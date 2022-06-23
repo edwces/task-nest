@@ -1,12 +1,18 @@
-import { Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post } from '@nestjs/common';
+import { SignInDTO } from './dto/sign-in.dto';
+import { SignUpDTO } from './dto/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
-    @Post("signin")
+  @Post('signin')
+  signIn(@Body() dto: SignInDTO) {}
 
-    @Post("signup")
+  @Post('signup')
+  signUp(@Body() dto: SignUpDTO) {}
 
-    @Post("token")
+  @Post('token')
+  getToken() {}
 
-    @Post("logout")
+  @Post('logout')
+  logout() {}
 }
