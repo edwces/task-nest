@@ -1,0 +1,31 @@
+import { MikroORM } from '@mikro-orm/core';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Module, OnModuleInit } from '@nestjs/common';
+import { AuthModule } from './modules/auth/auth.module';
+import { User } from './modules/user/user.entity';
+import { UserModule } from './modules/user/user.module';
+
+@Module({
+  imports: [
+    MikroOrmModule.forRoot({
+      type: 'postgresql',
+      host: 'postgres',
+      password: 'password',
+      user: 'postgres',
+      dbName: 'postgres',
+      entitiesTs: [User],
+      entities: ['dist/**/*.entity.js'],
+    }),
+    UserModule,
+    AuthModule,
+  ],
+})
+export class AppModule implements OnModuleInit {
+  constructor(private readonly orm: MikroORM) {}
+
+  async onModuleInit() {
+    const generator = this.orm.getSchemaGenerator();
+    await generator.refreshDatabase();
+    await generator.updateSchema();
+  }
+}
