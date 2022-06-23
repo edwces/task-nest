@@ -15,7 +15,7 @@ export class User extends BasicEntity {
   email!: string;
 
   @Property({ hidden: true })
-  password!: string;
+  hash!: string;
 
   @Property({ hidden: true })
   token!: string;
