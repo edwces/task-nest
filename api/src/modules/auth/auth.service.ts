@@ -25,6 +25,27 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInDTO) {
+    const user = await this._validateCredentials({ email, password });
+
+    const userPayload = {
+      email,
+      sub: user.id,
+    };
+
+    const { accessToken, refreshToken } = await this._createTokens(userPayload);
+
+    return { accessToken, user: { id: user.id, email } };
+  }
+
+  async logout() {
+    return '';
+  }
+
+  async refreshTokens() {
+    return '';
+  }
+
+  private async _validateCredentials({ email, password }: SignInDTO) {
     const user = await this.userService.findOne({ email });
     if (!user)
       throw new UnauthorizedException('User with that email does not exist');
@@ -32,24 +53,17 @@ export class AuthService {
     const isPasswordValid = await argon2.verify(user.hash, password);
     if (!isPasswordValid) throw new UnauthorizedException('Invalid Password');
 
-    const userPayload = {
-      email,
-      sub: user.id,
-    };
-
-    const refreshToken = await this.jwtService.signAsync(userPayload, {
-      secret: 'secret_rt',
-    });
-    const accessToken = await this.jwtService.signAsync(userPayload, {
-      secret: 'secret_at',
-    });
-
-    this.userService.assignToken(user.id, refreshToken);
-
-    return { accessToken, user: { id: user.id, email } };
+    return user;
   }
 
-  async logout() {}
-
-  async refreshTokens() {}
+  private async _createTokens(payload: any) {
+    return {
+      refreshToken: await this.jwtService.signAsync(payload, {
+        secret: 'secret_rt',
+      }),
+      accessToken: await this.jwtService.signAsync(payload, {
+        secret: 'secret_at',
+      }),
+    };
+  }
 }

@@ -17,9 +17,6 @@ export class User extends BasicEntity {
   @Property({ hidden: true })
   hash!: string;
 
-  @Property({ hidden: true, nullable: true })
-  hashedToken?: string;
-
   @Enum(() => UserRole)
   role = UserRole.USER;
 }
