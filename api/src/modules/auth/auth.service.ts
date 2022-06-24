@@ -32,7 +32,21 @@ export class AuthService {
     const isPasswordValid = await argon2.verify(user.hash, password);
     if (!isPasswordValid) throw new UnauthorizedException('Invalid Password');
 
-    if (user.hashedToken) 
+    const userPayload = {
+      email,
+      sub: user.id,
+    };
+
+    const refreshToken = await this.jwtService.signAsync(userPayload, {
+      secret: 'secret_rt',
+    });
+    const accessToken = await this.jwtService.signAsync(userPayload, {
+      secret: 'secret_at',
+    });
+
+    this.userService.assignToken(user.id, refreshToken);
+
+    return { accessToken, user: { id: user.id, email } };
   }
 
   async logout() {}

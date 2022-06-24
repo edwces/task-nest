@@ -20,7 +20,7 @@ export class AuthController {
 
   @Post('token')
   @HttpCode(HttpStatus.OK)
-  refreshToken() {
+  refreshTokens() {
     this.authService.refreshTokens();
   }
 
