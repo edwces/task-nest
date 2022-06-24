@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
+import argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -12,12 +17,25 @@ export class AuthService {
   ) {}
 
   async singUp(dto: SignUpDTO) {
-    this.userService.create(dto);
+    const doesExist = this.userService.findOne({ email: dto.email });
+    if (doesExist)
+      throw new ConflictException('User with that email already exists');
+
+    const user = await this.userService.create(dto);
   }
 
-  async signIn(dto: SignInDTO) {}
+  async signIn({ email, password }: SignInDTO) {
+    const user = await this.userService.findOne({ email });
+    if (!user)
+      throw new UnauthorizedException('User with that email does not exist');
+
+    const isPasswordValid = await argon2.verify(user.hash, password);
+    if (!isPasswordValid) throw new UnauthorizedException('Invalid Password');
+
+    if (user.hashedToken) 
+  }
 
   async logout() {}
 
-  async getTokens() {}
+  async refreshTokens() {}
 }
