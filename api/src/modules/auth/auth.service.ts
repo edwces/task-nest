@@ -10,6 +10,7 @@ import { SignUpDTO } from './dto/sign-up.dto';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/shared/types/interfaces/environment-variables.interface';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -38,8 +39,8 @@ export class AuthService {
     return { accessToken, user, refreshToken };
   }
 
-  async logout() {
-    return '';
+  async logout(response: Response) {
+    response.clearCookie('refresh_token');
   }
 
   async refreshTokens() {
