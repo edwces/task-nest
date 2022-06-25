@@ -25,16 +25,14 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInDTO) {
-    const user = await this._validateCredentials({ email, password });
+    const user = await this._getUserByCredentials({ email, password });
 
-    const userPayload = {
+    const { accessToken, refreshToken } = await this._createTokens({
       email,
       sub: user.id,
-    };
+    });
 
-    const { accessToken, refreshToken } = await this._createTokens(userPayload);
-
-    return { accessToken, user: { id: user.id, email } };
+    return { accessToken, user, refreshToken };
   }
 
   async logout() {
@@ -45,7 +43,7 @@ export class AuthService {
     return '';
   }
 
-  private async _validateCredentials({ email, password }: SignInDTO) {
+  private async _getUserByCredentials({ email, password }: SignInDTO) {
     const user = await this.userService.findOne({ email });
     if (!user)
       throw new UnauthorizedException('User with that email does not exist');

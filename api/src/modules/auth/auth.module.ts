@@ -14,9 +14,7 @@ import { RefreshStrategy } from './strategies/refresh.startegy';
     UserModule,
     MikroOrmModule.forFeature([User]),
     PassportModule,
-    JwtModule.register({
-      secret: 'secret_rt',
-    }),
+    JwtModule.register({}),
   ],
   controllers: [AuthController],
   providers: [AuthService, AccessStrategy, RefreshStrategy],
