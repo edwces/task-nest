@@ -8,12 +8,15 @@ import { UserService } from '../user/user.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
 import argon2 from 'argon2';
+import { ConfigService } from '@nestjs/config';
+import { EnvironmentVariables } from 'src/shared/types/interfaces/environment-variables.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService<EnvironmentVariables>,
   ) {}
 
   async singUp(dto: SignUpDTO) {
@@ -57,10 +60,10 @@ export class AuthService {
   private async _createTokens(payload: any) {
     return {
       refreshToken: await this.jwtService.signAsync(payload, {
-        secret: 'secret_rt',
+        secret: this.configService.get('JWT_ACCESS_SECRET'),
       }),
       accessToken: await this.jwtService.signAsync(payload, {
-        secret: 'secret_at',
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
       }),
     };
   }
