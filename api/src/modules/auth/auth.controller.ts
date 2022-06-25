@@ -16,6 +16,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
+  @HttpCode(HttpStatus.OK)
   async signIn(
     @Body() dto: SignInDTO,
     @Res({ passthrough: true }) response: Response,
@@ -23,7 +24,7 @@ export class AuthController {
     const { refreshToken, accessToken, user } = await this.authService.signIn(
       dto,
     );
-    response.cookie('refresh_token', refreshToken);
+    response.cookie('refresh_token', refreshToken, { httpOnly: true });
     return {
       accessToken,
       user: { id: user.id, email: user.email, name: user.name },
@@ -31,7 +32,6 @@ export class AuthController {
   }
 
   @Post('signup')
-  @HttpCode(HttpStatus.OK)
   signUp(@Body() dto: SignUpDTO) {
     this.authService.singUp(dto);
   }

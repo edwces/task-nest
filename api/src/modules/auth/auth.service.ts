@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
-import argon2 from 'argon2';
+import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/shared/types/interfaces/environment-variables.interface';
 
@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async singUp(dto: SignUpDTO) {
-    const doesExist = this.userService.findOne({ email: dto.email });
+    const doesExist = await this.userService.findOne({ email: dto.email });
     if (doesExist)
       throw new ConflictException('User with that email already exists');
 
@@ -60,10 +60,12 @@ export class AuthService {
   private async _createTokens(payload: any) {
     return {
       refreshToken: await this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_ACCESS_SECRET'),
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        expiresIn: 1000 * 60 * 60 * 60,
       }),
       accessToken: await this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        secret: this.configService.get('JWT_ACCESS_SECRET'),
+        expiresIn: 1000 * 60 * 60,
       }),
     };
   }
