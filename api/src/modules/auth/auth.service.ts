@@ -34,6 +34,7 @@ export class AuthService {
     const payload = {
       email,
       sub: user.id,
+      role: user.role,
     };
 
     const accessToken = await this._createAccessToken(payload);
@@ -63,7 +64,7 @@ export class AuthService {
 
   private async _createAccessToken(payload: any) {
     return await this.jwtService.signAsync(
-      { email: payload.email, sub: payload.sub },
+      { email: payload.email, sub: payload.sub, role: payload.role },
       {
         expiresIn: '15m',
         secret: this.configService.get('JWT_ACCESS_SECRET'),
@@ -73,7 +74,7 @@ export class AuthService {
 
   private async _createRefreshToken(payload: any) {
     return await this.jwtService.signAsync(
-      { email: payload.email, sub: payload.sub },
+      { email: payload.email, sub: payload.sub, role: payload.role },
       {
         expiresIn: '7d',
         secret: this.configService.get('JWT_REFRESH_SECRET'),
