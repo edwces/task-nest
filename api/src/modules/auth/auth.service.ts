@@ -11,6 +11,11 @@ import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/common/types/interfaces/environment-variables.interface';
 import { Response } from 'express';
+import {
+  JWT_ACCESS_EXPIRE_TIME,
+  JWT_REFRESH_COOKIE_NAME,
+  JWT_REFRESH_EXPIRE_TIME,
+} from './auth.consts';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +49,7 @@ export class AuthService {
   }
 
   async logout(response: Response) {
-    response.clearCookie('refresh_token');
+    response.clearCookie(JWT_REFRESH_COOKIE_NAME);
   }
 
   async refreshTokens(payload: any) {
@@ -66,7 +71,7 @@ export class AuthService {
     return await this.jwtService.signAsync(
       { email: payload.email, sub: payload.sub, role: payload.role },
       {
-        expiresIn: '15m',
+        expiresIn: JWT_ACCESS_EXPIRE_TIME,
         secret: this.configService.get('JWT_ACCESS_SECRET'),
       },
     );
@@ -76,7 +81,7 @@ export class AuthService {
     return await this.jwtService.signAsync(
       { email: payload.email, sub: payload.sub, role: payload.role },
       {
-        expiresIn: '7d',
+        expiresIn: JWT_REFRESH_EXPIRE_TIME,
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       },
     );

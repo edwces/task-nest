@@ -12,6 +12,7 @@ import { Auth } from 'src/common/decorators/auth.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserRole } from 'src/common/types/enums/user-role.enum';
 import { UserPayload } from 'src/common/types/interfaces/user-payload';
+import { JWT_REFRESH_COOKIE_NAME } from './auth.consts';
 import { AuthService } from './auth.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
@@ -30,7 +31,7 @@ export class AuthController {
     const { refreshToken, accessToken, user } = await this.authService.signIn(
       dto,
     );
-    response.cookie('refresh_token', refreshToken, { httpOnly: true });
+    response.cookie(JWT_REFRESH_COOKIE_NAME, refreshToken, { httpOnly: true });
     return {
       accessToken,
       user: { id: user.id, email: user.email, name: user.name },
