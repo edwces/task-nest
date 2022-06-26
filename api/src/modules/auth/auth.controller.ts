@@ -4,13 +4,13 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Auth } from 'src/common/decorators/auth.decorator';
 import { User } from 'src/common/decorators/user.decorator';
-import { AuthenticatedRequest } from 'src/common/types/interfaces/authenticated-request.interface';
+import { UserRole } from 'src/common/types/enums/user-role.enum';
 import { UserPayload } from 'src/common/types/interfaces/user-payload';
 import { AuthService } from './auth.service';
 import { SignInDTO } from './dto/sign-in.dto';
@@ -44,7 +44,7 @@ export class AuthController {
 
   @Post('token')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(RefreshGuard)
+  @Auth(UserRole.ADMIN)
   refreshTokens(@User() user: UserPayload) {
     return this.authService.refreshTokens(user);
   }
