@@ -1,6 +1,6 @@
 import { Entity, Enum, PrimaryKey, Property, Unique } from '@mikro-orm/core';
-import { BasicEntity } from 'src/shared/entities/basic.entity';
-import { UserRole } from 'src/shared/types/enums/user-role.enum';
+import { BasicEntity } from 'src/common/entities/basic.entity';
+import { UserRole } from 'src/common/types/enums/user-role.enum';
 
 @Entity()
 export class User extends BasicEntity {

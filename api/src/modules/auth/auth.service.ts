@@ -9,7 +9,7 @@ import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from 'src/shared/types/interfaces/environment-variables.interface';
+import { EnvironmentVariables } from 'src/common/types/interfaces/environment-variables.interface';
 import { Response } from 'express';
 
 @Injectable()
@@ -31,10 +31,13 @@ export class AuthService {
   async signIn({ email, password }: SignInDTO) {
     const user = await this._getUserByCredentials({ email, password });
 
-    const { accessToken, refreshToken } = await this._createTokens({
+    const payload = {
       email,
       sub: user.id,
-    });
+    };
+
+    const accessToken = await this._createAccessToken(payload);
+    const refreshToken = await this._createRefreshToken(payload);
 
     return { accessToken, user, refreshToken };
   }
@@ -43,8 +46,8 @@ export class AuthService {
     response.clearCookie('refresh_token');
   }
 
-  async refreshTokens() {
-    return '';
+  async refreshTokens(payload: any) {
+    return await this._createAccessToken(payload);
   }
 
   private async _getUserByCredentials({ email, password }: SignInDTO) {
@@ -58,16 +61,23 @@ export class AuthService {
     return user;
   }
 
-  private async _createTokens(payload: any) {
-    return {
-      refreshToken: await this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
-        expiresIn: 1000 * 60 * 60 * 60,
-      }),
-      accessToken: await this.jwtService.signAsync(payload, {
+  private async _createAccessToken(payload: any) {
+    return await this.jwtService.signAsync(
+      { email: payload.email, sub: payload.sub },
+      {
+        expiresIn: '15m',
         secret: this.configService.get('JWT_ACCESS_SECRET'),
-        expiresIn: 1000 * 60 * 60,
-      }),
-    };
+      },
+    );
+  }
+
+  private async _createRefreshToken(payload: any) {
+    return await this.jwtService.signAsync(
+      { email: payload.email, sub: payload.sub },
+      {
+        expiresIn: '7d',
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+      },
+    );
   }
 }

@@ -4,12 +4,16 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { AuthenticatedRequest } from 'src/common/types/interfaces/authenticated-request.interface';
 import { AuthService } from './auth.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
+import { RefreshGuard } from './guards/refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -38,12 +42,14 @@ export class AuthController {
 
   @Post('token')
   @HttpCode(HttpStatus.OK)
-  refreshTokens() {
-    this.authService.refreshTokens();
+  @UseGuards(RefreshGuard)
+  refreshTokens(@Req() request: AuthenticatedRequest) {
+    return this.authService.refreshTokens(request.user);
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RefreshGuard)
   logout(@Res({ passthrough: true }) response: Response) {
     this.authService.logout(response);
   }
