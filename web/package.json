@@ -12,9 +12,12 @@
     "@mantine/core": "^4.2.11",
     "@mantine/hooks": "^4.2.11",
     "@mantine/next": "^4.2.11",
+    "axios": "^0.27.2",
     "next": "12.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-query": "^3.39.1",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
