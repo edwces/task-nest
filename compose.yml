@@ -8,8 +8,12 @@ services:
       - /app/node_modules
     ports:
       - "3000:3000"
+      - "9229:9229"
     depends_on:
       - postgres
+    env_file:
+      - api/.env
+    command: yarn start:debug
   postgres:
     image: postgres:14.3-alpine
     environment:

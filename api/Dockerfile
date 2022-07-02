@@ -7,7 +7,7 @@ RUN apt update && \
 # set directory
 WORKDIR /app
 
-EXPOSE 3000
+EXPOSE 3000 9229 9230
 
 COPY package.json package.json
 COPY yarn.lock yarn.lock
