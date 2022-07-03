@@ -1,4 +1,6 @@
+import { SessionUser } from "../../../common/types/session-user.type";
+
 export interface SignInDTO {
-  email: string;
-  password: string;
+  token: string;
+  user: SessionUser;
 }

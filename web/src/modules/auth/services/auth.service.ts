@@ -1,16 +1,17 @@
 import { http } from "../../../config/httpClient";
+import { SignInFieldsDTO } from "../dto/sign-in-fields.dto";
 import { SignInDTO } from "../dto/sign-in.dto";
-import { SignUpDTO } from "../dto/sign-up.dto";
+import { SignUpFieldsDTO } from "../dto/sign-up-fields.dto";
 
-export function signUp(data: SignUpDTO): Promise<void> {
+export function signUp(data: SignUpFieldsDTO): Promise<void> {
   return http.post("/auth/signup", data);
 }
 
-export function signIn(data: SignInDTO) {
+export function signIn(data: SignInFieldsDTO): Promise<SignInDTO> {
   return http.post("/auth/signin", data).then((response) => response.data);
 }
 
-export function refreshToken() {
+export function refreshToken(): Promise<SignInDTO> {
   return http
     .post("/auth/token", {}, { withCredentials: true })
     .then((response) => response.data);

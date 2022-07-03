@@ -1,21 +1,16 @@
 import create from "zustand";
+import { SessionUser } from "../types/session-user.type";
 
 type Nullable<T> = { [K in keyof T]: T | null };
 
-interface SessionUser {
-  id: number;
-  email: string;
-  name: string;
-}
-
 interface SessionStoreState {
-  user: Nullable<SessionUser>;
+  user: Nullable<SessionUser> | SessionUser;
   status: "idle" | "signIn" | "signOut";
   token: string | null;
 }
 
 interface SessionStoreActions {
-  setSignedIn: (data: Nullable<SessionUser>, token: string) => void;
+  setSignedIn: (data: SessionUser, token: string) => void;
   setSignedOut: () => void;
 }
 

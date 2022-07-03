@@ -14,8 +14,8 @@ import { UserRole } from 'src/common/types/enums/user-role.enum';
 import { UserPayload } from 'src/common/types/interfaces/user-payload';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.consts';
 import { AuthService } from './auth.service';
-import { SignInDTO } from './dto/sign-in.dto';
-import { SignUpDTO } from './dto/sign-up.dto';
+import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
+import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import { RefreshGuard } from './guards/refresh.guard';
 
 @Controller('auth')
@@ -25,7 +25,7 @@ export class AuthController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signIn(
-    @Body() dto: SignInDTO,
+    @Body() dto: SignInFieldsDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
     const { refreshToken, accessToken, user } = await this.authService.signIn(
@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   @Post('signup')
-  signUp(@Body() dto: SignUpDTO) {
+  signUp(@Body() dto: SignUpFieldsDTO) {
     this.authService.singUp(dto);
   }
 
