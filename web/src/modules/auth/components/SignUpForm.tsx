@@ -5,11 +5,13 @@ import { SignUpFieldsDTO } from "../dto/sign-up-fields.dto";
 interface SignUpFormProps {
   handleSubmit: (values: SignUpFieldsDTO) => void;
   initialValues?: SignUpFieldsDTO;
+  isSubmitting?: boolean;
 }
 
 export function SignUpForm({
   handleSubmit,
   initialValues = { email: "", name: "", password: "" },
+  isSubmitting = false,
 }: SignUpFormProps) {
   const form = useForm<SignUpFieldsDTO>({
     initialValues,
@@ -41,7 +43,9 @@ export function SignUpForm({
           autoComplete="current-password"
           {...form.getInputProps("password")}
         />
-        <Button type="submit">Sign up</Button>
+        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+          Sign up
+        </Button>
       </Stack>
     </form>
   );
