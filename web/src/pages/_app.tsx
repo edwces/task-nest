@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider withNormalizeCSS>
-        <SessionProvider redirectUrl="/">
+        <SessionProvider>
           <Component {...pageProps} />
         </SessionProvider>
       </MantineProvider>
