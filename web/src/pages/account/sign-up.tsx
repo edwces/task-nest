@@ -1,11 +1,15 @@
 import { NextPage } from "next";
+import { PageMetadata } from "../../common/components/PageMetadata";
 import { SignUpForm } from "../../modules/auth/components/SignUpForm";
 
 const SignUp: NextPage = () => {
   return (
-    <main>
-      <SignUpForm handleSubmit={(values) => console.log(values)} />
-    </main>
+    <>
+      <PageMetadata title="Sign up" />
+      <main>
+        <SignUpForm handleSubmit={(values) => console.log(values)} />
+      </main>
+    </>
   );
 };
 
