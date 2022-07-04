@@ -16,7 +16,7 @@ import {
   JWT_REFRESH_COOKIE_NAME,
   JWT_REFRESH_EXPIRE_TIME,
 } from './auth.consts';
-import { RefreshClaims } from 'src/common/types/interfaces/refresh-claims.interface';
+import { RefreshClaims } from 'src/modules/auth/interfaces/refresh-claims.interface';
 
 @Injectable()
 export class AuthService {

@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
-import { RefreshClaims } from 'src/common/types/interfaces/refresh-claims.interface';
+import { RefreshClaims } from 'src/modules/auth/interfaces/refresh-claims.interface';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.consts';
 import { AuthService } from './auth.service';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
