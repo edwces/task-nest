@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { UserPayload } from './user-payload';
+import { AccessClaims } from './access-claims.interface';
 
 export interface AuthenticatedRequest extends Request {
-  user: UserPayload;
+  user: AccessClaims;
 }

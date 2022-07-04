@@ -8,10 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { Auth } from 'src/common/decorators/auth.decorator';
 import { User } from 'src/common/decorators/user.decorator';
-import { UserRole } from 'src/common/types/enums/user-role.enum';
-import { UserPayload } from 'src/common/types/interfaces/user-payload';
+import { RefreshClaims } from 'src/common/types/interfaces/refresh-claims.interface';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.consts';
 import { AuthService } from './auth.service';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
@@ -45,8 +43,8 @@ export class AuthController {
 
   @Post('token')
   @HttpCode(HttpStatus.OK)
-  @Auth(UserRole.ADMIN)
-  refreshTokens(@User() user: UserPayload) {
+  @UseGuards(RefreshGuard)
+  refreshTokens(@User() user: RefreshClaims) {
     return this.authService.refreshTokens(user);
   }
 

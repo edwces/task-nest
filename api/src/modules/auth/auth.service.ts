@@ -16,6 +16,7 @@ import {
   JWT_REFRESH_COOKIE_NAME,
   JWT_REFRESH_EXPIRE_TIME,
 } from './auth.consts';
+import { RefreshClaims } from 'src/common/types/interfaces/refresh-claims.interface';
 
 @Injectable()
 export class AuthService {
@@ -52,7 +53,7 @@ export class AuthService {
     response.clearCookie(JWT_REFRESH_COOKIE_NAME);
   }
 
-  async refreshTokens(payload: any) {
+  async refreshTokens(payload: RefreshClaims) {
     return await this._createAccessToken(payload);
   }
 
