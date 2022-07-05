@@ -17,13 +17,8 @@ export function SignInForm({
     initialValues,
   });
 
-  const handleSignUp = (values: SignInFieldsDTO) => {
-    handleSubmit(values);
-    form.reset();
-  };
-
   return (
-    <form onSubmit={form.onSubmit(handleSignUp)}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack spacing={10}>
         <TextInput
           required
