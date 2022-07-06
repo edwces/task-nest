@@ -6,14 +6,21 @@ import { SessionProvider } from "../modules/auth/components/SessionProvider";
 import { ModalsProvider } from "@mantine/modals";
 import { AddTodoModal } from "../modules/todo/components/AddTodoModal";
 import { Modal } from "../common/types/modal.enum";
+import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider withNormalizeCSS>
         <ModalsProvider modals={{ [Modal.ADD_TODO]: AddTodoModal }}>
           <SessionProvider>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </SessionProvider>
         </ModalsProvider>
       </MantineProvider>
