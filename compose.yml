@@ -5,6 +5,8 @@ services:
       target: dev
     volumes:
       - ./api:/app
+      - ./api/package.json:/app/package.json
+      - ./api/yarn.lock:/app/yarn.lock
       - /app/node_modules
     ports:
       - "3001:3000"
@@ -32,6 +34,8 @@ services:
       target: dev
     volumes:
       - ./web:/app
+      - ./web/package.json:/app/package.json
+      - ./web/yarn.lock:/app/yarn.lock
       - /app/node_modules
       - /app/.next
     ports:

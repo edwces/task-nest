@@ -1,11 +1,14 @@
+import { Button } from "@mantine/core";
 import type { NextPage } from "next";
 import { PageMetadata } from "../common/components/PageMetadata";
-import { AuthGate } from "../modules/auth/components/AuthGate";
 import { TodoList } from "../modules/todo/components/TodoList";
+import { useAddTodoModal } from "../modules/todo/hooks/useAddTodoModal";
 
 const Home: NextPage = () => {
+  const { open } = useAddTodoModal();
+
   return (
-    <AuthGate redirectUrl="/account/sign-up">
+    <>
       <PageMetadata title="Todo clone" />
       <main>
         <TodoList
@@ -14,8 +17,9 @@ const Home: NextPage = () => {
             { id: 6, label: "Do homework" },
           ]}
         />
+        <Button onClick={open} />
       </main>
-    </AuthGate>
+    </>
   );
 };
 

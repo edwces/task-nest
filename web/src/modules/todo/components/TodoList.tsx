@@ -1,5 +1,5 @@
 import { Stack } from "@mantine/core";
-import { Todo } from "../todo.model";
+import { Todo } from "../models/todo.model";
 import { TodoItem } from "./TodoItem";
 
 interface TodoListProps {
