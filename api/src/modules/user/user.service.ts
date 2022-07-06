@@ -13,16 +13,16 @@ export class UserService {
     private readonly userRepository: EntityRepository<User>,
   ) {}
 
-  async findAll(): Promise<User[]> {
+  async findAll() {
     return await this.userRepository.findAll();
   }
 
-  async findOne(filter: FilterQuery<User>): Promise<User | undefined> {
-    return await this.userRepository.findOne(filter);
+  async findOne(filter: FilterQuery<User>) {
+    return await this.userRepository.findOneOrFail(filter);
   }
 
-  async create(dto: CreateUserDTO): Promise<User> {
-    const hash = await argon2.hash(dto.password);
+  async create({ password, ...dto }: CreateUserDTO) {
+    const hash = await argon2.hash(password);
     const user = this.userRepository.create({ ...dto, hash });
     await this.userRepository.persistAndFlush(user);
 

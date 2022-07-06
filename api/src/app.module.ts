@@ -2,9 +2,9 @@ import { MikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import mikroOrmConfig from './config/mikro-orm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { TodoModule } from './modules/todo/todo.module';
-import { User } from './modules/user/user.entity';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -12,15 +12,7 @@ import { UserModule } from './modules/user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MikroOrmModule.forRoot({
-      type: 'postgresql',
-      host: 'postgres',
-      password: 'password',
-      user: 'postgres',
-      dbName: 'postgres',
-      entitiesTs: [User],
-      entities: ['dist/**/*.entity.js'],
-    }),
+    MikroOrmModule.forRoot(mikroOrmConfig),
     UserModule,
     AuthModule,
     TodoModule,

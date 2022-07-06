@@ -10,7 +10,7 @@ export class TodoService {
     private readonly todoRepository: EntityRepository<Todo>,
   ) {}
 
-  async findAll(): Promise<Todo[]> {
+  async findAll() {
     return await this.todoRepository.findAll();
   }
 }
