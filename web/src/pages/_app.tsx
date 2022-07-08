@@ -7,14 +7,12 @@ import { ModalsProvider } from "@mantine/modals";
 import { AddTodoModal } from "../modules/todo/components/AddTodoModal";
 import { Modal } from "../common/types/modal.enum";
 import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
-import { useHttpClientInterceptors } from "../common/hooks/useHttpClientInterceptors";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  useHttpClientInterceptors();
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (

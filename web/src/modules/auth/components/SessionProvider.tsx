@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from "react";
+import { HttpClientInterceptors } from "../../../common/components/HttpClientInterceptors";
 import { useSession } from "../../../common/store/useSession";
 import { refreshToken } from "../services/auth.service";
 
@@ -7,17 +8,22 @@ interface SessionProviderProps {
 }
 
 export function SessionProvider({ children }: SessionProviderProps) {
-  const { setSignedIn, setSignedOut, status } = useSession();
+  const { setSignedIn, setSignedOut } = useSession();
 
   useEffect(() => {
-    refreshToken()
+    const controller = new AbortController();
+
+    refreshToken({ signal: controller.signal })
       .then((data) => {
         setSignedIn(data.user, data.token);
       })
-      .catch(() => {
-        setSignedOut();
+      .catch((error) => {
+        if (error.response) {
+          setSignedOut();
+        }
       });
-  }, [status]);
+    return () => controller.abort();
+  }, []);
 
-  return <>{children}</>;
+  return <HttpClientInterceptors>{children}</HttpClientInterceptors>;
 }

@@ -13,9 +13,13 @@ export function signIn(data: SignInFieldsDTO): Promise<SignInDTO> {
     .then((response) => response.data);
 }
 
-export function refreshToken(): Promise<SignInDTO> {
+export function refreshToken({
+  signal,
+}: {
+  signal?: AbortSignal;
+}): Promise<SignInDTO> {
   return http
-    .post("/auth/token", {}, { withCredentials: true })
+    .post("/auth/token", {}, { withCredentials: true, signal })
     .then((response) => response.data);
 }
 
