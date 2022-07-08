@@ -7,5 +7,5 @@ export class Todo extends BasicEntity {
   id!: number;
 
   @Property()
-  title!: string;
+  label!: string;
 }

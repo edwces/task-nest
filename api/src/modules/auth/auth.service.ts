@@ -9,14 +9,14 @@ import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from 'src/common/types/interfaces/environment-variables.interface';
+import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
 import { Response } from 'express';
 import {
   JWT_ACCESS_EXPIRE_TIME,
   JWT_REFRESH_COOKIE_NAME,
   JWT_REFRESH_EXPIRE_TIME,
 } from './auth.constants';
-import { RefreshClaims } from 'src/modules/auth/interfaces/refresh-claims.interface';
+import { JWTRefreshPayload } from 'src/modules/auth/interfaces/jwt-refresh-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
     if (doesExist)
       throw new ConflictException('User with that email already exists');
 
-    const user = await this.userService.create(dto);
+    await this.userService.create(dto);
   }
 
   async signIn({ email, password }: SignInFieldsDTO) {
@@ -40,7 +40,7 @@ export class AuthService {
     const payload = {
       email,
       sub: user.id,
-      role: user.role,
+      role: user.roles,
     };
 
     const accessToken = await this._createAccessToken(payload);
@@ -53,7 +53,7 @@ export class AuthService {
     response.clearCookie(JWT_REFRESH_COOKIE_NAME);
   }
 
-  async refreshTokens(payload: RefreshClaims) {
+  async refreshTokens(payload: JWTRefreshPayload) {
     return await this._createAccessToken(payload);
   }
 

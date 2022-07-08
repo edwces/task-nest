@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { EnvironmentVariables } from 'src/common/types/interfaces/environment-variables.interface';
-import { AccessClaims } from '../interfaces/access-claims.interface';
+import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
+import { JWTAccessPayload } from '../interfaces/jwt-access-payload.interface';
 
 @Injectable()
-export class AccessStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class JWTAccessStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly configService: ConfigService<EnvironmentVariables>,
   ) {
@@ -16,7 +16,7 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  validate(payload: AccessClaims) {
+  validate(payload: JWTAccessPayload) {
     return payload;
   }
 }

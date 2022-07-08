@@ -1,6 +1,6 @@
 import { Entity, Enum, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
-import { UserRole } from 'src/common/types/enums/user-role.enum';
+import { UserRole } from 'src/modules/user/enums/user-role.enum';
 
 @Entity()
 export class User extends BasicEntity {
@@ -17,6 +17,6 @@ export class User extends BasicEntity {
   @Property({ hidden: true })
   hash!: string;
 
-  @Enum(() => UserRole)
-  role = UserRole.USER;
+  @Enum({ items: () => UserRole, array: true })
+  roles: UserRole[] = [UserRole.USER];
 }

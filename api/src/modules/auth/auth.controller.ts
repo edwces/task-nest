@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
-import { RefreshClaims } from 'src/modules/auth/interfaces/refresh-claims.interface';
+import { JWTRefreshPayload } from 'src/modules/auth/interfaces/jwt-refresh-payload.interface';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
-import { RefreshGuard } from './guards/refresh.guard';
+import { JWTRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -31,27 +31,27 @@ export class AuthController {
     );
     response.cookie(JWT_REFRESH_COOKIE_NAME, refreshToken, { httpOnly: true });
     return {
-      accessToken,
+      token: accessToken,
       user: { id: user.id, email: user.email, name: user.name },
     };
   }
 
   @Post('signup')
   signUp(@Body() dto: SignUpFieldsDTO) {
-    this.authService.singUp(dto);
+    return this.authService.singUp(dto);
   }
 
   @Post('token')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(RefreshGuard)
-  refreshTokens(@User() user: RefreshClaims) {
+  @UseGuards(JWTRefreshGuard)
+  refreshTokens(@User() user: JWTRefreshPayload) {
     return this.authService.refreshTokens(user);
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(RefreshGuard)
+  @UseGuards(JWTRefreshGuard)
   logout(@Res({ passthrough: true }) response: Response) {
-    this.authService.logout(response);
+    return this.authService.logout(response);
   }
 }

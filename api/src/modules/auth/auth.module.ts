@@ -6,8 +6,8 @@ import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { AccessStrategy } from './strategies/access.strategy';
-import { RefreshStrategy } from './strategies/refresh.startegy';
+import { JWTAccessStrategy } from './strategies/jwt-access.strategy';
+import { JWTRefreshStrategy } from './strategies/jwt-refresh.startegy';
 
 @Module({
   imports: [
@@ -17,6 +17,6 @@ import { RefreshStrategy } from './strategies/refresh.startegy';
     JwtModule.register({}),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AccessStrategy, RefreshStrategy],
+  providers: [AuthService, JWTAccessStrategy, JWTRefreshStrategy],
 })
 export class AuthModule {}

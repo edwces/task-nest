@@ -18,7 +18,7 @@ export class UserService {
   }
 
   async findOne(filter: FilterQuery<User>) {
-    return await this.userRepository.findOneOrFail(filter);
+    return await this.userRepository.findOne(filter);
   }
 
   async create({ password, ...dto }: CreateUserDTO) {

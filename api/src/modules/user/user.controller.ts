@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Auth } from 'src/common/decorators/auth.decorator';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { User } from 'src/common/decorators/user.decorator';
-import { UserRole } from 'src/common/types/enums/user-role.enum';
-import { AccessClaims } from '../auth/interfaces/access-claims.interface';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { UserRole } from 'src/modules/user/enums/user-role.enum';
+import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
+import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
@@ -11,20 +13,22 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @Auth(UserRole.ADMIN)
+  @Roles(UserRole.ADMIN)
+  @UseGuards(JWTAccessGuard, RolesGuard)
   findAll() {
     return this.userService.findAll();
   }
 
   @Post()
-  @Auth(UserRole.ADMIN)
+  @Roles(UserRole.ADMIN)
+  @UseGuards(JWTAccessGuard, RolesGuard)
   create(@Body() dto: CreateUserDTO) {
     return this.userService.create(dto);
   }
 
   @Get('me')
-  @Auth()
-  getByToken(@User() user: AccessClaims) {
+  @UseGuards(JWTAccessGuard)
+  getByToken(@User() user: JWTAccessPayload) {
     return this.userService.findOne(user.sub);
   }
 }
