@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UserRole } from 'src/modules/user/enums/user-role.enum';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
 import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
+import { CreateUserTodoDTO } from './dto/create-user-todo.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
@@ -28,7 +38,28 @@ export class UserController {
 
   @Get('me')
   @UseGuards(JWTAccessGuard)
-  getByToken(@User() user: JWTAccessPayload) {
+  findByToken(@User() user: JWTAccessPayload) {
     return this.userService.findOne(user.sub);
+  }
+
+  @Get('me/todos')
+  @UseGuards(JWTAccessGuard)
+  findTodosByToken(@User() user: JWTAccessPayload) {
+    return this.userService.findTodosById(user.sub);
+  }
+
+  @Post('me/todos')
+  @UseGuards(JWTAccessGuard)
+  createTodo(@User() user: JWTAccessPayload, @Body() dto: CreateUserTodoDTO) {
+    return this.userService.createTodo({
+      authorId: user.sub,
+      label: dto.label,
+    });
+  }
+
+  @Delete('me/todos/:id')
+  @UseGuards(JWTAccessGuard)
+  deleteTodo(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.deleteTodo(id);
   }
 }

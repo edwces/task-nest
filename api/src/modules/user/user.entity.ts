@@ -1,6 +1,15 @@
-import { Entity, Enum, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Enum,
+  OneToMany,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
 import { UserRole } from 'src/modules/user/enums/user-role.enum';
+import { Todo } from '../todo/todo.entity';
 
 @Entity()
 export class User extends BasicEntity {
@@ -19,4 +28,7 @@ export class User extends BasicEntity {
 
   @Enum({ items: () => UserRole, array: true })
   roles: UserRole[] = [UserRole.USER];
+
+  @OneToMany(() => Todo, (todo) => todo.author)
+  todos = new Collection<Todo>(this);
 }

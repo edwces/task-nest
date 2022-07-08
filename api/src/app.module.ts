@@ -13,9 +13,9 @@ import { UserModule } from './modules/user/user.module';
       isGlobal: true,
     }),
     MikroOrmModule.forRoot(mikroOrmConfig),
+    TodoModule,
     UserModule,
     AuthModule,
-    TodoModule,
   ],
 })
 export class AppModule implements OnModuleInit {

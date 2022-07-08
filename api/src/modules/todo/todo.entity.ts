@@ -1,5 +1,6 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Todo extends BasicEntity {
@@ -8,4 +9,7 @@ export class Todo extends BasicEntity {
 
   @Property()
   label!: string;
+
+  @ManyToOne(() => User)
+  author!: User;
 }
