@@ -29,7 +29,10 @@ export class AuthController {
     const { refreshToken, accessToken, user } = await this.authService.signIn(
       dto,
     );
-    response.cookie(JWT_REFRESH_COOKIE_NAME, refreshToken, { httpOnly: true });
+    response.cookie(JWT_REFRESH_COOKIE_NAME, refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+    });
     return {
       token: accessToken,
       user: { id: user.id, email: user.email, name: user.name },

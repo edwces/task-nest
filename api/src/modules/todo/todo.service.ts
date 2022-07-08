@@ -22,7 +22,7 @@ export class TodoService {
   }
 
   async delete(id: number) {
-    const todo = await this.todoRepository.findOne(id);
+    const todo = await this.todoRepository.findOneOrFail(id);
     await this.todoRepository.removeAndFlush(todo);
   }
 }

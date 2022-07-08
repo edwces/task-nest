@@ -54,7 +54,11 @@ export class AuthService {
   }
 
   async refreshTokens(payload: JWTRefreshPayload) {
-    return await this._createAccessToken(payload);
+    const token = await this._createAccessToken(payload);
+    return {
+      token,
+      user: payload,
+    };
   }
 
   private async _getUserByCredentials({ email, password }: SignInFieldsDTO) {

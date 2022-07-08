@@ -8,7 +8,9 @@ export function signUp(data: SignUpFieldsDTO): Promise<void> {
 }
 
 export function signIn(data: SignInFieldsDTO): Promise<SignInDTO> {
-  return http.post("/auth/signin", data).then((response) => response.data);
+  return http
+    .post("/auth/signin", data, { withCredentials: true })
+    .then((response) => response.data);
 }
 
 export function refreshToken(): Promise<SignInDTO> {
