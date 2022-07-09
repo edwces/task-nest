@@ -31,7 +31,6 @@ export class AuthController {
     );
     response.cookie(JWT_REFRESH_COOKIE_NAME, refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
     });
     return {
       token: accessToken,
