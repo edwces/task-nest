@@ -1,4 +1,4 @@
-import { Checkbox } from "@mantine/core";
+import { Checkbox, Paper } from "@mantine/core";
 import { ChangeEventHandler } from "react";
 
 interface TodoItemProps {

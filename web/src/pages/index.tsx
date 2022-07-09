@@ -13,8 +13,10 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Todo clone" />
+      <Button onClick={open} mb={25}>
+        Add Todo
+      </Button>
       {data && <TodoList data={data} />}
-      <Button onClick={open} />
     </>
   );
 };

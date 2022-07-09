@@ -10,7 +10,20 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <AuthGate redirectUrl="/account/sign-in">
-      <AppShell header={<DashboardHeader />}>{children}</AppShell>;
+      <AppShell
+        fixed
+        header={<DashboardHeader />}
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        })}
+      >
+        {children}
+      </AppShell>
     </AuthGate>
   );
 }
