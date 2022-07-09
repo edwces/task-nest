@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from "axios";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { http } from "../../config/httpClient";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useSession } from "../store/useSession";
 
 interface HttpClientInterceptorsProps {
@@ -11,21 +12,18 @@ export function HttpClientInterceptors({
   children,
 }: HttpClientInterceptorsProps) {
   const token = useSession((state) => state.token);
-  const [isSet, set] = useState(false);
   const attachAuthHeader = (config: AxiosRequestConfig<any>) => {
     config.headers!.Authorization = `Bearer ${token}`;
     return config;
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const id = http.interceptors.request.use(attachAuthHeader);
-    set(true);
 
     return () => {
-      set(false);
       http.interceptors.request.eject(id);
     };
   }, [token]);
 
-  return <>{isSet && children}</>;
+  return <>{children}</>;
 }
