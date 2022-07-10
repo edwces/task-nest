@@ -5,6 +5,7 @@ import { DashboardLayout } from "../modules/layout/components/DashboardLayout";
 import { TodoList } from "../modules/todo/components/TodoList";
 import { useAddTodoModal } from "../modules/todo/hooks/useAddTodoModal";
 import { useTodos } from "../modules/todo/hooks/useTodos";
+import { motion } from "framer-motion";
 
 const Home: NextPageWithLayout = () => {
   const { open } = useAddTodoModal();
