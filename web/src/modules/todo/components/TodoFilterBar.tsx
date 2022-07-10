@@ -1,9 +1,9 @@
 import { Group, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-const orderOptions = [
-  { value: "created-by-desc", label: "latest" },
-  { value: "created-by-asc", label: "oldest" },
+export const orderOptions = [
+  { value: "created-by:desc", label: "latest" },
+  { value: "created-by:asc", label: "oldest" },
 ] as const;
 
 interface TodoFilters {
@@ -11,13 +11,15 @@ interface TodoFilters {
 }
 
 interface TodoFilterBarProps {
+  initialValue?: TodoFilters;
   onChange?: (values: TodoFilters) => void;
 }
 
-export function TodoFilterBar({ onChange = () => {} }: TodoFilterBarProps) {
-  const [filters, setFilters] = useState<TodoFilters>({
-    order: "created-by-asc",
-  });
+export function TodoFilterBar({
+  onChange = () => {},
+  initialValue = { order: "created-by:asc" },
+}: TodoFilterBarProps) {
+  const [filters, setFilters] = useState<TodoFilters>(initialValue);
 
   useEffect(() => {
     onChange(filters);

@@ -1,15 +1,18 @@
 import { Button } from "@mantine/core";
+import { useState } from "react";
 import { PageMetadata } from "../common/components/PageMetadata";
 import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
 import { DashboardLayout } from "../modules/layout/components/DashboardLayout";
+import { TodoFilterBar } from "../modules/todo/components/TodoFilterBar";
 import { TodoList } from "../modules/todo/components/TodoList";
 import { useAddTodoModal } from "../modules/todo/hooks/useAddTodoModal";
 import { useTodos } from "../modules/todo/hooks/useTodos";
-import { motion } from "framer-motion";
+import { TodosQuery } from "../modules/todo/types/add-todo-query.interface";
 
 const Home: NextPageWithLayout = () => {
   const { open } = useAddTodoModal();
-  const { data } = useTodos();
+  const [filters, setFilters] = useState<TodosQuery>({});
+  const { data } = useTodos(filters);
 
   return (
     <>
@@ -17,6 +20,7 @@ const Home: NextPageWithLayout = () => {
       <Button onClick={open} mb={25}>
         Add Todo
       </Button>
+      <TodoFilterBar onChange={(values) => setFilters(values as any)} />
       {data && <TodoList data={data} />}
     </>
   );
