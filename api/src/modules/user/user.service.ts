@@ -7,6 +7,7 @@ import { User } from './user.entity';
 import * as argon2 from 'argon2';
 import { TodoService } from '../todo/todo.service';
 import { CreateTodoDTO } from '../todo/dto/create-todo.dto';
+import { TodosQueryParams } from '../todo/interfaces/todos-query-params.interface';
 
 @Injectable()
 export class UserService {
@@ -32,11 +33,8 @@ export class UserService {
     return user;
   }
 
-  async findTodosById(id: number) {
-    const user = await this.userRepository.findOneOrFail(id, {
-      populate: ['todos'],
-    });
-    return user.todos;
+  async findTodosById(id: number, query: TodosQueryParams) {
+    return await this.todoService.findAll({ author: id }, query);
   }
 
   async createTodo(dto: CreateTodoDTO) {

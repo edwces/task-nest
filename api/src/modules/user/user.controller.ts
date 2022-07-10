@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -14,6 +15,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UserRole } from 'src/modules/user/enums/user-role.enum';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
 import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
+import { TodosQueryParams } from '../todo/interfaces/todos-query-params.interface';
 import { CreateUserTodoDTO } from './dto/create-user-todo.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
@@ -44,8 +46,11 @@ export class UserController {
 
   @Get('me/todos')
   @UseGuards(JWTAccessGuard)
-  findTodosByToken(@User() user: JWTAccessPayload) {
-    return this.userService.findTodosById(user.sub);
+  findTodosByToken(
+    @User() user: JWTAccessPayload,
+    @Query() query: TodosQueryParams,
+  ) {
+    return this.userService.findTodosById(user.sub, query);
   }
 
   @Post('me/todos')
