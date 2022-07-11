@@ -45,7 +45,7 @@ export function SignInForm({
         </Button>
         <Text size="sm">
           Don&apos;t have an Account? Create it{" "}
-          <Anchor size="sm" component={NextLink} href="account/sign-up">
+          <Anchor size="sm" component={NextLink} href="/account/sign-up">
             here
           </Anchor>
         </Text>
