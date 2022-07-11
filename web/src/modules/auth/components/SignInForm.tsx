@@ -6,9 +6,16 @@ import {
   Text,
   Anchor,
 } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
+import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
-import { SignInFieldsDTO } from "../dto/sign-in-fields.dto";
+import { z } from "zod";
+
+const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(5),
+});
+
+type SignInFieldsDTO = z.infer<typeof signInSchema>;
 
 interface SignInFormProps {
   handleSubmit: (values: SignInFieldsDTO) => void;
@@ -23,6 +30,7 @@ export function SignInForm({
 }: SignInFormProps) {
   const form = useForm<SignInFieldsDTO>({
     initialValues,
+    schema: zodResolver(signInSchema),
   });
 
   return (

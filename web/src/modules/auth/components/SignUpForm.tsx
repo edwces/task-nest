@@ -1,6 +1,14 @@
 import { Button, PasswordInput, TextInput, Stack } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
-import { SignUpFieldsDTO } from "../dto/sign-up-fields.dto";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
+
+const signUpSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(5),
+});
+
+type SignUpFieldsDTO = z.infer<typeof signUpSchema>;
 
 interface SignUpFormProps {
   handleSubmit: (values: SignUpFieldsDTO) => void;
@@ -15,6 +23,7 @@ export function SignUpForm({
 }: SignUpFormProps) {
   const form = useForm<SignUpFieldsDTO>({
     initialValues,
+    schema: zodResolver(signUpSchema),
   });
 
   return (
