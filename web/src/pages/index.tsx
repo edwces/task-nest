@@ -20,7 +20,12 @@ const Home: NextPageWithLayout = () => {
       <Button onClick={open} mb={25}>
         Add Todo
       </Button>
-      <TodoFilterBar onChange={(values) => setFilters(values as any)} />
+      <TodoFilterBar
+        onFiltersApply={(values) => {
+          const [sort, direction] = values.sort.split(":");
+          setFilters({ sort, direction });
+        }}
+      />
       {data && <TodoList data={data} />}
     </>
   );
