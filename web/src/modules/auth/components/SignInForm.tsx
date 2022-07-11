@@ -1,5 +1,13 @@
-import { Button, PasswordInput, TextInput, Stack } from "@mantine/core";
+import {
+  Button,
+  PasswordInput,
+  TextInput,
+  Stack,
+  Text,
+  Anchor,
+} from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { NextLink } from "@mantine/next";
 import { SignInFieldsDTO } from "../dto/sign-in-fields.dto";
 
 interface SignInFormProps {
@@ -19,7 +27,7 @@ export function SignInForm({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack spacing={10}>
+      <Stack spacing={25}>
         <TextInput
           required
           label="Email"
@@ -35,6 +43,12 @@ export function SignInForm({
         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
           Sign in
         </Button>
+        <Text size="sm">
+          Don&apos;t have an Account? Create it{" "}
+          <Anchor size="sm" component={NextLink} href="account/sign-up">
+            here
+          </Anchor>
+        </Text>
       </Stack>
     </form>
   );

@@ -19,7 +19,7 @@ export function SignUpForm({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack spacing={10}>
+      <Stack spacing={25}>
         <TextInput
           required
           label="Email"
