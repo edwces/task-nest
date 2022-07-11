@@ -1,6 +1,12 @@
-import { Button, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
-import { AddTodoDTO } from "../dto/add-todo.dto";
+import { Button, Stack, TextInput } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
+
+const addTodoSchema = z.object({
+  label: z.string().min(1).max(20),
+});
+
+type AddTodoDTO = z.infer<typeof addTodoSchema>;
 
 interface AddTodoFormProps {
   handleSubmit: (values: AddTodoDTO) => void;
@@ -13,12 +19,19 @@ export function AddTodoForm({
   initialValues = { label: "" },
   isSubmitting = false,
 }: AddTodoFormProps) {
-  const form = useForm<AddTodoDTO>({ initialValues });
+  const form = useForm<AddTodoDTO>({
+    initialValues,
+    schema: zodResolver(addTodoSchema),
+  });
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <TextInput required {...form.getInputProps("label")} />
-      <Button type="submit" disabled={isSubmitting} loading={isSubmitting} />
+      <Stack spacing={30}>
+        <TextInput required {...form.getInputProps("label")} />
+        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+          Confirm
+        </Button>
+      </Stack>
     </form>
   );
 }
