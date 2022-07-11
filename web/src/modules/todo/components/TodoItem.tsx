@@ -7,5 +7,5 @@ interface TodoItemProps {
 }
 
 export function TodoItem({ label = "", onCheck }: TodoItemProps) {
-  return <Checkbox label={label} radius="xl" onChange={onCheck} />;
+  return <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />;
 }

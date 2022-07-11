@@ -1,5 +1,6 @@
-import { Button } from "@mantine/core";
+import { Button, Center, Group } from "@mantine/core";
 import { useState } from "react";
+import { Plus } from "tabler-icons-react";
 import { PageMetadata } from "../common/components/PageMetadata";
 import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
 import { DashboardLayout } from "../modules/layout/components/DashboardLayout";
@@ -17,16 +18,22 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Todo clone" />
-      <Button onClick={open} mb={25}>
-        Add Todo
-      </Button>
-      <TodoFilterBar
-        onFiltersApply={(values) => {
-          const [sort, direction] = values.sort.split(":");
-          setFilters({ sort, direction });
-        }}
-      />
-      {data && <TodoList data={data} />}
+      <Group position="apart" align="center">
+        <TodoFilterBar
+          onFiltersApply={(values) => {
+            const [sort, direction] = values.sort.split(":");
+            setFilters({ sort, direction });
+          }}
+        />
+        <Button onClick={open} leftIcon={<Plus />}>
+          Add Todo
+        </Button>
+      </Group>
+      {data && (
+        <Center>
+          <TodoList data={data} />
+        </Center>
+      )}
     </>
   );
 };

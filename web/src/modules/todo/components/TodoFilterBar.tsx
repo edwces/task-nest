@@ -1,9 +1,10 @@
 import { Group, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { ArrowsSort } from "tabler-icons-react";
 
 export const sortOptions = [
-  { value: "createdAt:desc", label: "latest" },
-  { value: "createdAt:asc", label: "oldest" },
+  { value: "createdAt:desc", label: "Latest" },
+  { value: "createdAt:asc", label: "Oldest" },
 ] as const;
 
 interface TodoFilters {
@@ -34,6 +35,7 @@ export function TodoFilterBar({
           setFilters({ ...filters, sort: value })
         }
         data={sortOptions as any}
+        icon={<ArrowsSort />}
       />
     </Group>
   );
