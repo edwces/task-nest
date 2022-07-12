@@ -14,6 +14,7 @@ import { NextPageWithLayout } from "../common/types/next-page-with-layout.interf
 import { useState } from "react";
 import { GetServerSidePropsContext } from "next";
 import { getCookie, setCookie } from "cookies-next";
+import { CustomErrorBoundary } from "../common/components/CustomErrorBoundary";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -42,9 +43,11 @@ function MyApp({ Component, pageProps, color }: AppPropsWithLayout) {
           theme={{ colorScheme }}
         >
           <ModalsProvider modals={{ [Modal.ADD_TODO]: AddTodoModal }}>
-            <SessionProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </SessionProvider>
+            <CustomErrorBoundary>
+              <SessionProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </SessionProvider>
+            </CustomErrorBoundary>
           </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
