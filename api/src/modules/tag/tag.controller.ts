@@ -5,11 +5,18 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
+import { UserRole } from '../user/enums/user-role.enum';
 import { CreateTagDTO } from './dto/create-tag.dto';
 import { TagService } from './tag.service';
 
 @Controller('tags')
+@Roles(UserRole.ADMIN)
+@UseGuards(JWTAccessGuard, RolesGuard)
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
@@ -21,18 +28,5 @@ export class TagController {
   @Post()
   create(@Body() dto: CreateTagDTO) {
     return this.tagService.create(dto);
-  }
-
-  @Post(':id/todos')
-  addTodo(
-    @Param('id', ParseIntPipe) id: number,
-    @Body('todoId', ParseIntPipe) todoId: number,
-  ) {
-    return this.tagService.addTodo(id, todoId);
-  }
-
-  @Get(':id/todos')
-  getTodosById(@Param('id', ParseIntPipe) id: number) {
-    return this.tagService.getTodosById(id);
   }
 }
