@@ -15,6 +15,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UserRole } from 'src/modules/user/enums/user-role.enum';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
 import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
+import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import { TodosQueryParams } from '../todo/interfaces/todos-query-params.interface';
 import { CreateUserTodoDTO } from './dto/create-user-todo.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -58,6 +59,7 @@ export class UserController {
   createTodo(@User() user: JWTAccessPayload, @Body() dto: CreateUserTodoDTO) {
     return this.userService.createTodo({
       authorId: user.sub,
+      tagId: dto.tagId,
       label: dto.label,
     });
   }
@@ -66,5 +68,20 @@ export class UserController {
   @UseGuards(JWTAccessGuard)
   deleteTodo(@Param('id', ParseIntPipe) id: number) {
     return this.userService.deleteTodo(id);
+  }
+
+  @Post('me/tags')
+  @UseGuards(JWTAccessGuard)
+  createTag(
+    @User() user: JWTAccessPayload,
+    @Body() dto: Omit<CreateTagDTO, 'authorId'>,
+  ) {
+    return this.userService.createTag({ ...dto, authorId: user.sub });
+  }
+
+  @Get('me/tags/:id/todos')
+  @UseGuards(JWTAccessGuard)
+  getTodosByTag(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getTodosByTag(id);
   }
 }

@@ -25,8 +25,12 @@ export class TodoService {
     return await em.getResult();
   }
 
-  async create({ authorId, ...dto }: CreateTodoDTO) {
-    const todo = this.todoRepository.create({ author: authorId, ...dto });
+  async create({ authorId, tagId, ...dto }: CreateTodoDTO) {
+    const todo = this.todoRepository.create({
+      author: authorId,
+      tag: tagId,
+      ...dto,
+    });
     await this.todoRepository.persistAndFlush(todo);
     return todo;
   }

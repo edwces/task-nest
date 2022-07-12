@@ -4,6 +4,7 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import mikroOrmConfig from './config/mikro-orm.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { TagModule } from './modules/tag/tag.module';
 import { TodoModule } from './modules/todo/todo.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -14,6 +15,7 @@ import { UserModule } from './modules/user/user.module';
     }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     TodoModule,
+    TagModule,
     UserModule,
     AuthModule,
   ],
