@@ -5,6 +5,7 @@ import { Strategy } from 'passport-jwt';
 import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
 import { jwtCookieExtractor } from '../helpers/jwt-cookie-extractor.helper';
 import { JWTRefreshPayload } from '../interfaces/jwt-refresh-payload.interface';
+import { SessionUser } from '../interfaces/session-user.interface';
 
 @Injectable()
 export class JWTRefreshStrategy extends PassportStrategy(
@@ -20,7 +21,11 @@ export class JWTRefreshStrategy extends PassportStrategy(
     });
   }
 
-  validate(payload: JWTRefreshPayload) {
-    return payload;
+  validate(payload: JWTRefreshPayload): SessionUser {
+    return {
+      id: payload.sub,
+      email: payload.email,
+      name: payload.name,
+    };
   }
 }

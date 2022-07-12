@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
-import { JWTRefreshPayload } from 'src/modules/auth/interfaces/jwt-refresh-payload.interface';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import { JWTRefreshGuard } from './guards/jwt-refresh.guard';
+import { SessionUser } from './interfaces/session-user.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -46,14 +46,14 @@ export class AuthController {
   @Post('token')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JWTRefreshGuard)
-  refreshTokens(@User() user: JWTRefreshPayload) {
-    return this.authService.refreshTokens(user);
+  refreshToken(@User() user: SessionUser) {
+    return this.authService.refreshToken(user.id);
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JWTRefreshGuard)
   logout(@Res({ passthrough: true }) response: Response) {
-    return this.authService.logout(response);
+    response.clearCookie(JWT_REFRESH_COOKIE_NAME);
   }
 }

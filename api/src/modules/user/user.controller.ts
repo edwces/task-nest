@@ -14,7 +14,7 @@ import { User } from 'src/common/decorators/user.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UserRole } from 'src/modules/user/enums/user-role.enum';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
-import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
+import { SessionUser } from '../auth/interfaces/session-user.interface';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-params.dto';
 import { CreateUserTodoDTO } from './dto/create-user-todo.dto';
@@ -41,24 +41,24 @@ export class UserController {
 
   @Get('me')
   @UseGuards(JWTAccessGuard)
-  findByToken(@User() user: JWTAccessPayload) {
-    return this.userService.findOne(user.sub);
+  findByToken(@User() user: SessionUser) {
+    return this.userService.findOne(user.id);
   }
 
   @Get('me/todos')
   @UseGuards(JWTAccessGuard)
   findTodosByToken(
-    @User() user: JWTAccessPayload,
+    @User() user: SessionUser,
     @Query() query: FindAllTodosQueryParamsDTO,
   ) {
-    return this.userService.findTodosById(user.sub, query);
+    return this.userService.findTodosById(user.id, query);
   }
 
   @Post('me/todos')
   @UseGuards(JWTAccessGuard)
-  createTodo(@User() user: JWTAccessPayload, @Body() dto: CreateUserTodoDTO) {
+  createTodo(@User() user: SessionUser, @Body() dto: CreateUserTodoDTO) {
     return this.userService.createTodo({
-      authorId: user.sub,
+      authorId: user.id,
       tagId: dto.tagId,
       label: dto.label,
     });
@@ -73,10 +73,10 @@ export class UserController {
   @Post('me/tags')
   @UseGuards(JWTAccessGuard)
   createTag(
-    @User() user: JWTAccessPayload,
+    @User() user: SessionUser,
     @Body() dto: Omit<CreateTagDTO, 'authorId'>,
   ) {
-    return this.userService.createTag({ ...dto, authorId: user.sub });
+    return this.userService.createTag({ ...dto, authorId: user.id });
   }
 
   @Get('me/tags/:id/todos')

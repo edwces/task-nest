@@ -10,13 +10,13 @@ import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
-import { Response } from 'express';
 import {
   JWT_ACCESS_EXPIRE_TIME,
-  JWT_REFRESH_COOKIE_NAME,
   JWT_REFRESH_EXPIRE_TIME,
 } from './auth.constants';
-import { JWTRefreshPayload } from 'src/modules/auth/interfaces/jwt-refresh-payload.interface';
+import { User } from '../user/user.entity';
+import { JWTAccessPayload } from './interfaces/jwt-access-payload.interface';
+import { JWTRefreshPayload } from './interfaces/jwt-refresh-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -35,33 +35,29 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInFieldsDTO) {
-    const user = await this._getUserByCredentials({ email, password });
+    const user = await this.findUserByCredentials({ email, password });
 
-    const payload = {
-      email,
-      sub: user.id,
-      role: user.roles,
-    };
+    const payload = this.toJWTPayload(user);
 
-    const accessToken = await this._createAccessToken(payload);
-    const refreshToken = await this._createRefreshToken(payload);
+    const accessToken = await this.createAccessToken(payload);
+    const refreshToken = await this.createRefreshToken(payload);
 
     return { accessToken, user, refreshToken };
   }
 
-  async logout(response: Response) {
-    response.clearCookie(JWT_REFRESH_COOKIE_NAME);
-  }
+  async refreshToken(id: number) {
+    const user = await this.userService.findOneById(id);
+    const payload = this.toJWTPayload(user);
 
-  async refreshTokens(payload: JWTRefreshPayload) {
-    const token = await this._createAccessToken(payload);
+    const token = await this.createAccessToken(payload);
+
     return {
       token,
-      user: payload,
+      user: { id: payload.sub, email: payload.email, name: payload.name },
     };
   }
 
-  private async _getUserByCredentials({ email, password }: SignInFieldsDTO) {
+  private async findUserByCredentials({ email, password }: SignInFieldsDTO) {
     const user = await this.userService.findOne({ email });
     if (!user)
       throw new UnauthorizedException('User with that email does not exist');
@@ -72,23 +68,25 @@ export class AuthService {
     return user;
   }
 
-  private async _createAccessToken(payload: any) {
-    return await this.jwtService.signAsync(
-      { email: payload.email, sub: payload.sub, role: payload.role },
-      {
-        expiresIn: JWT_ACCESS_EXPIRE_TIME,
-        secret: this.configService.get('JWT_ACCESS_SECRET'),
-      },
-    );
+  async createAccessToken(payload: Omit<JWTAccessPayload, 'exp'>) {
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: JWT_ACCESS_EXPIRE_TIME,
+      secret: this.configService.get('JWT_ACCESS_SECRET'),
+    });
   }
 
-  private async _createRefreshToken(payload: any) {
-    return await this.jwtService.signAsync(
-      { email: payload.email, sub: payload.sub, role: payload.role },
-      {
-        expiresIn: JWT_REFRESH_EXPIRE_TIME,
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
-      },
-    );
+  async createRefreshToken(payload: Omit<JWTRefreshPayload, 'exp'>) {
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: JWT_REFRESH_EXPIRE_TIME,
+      secret: this.configService.get('JWT_REFRESH_SECRET'),
+    });
+  }
+
+  private toJWTPayload(user: User) {
+    return {
+      email: user.email,
+      name: user.name,
+      sub: user.id,
+    };
   }
 }
