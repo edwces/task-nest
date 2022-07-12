@@ -16,7 +16,7 @@ import { UserRole } from 'src/modules/user/enums/user-role.enum';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
 import { JWTAccessPayload } from '../auth/interfaces/jwt-access-payload.interface';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
-import { TodosQueryParams } from '../todo/interfaces/todos-query-params.interface';
+import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-params.dto';
 import { CreateUserTodoDTO } from './dto/create-user-todo.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
@@ -49,7 +49,7 @@ export class UserController {
   @UseGuards(JWTAccessGuard)
   findTodosByToken(
     @User() user: JWTAccessPayload,
-    @Query() query: TodosQueryParams,
+    @Query() query: FindAllTodosQueryParamsDTO,
   ) {
     return this.userService.findTodosById(user.sub, query);
   }

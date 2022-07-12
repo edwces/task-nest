@@ -7,9 +7,9 @@ import { User } from './user.entity';
 import * as argon2 from 'argon2';
 import { TodoService } from '../todo/todo.service';
 import { CreateTodoDTO } from '../todo/dto/create-todo.dto';
-import { TodosQueryParams } from '../todo/interfaces/todos-query-params.interface';
 import { TagService } from '../tag/tag.service';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
+import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-params.dto';
 
 @Injectable()
 export class UserService {
@@ -24,8 +24,12 @@ export class UserService {
     return await this.userRepository.findAll();
   }
 
-  async findOne(filter: FilterQuery<User>) {
-    return await this.userRepository.findOne(filter);
+  async findOne(where: FilterQuery<User>) {
+    return await this.userRepository.findOne(where);
+  }
+
+  async findOneById(id: number) {
+    return await this.userRepository.findOneOrFail(id);
   }
 
   async create({ password, ...dto }: CreateUserDTO) {
@@ -36,8 +40,9 @@ export class UserService {
     return user;
   }
 
-  async findTodosById(id: number, query: TodosQueryParams) {
-    return await this.todoService.findAll({ author: id }, query);
+  // TODO: NOT WORKING
+  async findTodosById(id: number, query: FindAllTodosQueryParamsDTO) {
+    return await this.todoService.findAll(query);
   }
 
   async createTodo(dto: CreateTodoDTO) {

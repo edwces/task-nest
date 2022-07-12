@@ -1,9 +1,9 @@
-import { QBFilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
+import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
-import { TodosQueryParams } from './interfaces/todos-query-params.interface';
+import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { Todo } from './todo.entity';
 
 @Injectable()
@@ -13,15 +13,12 @@ export class TodoService {
     private readonly todoRepository: EntityRepository<Todo>,
   ) {}
 
-  async findAll(
-    where: QBFilterQuery<Todo>,
-    { sort, direction = 'asc' }: TodosQueryParams,
-  ) {
+  async findAll({
+    sort,
+    direction = QueryOrder.ASC,
+  }: FindAllTodosQueryParamsDTO) {
     const em = this.todoRepository.createQueryBuilder().select('*');
-
-    if (where) em.where(where);
     if (sort) em.orderBy({ [sort]: direction });
-
     return await em.getResult();
   }
 
@@ -32,7 +29,6 @@ export class TodoService {
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);
-    return todo;
   }
 
   async delete(id: number) {
