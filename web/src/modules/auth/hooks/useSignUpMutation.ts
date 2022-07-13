@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { SignUpFieldsDTO } from "../dto/sign-up-fields.dto";
+import { SignUpFieldsDTO } from "../components/SignUpForm";
 import { signUp } from "../services/auth.service";
 
 export function useSignUpMutation() {

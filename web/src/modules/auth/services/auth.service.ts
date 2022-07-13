@@ -1,7 +1,7 @@
 import { http } from "../../../config/httpClient";
-import { SignInFieldsDTO } from "../dto/sign-in-fields.dto";
+import { SignInFieldsDTO } from "../components/SignInForm";
+import { SignUpFieldsDTO } from "../components/SignUpForm";
 import { SignInDTO } from "../dto/sign-in.dto";
-import { SignUpFieldsDTO } from "../dto/sign-up-fields.dto";
 
 export function signUp(data: SignUpFieldsDTO): Promise<void> {
   return http.post("/auth/signup", data);

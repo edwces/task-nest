@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
 import { useSession } from "../../../common/store/useSession";
-import { SignInFieldsDTO } from "../dto/sign-in-fields.dto";
+import { SignInFieldsDTO } from "../components/SignInForm";
 import { signIn } from "../services/auth.service";
 
 export function useSignInMutation() {

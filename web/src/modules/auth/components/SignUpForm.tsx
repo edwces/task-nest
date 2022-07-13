@@ -8,7 +8,7 @@ const signUpSchema = z.object({
   password: z.string().min(5),
 });
 
-type SignUpFieldsDTO = z.infer<typeof signUpSchema>;
+export type SignUpFieldsDTO = z.infer<typeof signUpSchema>;
 
 interface SignUpFormProps {
   handleSubmit: (values: SignUpFieldsDTO) => void;

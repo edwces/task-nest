@@ -6,7 +6,7 @@ const addTodoSchema = z.object({
   label: z.string().min(1).max(20),
 });
 
-type AddTodoDTO = z.infer<typeof addTodoSchema>;
+export type AddTodoDTO = z.infer<typeof addTodoSchema>;
 
 interface AddTodoFormProps {
   handleSubmit: (values: AddTodoDTO) => void;

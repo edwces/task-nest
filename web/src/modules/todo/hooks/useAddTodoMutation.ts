@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
-import { AddTodoDTO } from "../dto/add-todo.dto";
+import { AddTodoDTO } from "../components/AddTodoForm";
 import { createTodo } from "../services/todo.service";
 
 export function useAddTodoMutation() {
