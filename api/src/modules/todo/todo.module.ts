@@ -7,11 +7,7 @@ import { Todo } from './todo.entity';
 import { TodoService } from './todo.service';
 
 @Module({
-  imports: [
-    MikroOrmModule.forFeature([Todo]),
-    forwardRef(() => UserModule),
-    CommonModule,
-  ],
+  imports: [MikroOrmModule.forFeature([Todo]), UserModule, CommonModule],
   providers: [TodoService],
   controllers: [TodoController],
   exports: [TodoService],

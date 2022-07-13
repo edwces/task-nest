@@ -35,4 +35,8 @@ export class TodoService {
     const todo = await this.todoRepository.findOneOrFail(id);
     await this.todoRepository.removeAndFlush(todo);
   }
+
+  async findByUserId(id: number) {
+    return await this.todoRepository.find({ author: id });
+  }
 }

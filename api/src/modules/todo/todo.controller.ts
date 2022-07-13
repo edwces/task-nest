@@ -17,7 +17,7 @@ import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { TodoService } from './todo.service';
 
-@Controller()
+@Controller('todos')
 @Roles(UserRole.ADMIN)
 @UseGuards(JWTAccessGuard, RolesGuard)
 export class TodoController {

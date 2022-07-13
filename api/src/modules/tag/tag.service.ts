@@ -21,10 +21,7 @@ export class TagService {
     return tag;
   }
 
-  async findTodosById(id: number) {
-    const tag = await this.tagRepository.findOneOrFail(id, {
-      populate: ['todos'],
-    });
-    return tag.todos;
+  async findByUserId(id: number) {
+    return await this.tagRepository.find({ author: id });
   }
 }
