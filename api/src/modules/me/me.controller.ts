@@ -8,7 +8,7 @@ import { CreateTodoDTO } from '../todo/dto/create-todo.dto';
 import { TodoService } from '../todo/todo.service';
 import { UserService } from '../user/user.service';
 
-@Controller('users/me')
+@Controller('me')
 @UseGuards(JWTAccessGuard)
 export class MeController {
   constructor(
