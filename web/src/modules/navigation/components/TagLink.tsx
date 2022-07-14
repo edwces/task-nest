@@ -1,19 +1,26 @@
-import { Group, UnstyledButton, Text } from "@mantine/core";
+import { Group, Text, Button } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { Tag } from "tabler-icons-react";
 
 interface TagLinkProps {
   label: string;
   link?: string;
+  isSelected?: boolean;
 }
 
-export function TagLink({ label, link = "#" }: TagLinkProps) {
+export function TagLink({
+  label,
+  link = "#",
+  isSelected = false,
+}: TagLinkProps) {
   return (
-    <UnstyledButton component={NextLink} href={link}>
-      <Group spacing={8}>
-        <Tag size={16} />
-        <Text>{label}</Text>
-      </Group>
-    </UnstyledButton>
+    <Button
+      component={NextLink}
+      href={link}
+      variant={isSelected ? "light" : "default"}
+      leftIcon={<Tag size={16} />}
+    >
+      {label}
+    </Button>
   );
 }

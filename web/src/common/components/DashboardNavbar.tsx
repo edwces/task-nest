@@ -1,8 +1,10 @@
 import { Navbar, Text } from "@mantine/core";
+import { useRouter } from "next/router";
 import { TagLinksList } from "../../modules/navigation/components/TagLinksList";
 import { useTags } from "../../modules/navigation/hooks/useTags";
 
 export function DashboardNavbar() {
+  const router = useRouter();
   const { data } = useTags();
 
   return (
@@ -10,7 +12,9 @@ export function DashboardNavbar() {
       <Text weight={700} mb={20}>
         Tags:
       </Text>
-      {data && <TagLinksList data={data} />}
+      {data && router.isReady && (
+        <TagLinksList data={data} selectedLabel={router.query.slug as string} />
+      )}
     </Navbar>
   );
 }
