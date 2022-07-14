@@ -27,6 +27,7 @@ export function TodoList({ data = [] }: TodoListProps) {
             <TodoItem
               label={todo.label}
               onCheck={() => removeTodo.mutate(todo.id)}
+              tag={todo.tag}
             />
           </motion.div>
         ))}

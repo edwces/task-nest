@@ -26,7 +26,10 @@ export class TodoService {
     { sort, direction = QueryOrder.ASC }: FindAllTodosQueryParamsDTO,
     where?: QBFilterQuery<Todo>,
   ) {
-    const em = this.todoRepository.createQueryBuilder().select('*');
+    const em = this.todoRepository
+      .createQueryBuilder('t')
+      .select('*')
+      .leftJoinAndSelect('t.tag', 'g');
     if (where) em.where(where);
     if (sort) em.orderBy({ [sort]: direction });
     return await em.getResult();

@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
 import { Todo } from '../todo/todo.entity';
@@ -16,6 +17,7 @@ export class Tag extends BasicEntity {
   id!: number;
 
   @Property()
+  @Unique()
   label!: string;
 
   @ManyToOne(() => User)
