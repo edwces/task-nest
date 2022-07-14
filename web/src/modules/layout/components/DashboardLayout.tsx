@@ -1,6 +1,7 @@
 import { AppShell } from "@mantine/core";
 import { ReactNode } from "react";
 import { DashboardHeader } from "../../../common/components/DashboardHeader";
+import { DashboardNavbar } from "../../../common/components/DashboardNavbar";
 import { AuthGate } from "../../auth/components/AuthGate";
 
 interface DashboardLayoutProps {
@@ -13,6 +14,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <AppShell
         fixed
         header={<DashboardHeader />}
+        navbar={<DashboardNavbar />}
         styles={(theme) => ({
           main: {
             backgroundColor:

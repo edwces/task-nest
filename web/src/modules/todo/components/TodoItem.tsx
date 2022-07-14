@@ -1,6 +1,6 @@
 import { Badge, Checkbox, Group } from "@mantine/core";
 import { ChangeEventHandler } from "react";
-import { Tag } from "../../tag/models/tag.model";
+import { Tag } from "../../navigation/models/tag.model";
 
 interface TodoItemProps {
   label?: string;

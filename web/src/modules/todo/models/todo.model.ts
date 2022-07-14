@@ -1,4 +1,4 @@
-import { Tag } from "../../tag/models/tag.model";
+import { Tag } from "../../navigation/models/tag.model";
 
 export interface Todo {
   id: number;
