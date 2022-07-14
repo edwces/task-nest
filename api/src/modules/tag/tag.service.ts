@@ -24,4 +24,8 @@ export class TagService {
   async findByUserId(id: number) {
     return await this.tagRepository.find({ author: id });
   }
+
+  async findOneByUserLabel(id: number, label: string) {
+    return await this.tagRepository.findOneOrFail({ author: id, label });
+  }
 }

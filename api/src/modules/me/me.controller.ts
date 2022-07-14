@@ -60,6 +60,20 @@ export class MeController {
     return this.tagService.findByUserId(user.id);
   }
 
+  @Get('tags/:label')
+  getTagByLabel(@User() user: SessionUser, @Param('label') label: string) {
+    return this.tagService.findOneByUserLabel(user.id, label);
+  }
+
+  @Get('tags/:label/todos')
+  getTodosByTagLabel(
+    @User() user: SessionUser,
+    @Param('label') label: string,
+    @Query() query: FindAllTodosQueryParamsDTO,
+  ) {
+    return this.todoService.findByTagLabel(user.id, label, query);
+  }
+
   @Post('tags')
   createTag(
     @User() user: SessionUser,

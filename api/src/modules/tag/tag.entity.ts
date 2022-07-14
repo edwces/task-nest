@@ -12,12 +12,12 @@ import { Todo } from '../todo/todo.entity';
 import { User } from '../user/user.entity';
 
 @Entity()
+@Unique({ properties: ['author', 'label'] })
 export class Tag extends BasicEntity {
   @PrimaryKey()
   id!: number;
 
   @Property()
-  @Unique()
   label!: string;
 
   @ManyToOne(() => User)

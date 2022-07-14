@@ -7,6 +7,8 @@ import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { Todo } from './todo.entity';
 
+// TODO: Find a way to make relations and query params
+// TODO: Easily distributed among all functions
 @Injectable()
 export class TodoService {
   constructor(
@@ -47,5 +49,13 @@ export class TodoService {
   async delete(id: number) {
     const todo = await this.todoRepository.findOneOrFail(id);
     await this.todoRepository.removeAndFlush(todo);
+  }
+
+  async findByTagLabel(
+    id: number,
+    label: string,
+    query: FindAllTodosQueryParamsDTO,
+  ) {
+    return await this.findByOptions(query, { tag: { author: id, label } });
   }
 }

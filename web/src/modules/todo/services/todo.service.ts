@@ -13,6 +13,15 @@ export function getTodos(query: TodosQuery): Promise<Todo[]> {
     .then((response) => response.data);
 }
 
+export function getTodosByTagLabel(
+  label: string,
+  query: TodosQuery
+): Promise<Todo[]> {
+  return http
+    .get(`me/tags/${label}/todos`, { params: query })
+    .then((response) => response.data);
+}
+
 export function removeTodo(id: number) {
   return http.delete(`me/todos/${id}`);
 }
