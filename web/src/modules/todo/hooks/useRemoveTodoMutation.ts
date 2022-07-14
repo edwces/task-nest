@@ -4,6 +4,9 @@ import { removeTodo } from "../services/todo.service";
 export function useRemoveTodoMutation() {
   const queryClient = useQueryClient();
   return useMutation((id: number) => removeTodo(id), {
-    onSuccess: () => queryClient.invalidateQueries(["todos"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["me", "todos"]);
+      queryClient.invalidateQueries(["me", "tags", "todos"]);
+    },
   });
 }

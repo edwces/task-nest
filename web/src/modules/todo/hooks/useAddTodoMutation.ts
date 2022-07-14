@@ -5,6 +5,9 @@ import { createTodo } from "../services/todo.service";
 export function useAddTodoMutation() {
   const queryClient = useQueryClient();
   return useMutation((data: AddTodoDTO) => createTodo(data), {
-    onSuccess: () => queryClient.invalidateQueries(["todos"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["me", "todos"]);
+      queryClient.invalidateQueries(["me", "tags", "todos"]);
+    },
   });
 }

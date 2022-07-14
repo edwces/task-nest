@@ -3,5 +3,5 @@ import { getTodos } from "../services/todo.service";
 import { TodosQuery } from "../types/add-todo-query.interface";
 
 export function useTodos(query: TodosQuery) {
-  return useQuery(["todos", query], () => getTodos(query));
+  return useQuery(["me", "todos", query], () => getTodos(query));
 }
