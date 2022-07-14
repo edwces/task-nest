@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
@@ -14,6 +15,7 @@ import { SessionUser } from '../auth/interfaces/session-user.interface';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import { TagService } from '../tag/tag.service';
 import { CreateTodoDTO } from '../todo/dto/create-todo.dto';
+import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-params.dto';
 import { TodoService } from '../todo/todo.service';
 import { UserService } from '../user/user.service';
 
@@ -31,10 +33,12 @@ export class MeController {
     return this.userService.findOneById(user.id);
   }
 
-  // TODO: Add sorting query
   @Get('todos')
-  getTodos(@User() user: SessionUser) {
-    return this.todoService.findByUserId(user.id);
+  getTodos(
+    @User() user: SessionUser,
+    @Query() query: FindAllTodosQueryParamsDTO,
+  ) {
+    return this.todoService.findByUserId(user.id, query);
   }
 
   @Post('todos')
