@@ -25,6 +25,10 @@ export class UserService {
     return await this.userRepository.findOneOrFail(id);
   }
 
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOneOrFail({ email });
+  }
+
   async create({ password, ...dto }: CreateUserDTO) {
     const hash = await argon2.hash(password);
     const user = this.userRepository.create({ ...dto, hash });
@@ -33,9 +37,11 @@ export class UserService {
     return user;
   }
 
-  async updateById(id: number, dto: Partial<User>) {
+  //TODO: try setting password on domain entity instead of service
+  async updatePasswordById(id: number, password: string) {
     const user = await this.findOneById(id);
-    wrap(user).assign(dto);
+    const newHash = await argon2.hash(password);
+    wrap(user).assign({ hash: newHash });
     this.userRepository.flush();
   }
 }

@@ -1,5 +1,5 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, MaxLength } from 'class-validator';
 
 export class ResetCodeFieldsDTO {
-  @IsString() @IsEmail() readonly email: string;
+  @IsEmail() @MaxLength(100) readonly email: string;
 }
