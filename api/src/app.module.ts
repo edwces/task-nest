@@ -1,5 +1,6 @@
 import { MikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { MailerModule } from '@nestjs-modules/mailer';
 import {
   MiddlewareConsumer,
   Module,
@@ -14,6 +15,7 @@ import { MeModule } from './modules/me/me.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TodoModule } from './modules/todo/todo.module';
 import { UserModule } from './modules/user/user.module';
+import * as nodemailer from 'nodemailer';
 
 @Module({
   imports: [
@@ -21,6 +23,24 @@ import { UserModule } from './modules/user/user.module';
       isGlobal: true,
     }),
     MikroOrmModule.forRoot(mikroOrmConfig),
+    MailerModule.forRootAsync({
+      useFactory: async () => {
+        const testAccount = await nodemailer.createTestAccount();
+        return {
+          transport: {
+            host: 'smtp.ethereal.email',
+            port: 587,
+            secure: false,
+            auth: {
+              type: 'LOGIN',
+              user: testAccount.user,
+              pass: testAccount.pass,
+            },
+          },
+          preview: true,
+        };
+      },
+    }),
     TodoModule,
     TagModule,
     UserModule,

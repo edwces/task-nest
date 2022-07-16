@@ -11,6 +11,7 @@ import { Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
+import { ResetCodeFieldsDTO } from './dto/reset-code-fields.dto';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import { JWTRefreshGuard } from './guards/jwt-refresh.guard';
@@ -55,5 +56,11 @@ export class AuthController {
   @UseGuards(JWTRefreshGuard)
   logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie(JWT_REFRESH_COOKIE_NAME);
+  }
+
+  @Post('forgot/code')
+  @HttpCode(HttpStatus.OK)
+  createResetCode(@Body() dto: ResetCodeFieldsDTO) {
+    this.authService.createResetCode(dto.email);
   }
 }

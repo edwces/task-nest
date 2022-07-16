@@ -17,12 +17,16 @@ import {
 import { User } from '../user/user.entity';
 import { JWTAccessPayload } from './interfaces/jwt-access-payload.interface';
 import { JWTRefreshPayload } from './interfaces/jwt-refresh-payload.interface';
+import * as crypto from 'node:crypto';
+import * as nodemailer from 'nodemailer';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
     private readonly configService: ConfigService<EnvironmentVariables>,
   ) {}
 
@@ -88,5 +92,18 @@ export class AuthService {
       name: user.name,
       sub: user.id,
     };
+  }
+
+  async createResetCode(email: string) {
+    const doesExist = await this.userService.findOne({ email });
+    if (!doesExist)
+      throw new UnauthorizedException('User with that email does not exist');
+
+    const code = crypto.randomBytes(4).toString('hex');
+
+    // store in redis ??hashed version wit expire date
+    // send in email
+    const info = await this.emailService.sendResetCode(code, email);
+    console.log(nodemailer.getTestMessageUrl(info));
   }
 }
