@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -13,6 +14,7 @@ import { EnvironmentVariables } from 'src/common/interfaces/environment-variable
 import {
   JWT_ACCESS_EXPIRE_TIME,
   JWT_REFRESH_EXPIRE_TIME,
+  RESET_CODE_EXPIRE_TIME,
 } from './auth.constants';
 import { User } from '../user/user.entity';
 import { JWTAccessPayload } from './interfaces/jwt-access-payload.interface';
@@ -20,10 +22,14 @@ import { JWTRefreshPayload } from './interfaces/jwt-refresh-payload.interface';
 import * as crypto from 'node:crypto';
 import * as nodemailer from 'nodemailer';
 import { EmailService } from '../email/email.service';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+import { ResetPasswordFieldsDTO } from './dto/reset-password-fields.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRedis() private readonly redis: Redis,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
@@ -101,9 +107,30 @@ export class AuthService {
 
     const code = crypto.randomBytes(4).toString('hex');
 
-    // store in redis ??hashed version wit expire date
-    // send in email
+    await this.redis.set(
+      doesExist.id.toString(),
+      code,
+      'EX',
+      RESET_CODE_EXPIRE_TIME,
+    );
     const info = await this.emailService.sendResetCode(code, email);
     console.log(nodemailer.getTestMessageUrl(info));
+  }
+
+  async resetPassword(dto: ResetPasswordFieldsDTO) {
+    const doesExist = await this.userService.findOne({ email: dto.email });
+    if (!doesExist)
+      throw new UnauthorizedException('User with that email does not exist');
+
+    const code = await this.redis.get(doesExist.id.toString());
+    if (!code) throw new BadRequestException('Code must have expired');
+
+    const isCodeValid = code === dto.code;
+
+    if (!isCodeValid) throw new UnauthorizedException('Code is not valid');
+
+    this.userService.updateById(doesExist.id, {
+      hash: await argon2.hash(dto.password),
+    });
   }
 }

@@ -12,6 +12,7 @@ import { User } from 'src/common/decorators/user.decorator';
 import { JWT_REFRESH_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
 import { ResetCodeFieldsDTO } from './dto/reset-code-fields.dto';
+import { ResetPasswordFieldsDTO } from './dto/reset-password-fields.dto';
 import { SignInFieldsDTO } from './dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from './dto/sign-up-fields.dto';
 import { JWTRefreshGuard } from './guards/jwt-refresh.guard';
@@ -62,5 +63,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   createResetCode(@Body() dto: ResetCodeFieldsDTO) {
     this.authService.createResetCode(dto.email);
+  }
+
+  @Post('forgot/reset')
+  @HttpCode(HttpStatus.OK)
+  resetPassword(@Body() dto: ResetPasswordFieldsDTO) {
+    return this.authService.resetPassword(dto);
   }
 }

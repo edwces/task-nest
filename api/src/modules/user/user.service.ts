@@ -1,4 +1,4 @@
-import { FilterQuery } from '@mikro-orm/core';
+import { FilterQuery, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
@@ -31,5 +31,11 @@ export class UserService {
     await this.userRepository.persistAndFlush(user);
 
     return user;
+  }
+
+  async updateById(id: number, dto: Partial<User>) {
+    const user = await this.findOneById(id);
+    wrap(user).assign(dto);
+    this.userRepository.flush();
   }
 }

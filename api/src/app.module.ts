@@ -16,6 +16,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { TodoModule } from './modules/todo/todo.module';
 import { UserModule } from './modules/user/user.module';
 import * as nodemailer from 'nodemailer';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import * as nodemailer from 'nodemailer';
       isGlobal: true,
     }),
     MikroOrmModule.forRoot(mikroOrmConfig),
+    RedisModule.forRoot({ config: { host: 'redis', port: 6379 } }),
     MailerModule.forRootAsync({
       useFactory: async () => {
         const testAccount = await nodemailer.createTestAccount();
