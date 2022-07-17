@@ -14,10 +14,10 @@ export class ResetController {
     return this.resetService.createResetCode(dto);
   }
 
-  @Post('check')
+  @Post('validate')
   @HttpCode(HttpStatus.OK)
-  checkResetCode(@Body() dto: CheckResetCodeDTO) {
-    return this.resetService.checkResetCode(dto);
+  validateResetCode(@Body() dto: CheckResetCodeDTO) {
+    return this.resetService.validateResetCodeByEmail(dto);
   }
 
   @Post()

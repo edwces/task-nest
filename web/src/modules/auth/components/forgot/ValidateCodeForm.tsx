@@ -2,23 +2,23 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
 
-const checkCodeSchema = z.object({
+const validateCodeSchema = z.object({
   code: z.string().length(8),
 });
 
-export type CheckCodeFieldsDTO = z.infer<typeof checkCodeSchema>;
+export type ValidateCodeFieldsDTO = z.infer<typeof validateCodeSchema>;
 
-interface CheckCodeFormProps {
-  handleSubmit: (values: CheckCodeFieldsDTO) => void;
-  initialValues?: CheckCodeFieldsDTO;
+interface ValidateCodeFormProps {
+  handleSubmit: (values: ValidateCodeFieldsDTO) => void;
+  initialValues?: ValidateCodeFieldsDTO;
   isSubmitting?: boolean;
 }
 
-export function CheckCodeForm({
+export function ValidateCodeForm({
   handleSubmit,
   initialValues = { code: "" },
   isSubmitting = false,
-}: CheckCodeFormProps) {
+}: ValidateCodeFormProps) {
   const form = useForm({ initialValues });
 
   return (

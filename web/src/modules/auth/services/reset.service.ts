@@ -1,6 +1,6 @@
 import { http } from "../../../config/httpClient";
 import { CreateCodeFieldsDTO } from "../components/forgot/CreateCodeForm";
-import { CheckCodeDTO } from "../dto/check-code.dto";
+import { ValidateCodeDTO } from "../dto/validate-code.dto";
 import { ResetPasswordDTO } from "../dto/reset-password.dto";
 
 export function createResetCode(dto: CreateCodeFieldsDTO) {
@@ -11,6 +11,6 @@ export function resetPassword(dto: ResetPasswordDTO) {
   return http.post("/auth/reset", dto);
 }
 
-export function checkResetCode(dto: CheckCodeDTO) {
-  return http.post("/auth/reset/check", dto);
+export function checkResetCode(dto: ValidateCodeDTO) {
+  return http.post("/auth/reset/validate", dto);
 }

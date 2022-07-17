@@ -51,7 +51,7 @@ export class ResetService {
     await this.userService.updatePasswordById(user.id, password);
   }
 
-  async checkResetCode({ email, code }: CheckResetCodeDTO) {
+  async validateResetCodeByEmail({ email, code }: CheckResetCodeDTO) {
     const user = await this.userService.findOneByEmail(email);
 
     await this.validateCode(code, user.id);
