@@ -13,7 +13,8 @@ import { ResetPasswordFieldsDTO } from '../dto/reset-password-fields.dto';
 import * as crypto from 'node:crypto';
 import * as argon2 from 'argon2';
 import * as nodemailer from 'nodemailer';
-import { ResetCodeFieldsDTO } from '../dto/reset-code-fields.dto';
+import { CreateResetCodeDTO } from '../dto/create-reset-code.dto';
+import { CheckResetCodeDTO } from '../dto/check-reset-code.dto';
 
 @Injectable()
 export class ResetService {
@@ -25,7 +26,7 @@ export class ResetService {
     private readonly userService: UserService,
   ) {}
 
-  async createResetCode({ email }: ResetCodeFieldsDTO) {
+  async createResetCode({ email }: CreateResetCodeDTO) {
     const user = await this.userService.findOneByEmail(email);
 
     const code = crypto.randomBytes(4).toString('hex');
@@ -48,6 +49,12 @@ export class ResetService {
     this.redis.del(user.id.toString());
 
     await this.userService.updatePasswordById(user.id, password);
+  }
+
+  async checkResetCode({ email, code }: CheckResetCodeDTO) {
+    const user = await this.userService.findOneByEmail(email);
+
+    await this.validateCode(code, user.id);
   }
 
   private async validateCode(code: string, id: number) {

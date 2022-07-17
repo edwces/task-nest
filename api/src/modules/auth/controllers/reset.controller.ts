@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ResetCodeFieldsDTO } from '../dto/reset-code-fields.dto';
+import { CheckResetCodeDTO } from '../dto/check-reset-code.dto';
+import { CreateResetCodeDTO } from '../dto/create-reset-code.dto';
 import { ResetPasswordFieldsDTO } from '../dto/reset-password-fields.dto';
 import { ResetService } from '../services/reset.service';
 
@@ -9,8 +10,14 @@ export class ResetController {
 
   @Post('code')
   @HttpCode(HttpStatus.OK)
-  createResetCode(@Body() dto: ResetCodeFieldsDTO) {
+  createResetCode(@Body() dto: CreateResetCodeDTO) {
     return this.resetService.createResetCode(dto);
+  }
+
+  @Post('check')
+  @HttpCode(HttpStatus.OK)
+  checkResetCode(@Body() dto: CheckResetCodeDTO) {
+    return this.resetService.checkResetCode(dto);
   }
 
   @Post()
