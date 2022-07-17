@@ -62,6 +62,6 @@ export class ResetService {
     if (!redisCode) throw new BadRequestException('Code must have expired');
 
     const isCodeValid = await argon2.verify(redisCode, code);
-    if (isCodeValid) throw new UnauthorizedException('Code is not valid');
+    if (!isCodeValid) throw new UnauthorizedException('Code is not valid');
   }
 }

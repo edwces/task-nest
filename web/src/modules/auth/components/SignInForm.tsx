@@ -48,6 +48,9 @@ export function SignInForm({
           autoComplete="current-password"
           {...form.getInputProps("password")}
         />
+        <Anchor size="sm" component={NextLink} href="/account/forgot-password">
+          Forgot password?
+        </Anchor>
         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
           Sign in
         </Button>
