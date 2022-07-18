@@ -1,5 +1,6 @@
 import { Button, PasswordInput, TextInput, Stack } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { Lock, Mail, User } from "tabler-icons-react";
 import { z } from "zod";
 
 const signUpSchema = z.object({
@@ -33,18 +34,24 @@ export function SignUpForm({
           required
           label="Email"
           autoComplete="email"
+          icon={<Mail size={16} />}
+          placeholder="your@email.com"
           {...form.getInputProps("email")}
         />
         <TextInput
           required
           label="Username"
           autoComplete="username"
+          icon={<User size={16} />}
+          placeholder="bob123"
           {...form.getInputProps("name")}
         />
         <PasswordInput
           required
           label="Password"
           autoComplete="current-password"
+          icon={<Lock size={16} />}
+          placeholder="your-password"
           {...form.getInputProps("password")}
         />
         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

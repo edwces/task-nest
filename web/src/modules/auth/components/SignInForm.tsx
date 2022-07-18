@@ -8,11 +8,14 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
+import { Lock, Mail } from "tabler-icons-react";
 import { z } from "zod";
 
 const signInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(5),
+  password: z
+    .string()
+    .min(5, { message: "Password must contain at least 5 characters" }),
 });
 
 export type SignInFieldsDTO = z.infer<typeof signInSchema>;
@@ -40,12 +43,16 @@ export function SignInForm({
           required
           label="Email"
           autoComplete="email"
+          placeholder="your@email.com"
+          icon={<Mail size={16} />}
           {...form.getInputProps("email")}
         />
         <PasswordInput
           required
           label="Password"
+          placeholder="your-password"
           autoComplete="current-password"
+          icon={<Lock size={16} />}
           {...form.getInputProps("password")}
         />
         <Anchor size="sm" component={NextLink} href="/account/forgot-password">
@@ -54,12 +61,6 @@ export function SignInForm({
         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
           Sign in
         </Button>
-        <Text size="sm">
-          Don&apos;t have an Account? Create it{" "}
-          <Anchor size="sm" component={NextLink} href="/account/sign-up">
-            here
-          </Anchor>
-        </Text>
       </Stack>
     </form>
   );

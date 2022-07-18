@@ -1,4 +1,5 @@
-import { Paper, Title } from "@mantine/core";
+import { Paper, Stack, Title, Text, Anchor, Container } from "@mantine/core";
+import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import { PageMetadata } from "../../common/components/PageMetadata";
 import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
@@ -13,7 +14,15 @@ const SignIn: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Sign in" />
-      <Title mb={30}>Sign In to your Account</Title>
+      <Stack mb={30} spacing={7}>
+        <Title>Sign in for access</Title>
+        <Text size="sm" color="dimmed" align="center">
+          Don&apos;t have an account yet?{" "}
+          <Anchor size="sm" component={NextLink} href="/account/sign-up">
+            Sign up here
+          </Anchor>
+        </Text>
+      </Stack>
       <Paper withBorder p={30}>
         <SignInForm
           handleSubmit={(values) =>
