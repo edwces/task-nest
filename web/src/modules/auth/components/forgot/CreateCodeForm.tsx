@@ -1,4 +1,4 @@
-import { Button, TextInput } from "@mantine/core";
+import { Button, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
 
@@ -23,10 +23,12 @@ export function CreateCodeForm({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <TextInput required label="Email" {...form.getInputProps("email")} />
-      <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-        Create Reset Code
-      </Button>
+      <Stack spacing={25}>
+        <TextInput required label="Email" {...form.getInputProps("email")} />
+        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+          Create Reset Code
+        </Button>
+      </Stack>
     </form>
   );
 }

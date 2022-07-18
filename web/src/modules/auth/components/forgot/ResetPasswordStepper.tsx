@@ -1,4 +1,4 @@
-import { Alert, Button, Paper, Stepper } from "@mantine/core";
+import { Alert, Button, Center, Paper, Stepper } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { InfoCircle } from "tabler-icons-react";
@@ -59,21 +59,24 @@ export function ResetPasswordStepper() {
   };
 
   return (
-    <Stepper active={active} mb={30}>
-      <Stepper.Step label="Create Code">
-        <Paper withBorder p={20}>
-          <CreateCodeForm
-            handleSubmit={handleCreateCode}
-            isSubmitting={createResetCode.isLoading}
-          />
-        </Paper>
+    <Stepper active={active}>
+      <Stepper.Step label="Create Code" mb={50}>
+        <Center>
+          <Paper withBorder p={30} sx={{ width: 400 }}>
+            <CreateCodeForm
+              handleSubmit={handleCreateCode}
+              isSubmitting={createResetCode.isLoading}
+            />
+          </Paper>
+        </Center>
       </Stepper.Step>
-      <Stepper.Step label="Validate Code">
-        <Paper withBorder p={20}>
+      <Stepper.Step label="Validate Code" mb={50}>
+        <Paper withBorder p={30}>
           <Alert
             icon={<InfoCircle size={16} />}
             title="Code sent"
             color="green"
+            mb={15}
           >{`Reset Code was sent to your email at ${savedFields.email}`}</Alert>
           <ValidateCodeForm
             handleSubmit={handleValidateCode}
@@ -82,17 +85,20 @@ export function ResetPasswordStepper() {
           <Button
             compact
             variant="subtle"
+            mt={25}
             onClick={() => createResetCode.mutate({ email: savedFields.email })}
           >
             Resend Password
           </Button>
         </Paper>
       </Stepper.Step>
-      <Stepper.Step label="Reset Password">
-        <ResetPasswordForm
-          handleSubmit={handleResetPassword}
-          isSubmitting={resetPassword.isLoading}
-        />
+      <Stepper.Step label="Reset Password" mb={50}>
+        <Paper withBorder p={30}>
+          <ResetPasswordForm
+            handleSubmit={handleResetPassword}
+            isSubmitting={resetPassword.isLoading}
+          />
+        </Paper>
       </Stepper.Step>
     </Stepper>
   );

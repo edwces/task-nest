@@ -1,4 +1,4 @@
-import { Button, TextInput } from "@mantine/core";
+import { Button, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
 
@@ -23,14 +23,16 @@ export function ResetPasswordForm({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <TextInput
-        required
-        label="New password"
-        {...form.getInputProps("password")}
-      />
-      <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-        Reset Password
-      </Button>
+      <Stack spacing={25}>
+        <TextInput
+          required
+          label="New password"
+          {...form.getInputProps("password")}
+        />
+        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+          Reset Password
+        </Button>
+      </Stack>
     </form>
   );
 }
