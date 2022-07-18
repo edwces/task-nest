@@ -12,10 +12,10 @@ const SignIn: NextPageWithLayout = () => {
   const router = useRouter();
 
   return (
-    <>
+    <Container size={460} sx={{ width: "100%" }}>
       <PageMetadata title="Sign in" />
       <Stack mb={30} spacing={7}>
-        <Title>Sign in for access</Title>
+        <Title align="center">Sign in for access</Title>
         <Text size="sm" color="dimmed" align="center">
           Don&apos;t have an account yet?{" "}
           <Anchor size="sm" component={NextLink} href="/account/sign-up">
@@ -31,7 +31,7 @@ const SignIn: NextPageWithLayout = () => {
           isSubmitting={signIn.isLoading}
         />
       </Paper>
-    </>
+    </Container>
   );
 };
 
