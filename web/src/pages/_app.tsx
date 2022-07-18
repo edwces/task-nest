@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps, color }: AppPropsWithLayout) {
         <MantineProvider
           withNormalizeCSS
           withGlobalStyles
-          theme={{ colorScheme }}
+          theme={{ colorScheme, headings: { fontFamily: "Montserrat" } }}
         >
           <ModalsProvider modals={{ [Modal.ADD_TODO]: AddTodoModal }}>
             <CustomErrorBoundary>
