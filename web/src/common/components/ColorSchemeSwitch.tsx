@@ -7,7 +7,8 @@ export function ColorSchemeSwitch() {
   return (
     <ActionIcon
       variant="outline"
-      color="blue"
+      color={colorScheme === "dark" ? "yellow" : "blue"}
+      radius="xl"
       onClick={() => toggleColorScheme()}
     >
       {colorScheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
