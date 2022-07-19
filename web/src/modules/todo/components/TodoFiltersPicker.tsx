@@ -3,23 +3,23 @@ import { useEffect, useState } from "react";
 import { ArrowsSort } from "tabler-icons-react";
 
 export const sortOptions = [
-  { value: "createdAt:desc", label: "Latest" },
-  { value: "createdAt:asc", label: "Oldest" },
+  { value: "NEWEST", label: "Latest" },
+  { value: "OLDEST", label: "Oldest" },
 ] as const;
 
-interface TodoFilters {
+export interface TodoFilters {
   sort: typeof sortOptions[number]["value"];
 }
 
-interface TodoFilterBarProps {
+interface TodoFiltersPickerProps {
   initialValue?: TodoFilters;
   onFiltersApply?: (values: TodoFilters) => void;
 }
 
-export function TodoFilterBar({
+export function TodoFiltersPicker({
   onFiltersApply = () => {},
-  initialValue = { sort: "createdAt:asc" },
-}: TodoFilterBarProps) {
+  initialValue = { sort: "NEWEST" },
+}: TodoFiltersPickerProps) {
   const [filters, setFilters] = useState<TodoFilters>(initialValue);
 
   useEffect(() => {

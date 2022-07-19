@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { getTodosByTagLabel } from "../services/todo.service";
-import { TodosQuery } from "../types/add-todo-query.interface";
+import { TodosQuery } from "../types/todos-query.interface";
 
 // TODO: Dont expose enabled
 export function useTodosByTagLabel(

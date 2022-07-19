@@ -1,7 +1,7 @@
 import { http } from "../../../config/httpClient";
 import { AddTodoDTO } from "../components/AddTodoForm";
 import { Todo } from "../models/todo.model";
-import { TodosQuery } from "../types/add-todo-query.interface";
+import { TodosQuery } from "../types/todos-query.interface";
 
 export function createTodo(data: AddTodoDTO) {
   return http.post("me/todos", data).then((response) => response.data);

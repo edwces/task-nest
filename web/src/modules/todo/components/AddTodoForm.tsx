@@ -1,6 +1,5 @@
 import { Button, Select, SelectItem, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useState } from "react";
 import { z } from "zod";
 
 const addTodoSchema = z.object({
