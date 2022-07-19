@@ -18,7 +18,7 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Todo clone" />
-      <Group position="apart" align="center">
+      <Group position="apart" align="center" mb={40}>
         <TodoFilterBar
           onFiltersApply={(values) => {
             const [sort, direction] = values.sort.split(":");
@@ -29,11 +29,7 @@ const Home: NextPageWithLayout = () => {
           Add Todo
         </Button>
       </Group>
-      {data && (
-        <Center>
-          <TodoList data={data} />
-        </Center>
-      )}
+      {data && <TodoList data={data} />}
     </>
   );
 };

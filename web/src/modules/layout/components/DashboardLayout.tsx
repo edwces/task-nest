@@ -1,4 +1,4 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { ReactNode } from "react";
 import { DashboardHeader } from "../../../common/components/DashboardHeader";
 import { DashboardNavbar } from "../../../common/components/DashboardNavbar";
@@ -24,7 +24,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           },
         })}
       >
-        {children}
+        <Container fluid px={40} pt={5}>
+          {children}
+        </Container>
       </AppShell>
     </AuthGate>
   );

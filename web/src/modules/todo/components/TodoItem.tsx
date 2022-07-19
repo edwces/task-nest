@@ -10,7 +10,7 @@ interface TodoItemProps {
 
 export function TodoItem({ label = "", onCheck, tag }: TodoItemProps) {
   return (
-    <Group>
+    <Group position="apart">
       <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />
       {tag && <Badge>{tag.label}</Badge>}
     </Group>

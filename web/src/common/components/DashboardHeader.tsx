@@ -9,8 +9,8 @@ export function DashboardHeader() {
   const router = useRouter();
 
   return (
-    <Header p="sm" px="xl" height={80}>
-      <Group align="center" position="apart">
+    <Header px="xl" height={80}>
+      <Group align="center" position="apart" sx={{ height: "100%" }}>
         <Title>Logo</Title>
         <Group spacing={20}>
           <ColorSchemeSwitch />
