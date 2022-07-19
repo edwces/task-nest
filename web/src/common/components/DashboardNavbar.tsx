@@ -1,7 +1,8 @@
-import { Button, Navbar, Text } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import { Divider, Navbar, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
-import { TagLinksList } from "../../modules/navigation/components/TagLinksList";
+import { Activity, BoxMultiple } from "tabler-icons-react";
+import { NavigationItem } from "../../modules/navigation/components/NavigationItem";
+import { NavigationItemsList } from "../../modules/navigation/components/NavigationItemsList";
 import { useTags } from "../../modules/navigation/hooks/useTags";
 
 export function DashboardNavbar() {
@@ -12,21 +13,27 @@ export function DashboardNavbar() {
 
   return (
     <Navbar p={20} width={{ base: 250 }}>
-      <Navbar.Section mb={30}>
-        <Button
-          fullWidth
-          component={NextLink}
-          href="/"
-          variant={isRootSelected ? "filled" : "outline"}
-        >
-          All
-        </Button>
+      <Navbar.Section>
+        <Stack spacing={5}>
+          <NavigationItem
+            icon={<BoxMultiple size={20} />}
+            link="/"
+            label="All"
+            isActive={isRootSelected}
+          />
+          <NavigationItem
+            icon={<Activity size={20} />}
+            link="/activity"
+            label="Activity"
+          />
+        </Stack>
       </Navbar.Section>
+      <Divider my={20} />
       <Navbar.Section grow>
         {data && router.isReady && (
-          <TagLinksList
+          <NavigationItemsList
             data={data}
-            selectedLabel={router.query.slug as string}
+            activeItem={router.query.slug as string}
           />
         )}
       </Navbar.Section>

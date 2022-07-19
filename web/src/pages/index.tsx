@@ -1,4 +1,4 @@
-import { Button, Center, Group } from "@mantine/core";
+import { Button, Center, Container, Group } from "@mantine/core";
 import { useState } from "react";
 import { Plus } from "tabler-icons-react";
 import { PageMetadata } from "../common/components/PageMetadata";
