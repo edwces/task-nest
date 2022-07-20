@@ -1,4 +1,3 @@
-import { Title } from "@mantine/core";
 import { PageMetadata } from "../../common/components/PageMetadata";
 import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
 import { ResetPasswordStepper } from "../../modules/auth/components/forgot/ResetPasswordStepper";

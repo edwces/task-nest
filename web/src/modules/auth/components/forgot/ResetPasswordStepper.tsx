@@ -1,7 +1,7 @@
-import { Alert, Button, Center, Paper, Stepper } from "@mantine/core";
+import { Alert, Center, Paper, Stepper, Text } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { InfoCircle } from "tabler-icons-react";
+import { Mail } from "tabler-icons-react";
 import { ResetPasswordDTO } from "../../dto/reset-password.dto";
 import { useValidateResetCodeMutation } from "../../hooks/useValidateResetCodeMutation";
 import { useCreateResetCodeMutation } from "../../hooks/useCreateResetCodeMutation";
@@ -63,6 +63,10 @@ export function ResetPasswordStepper() {
       <Stepper.Step label="Create Code" mb={50}>
         <Center>
           <Paper withBorder p={30} sx={{ width: 400 }}>
+            <Text mb={20} size="sm" color="dimmed">
+              Enter Email Address associated with your account and we&apos;ll
+              send you an Reset code to your address
+            </Text>
             <CreateCodeForm
               handleSubmit={handleCreateCode}
               isSubmitting={createResetCode.isLoading}
@@ -73,27 +77,26 @@ export function ResetPasswordStepper() {
       <Stepper.Step label="Validate Code" mb={50}>
         <Paper withBorder p={30}>
           <Alert
-            icon={<InfoCircle size={16} />}
-            title="Code sent"
-            color="green"
-            mb={15}
-          >{`Reset Code was sent to your email at ${savedFields.email}`}</Alert>
+            color="violet"
+            variant="outline"
+            title="Validate your code!"
+            mb={40}
+            icon={<Mail size={22} />}
+          >{`Enter code that was sent to your email: ${savedFields.email}`}</Alert>
           <ValidateCodeForm
             handleSubmit={handleValidateCode}
             isSubmitting={validateResetCode.isLoading}
+            onResendCode={() =>
+              createResetCode.mutate({ email: savedFields.email })
+            }
           />
-          <Button
-            compact
-            variant="subtle"
-            mt={25}
-            onClick={() => createResetCode.mutate({ email: savedFields.email })}
-          >
-            Resend Password
-          </Button>
         </Paper>
       </Stepper.Step>
       <Stepper.Step label="Reset Password" mb={50}>
         <Paper withBorder p={30}>
+          <Text mb={20} size="sm" color="dimmed">
+            This is going to be a new password that will be used from now on
+          </Text>
           <ResetPasswordForm
             handleSubmit={handleResetPassword}
             isSubmitting={resetPassword.isLoading}

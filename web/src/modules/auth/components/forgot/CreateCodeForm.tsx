@@ -1,5 +1,6 @@
-import { Button, Stack, TextInput } from "@mantine/core";
+import { Anchor, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { NextLink } from "@mantine/next";
 import { z } from "zod";
 
 const createCodeSchema = z.object({
@@ -25,9 +26,14 @@ export function CreateCodeForm({
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack spacing={25}>
         <TextInput required label="Email" {...form.getInputProps("email")} />
-        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-          Create Reset Code
-        </Button>
+        <Group position="apart">
+          <Anchor size="sm" component={NextLink} href="/account/sign-in">
+            Return to Sign In Page
+          </Anchor>
+          <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+            send Reset Code
+          </Button>
+        </Group>
       </Stack>
     </form>
   );
