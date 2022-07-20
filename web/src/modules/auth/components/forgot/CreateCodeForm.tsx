@@ -1,5 +1,5 @@
 import { Anchor, Button, Group, Stack, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import { z } from "zod";
 
@@ -20,7 +20,10 @@ export function CreateCodeForm({
   initialValues = { email: "" },
   isSubmitting = false,
 }: CreateCodeFormProps) {
-  const form = useForm({ initialValues });
+  const form = useForm({
+    initialValues,
+    schema: zodResolver(createCodeSchema),
+  });
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>

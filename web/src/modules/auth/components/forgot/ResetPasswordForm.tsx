@@ -1,5 +1,5 @@
 import { Button, Stack, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 
 const resetPasswordSchema = z.object({
@@ -19,7 +19,10 @@ export function ResetPasswordForm({
   initialValues = { password: "" },
   isSubmitting = false,
 }: ResetPasswordFormProps) {
-  const form = useForm({ initialValues });
+  const form = useForm({
+    initialValues,
+    schema: zodResolver(resetPasswordSchema),
+  });
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
