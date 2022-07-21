@@ -8,7 +8,6 @@ import { QueryClientProvider } from "react-query";
 import { queryClient } from "../config/queryClient";
 import { SessionProvider } from "../modules/auth/components/SessionProvider";
 import { ModalsProvider } from "@mantine/modals";
-import { AddTodoModal } from "../modules/todo/components/AddTodoModal";
 import { Modal } from "../common/types/modal.enum";
 import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
 import { useState } from "react";
@@ -47,13 +46,11 @@ function MyApp({ Component, pageProps, color }: AppPropsWithLayout) {
             headings: { fontFamily: "Montserrat" },
           }}
         >
-          <ModalsProvider modals={{ [Modal.ADD_TODO]: AddTodoModal }}>
-            <CustomErrorBoundary>
-              <SessionProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </SessionProvider>
-            </CustomErrorBoundary>
-          </ModalsProvider>
+          <CustomErrorBoundary>
+            <SessionProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </SessionProvider>
+          </CustomErrorBoundary>
         </MantineProvider>
       </ColorSchemeProvider>
     </QueryClientProvider>

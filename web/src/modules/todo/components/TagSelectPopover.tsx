@@ -2,17 +2,17 @@ import { ActionIcon, Popover, Select, SelectItem } from "@mantine/core";
 import { useState } from "react";
 import { Tag } from "tabler-icons-react";
 
-interface TagActionButtonProps {
+interface TagSelectPopoverProps {
   tagsChoices?: (string | SelectItem)[];
   onTagCreate?: (label: string) => void;
   onTagChange?: (value: string) => void;
 }
 
-export function TagActionButton({
+export function TagSelectPopover({
   tagsChoices = [],
   onTagCreate = () => {},
   onTagChange = () => {},
-}: TagActionButtonProps) {
+}: TagSelectPopoverProps) {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -32,8 +32,10 @@ export function TagActionButton({
         clearable
         creatable
         searchable
+        autoFocus
         getCreateLabel={(query) => `+ Create ${query}`}
         onCreate={onTagCreate}
+        dropdownPosition="bottom"
       />
     </Popover>
   );

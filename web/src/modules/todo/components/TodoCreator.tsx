@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useTagCreateMutation } from "../../navigation/hooks/useTagCreateMutation";
 import { useTags } from "../../navigation/hooks/useTags";
 import { Tag } from "../../navigation/models/tag.model";
-import { TagActionButton } from "./TagActionButton";
+import { TagSelectPopover } from "./TagSelectPopover";
 
 const addTodoSchema = z.object({
   label: z.string().min(1).max(20),
@@ -55,7 +55,7 @@ export function TodoCreator({
             />
           </Group>
           <Group>
-            <TagActionButton
+            <TagSelectPopover
               tagsChoices={data ? tagsToChoices(data) : []}
               onTagCreate={(label) => createTag.mutate({ label })}
               onTagChange={handleTagChange}
