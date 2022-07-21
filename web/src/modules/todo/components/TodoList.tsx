@@ -3,6 +3,7 @@ import { Todo } from "../models/todo.model";
 import { TodoItem } from "./TodoItem";
 import { AnimatePresence, motion } from "framer-motion";
 import { Stack } from "@mantine/core";
+import { useEditTodoModal } from "../hooks/useEditTodoModal";
 
 const MotionStack = motion(Stack);
 
@@ -12,6 +13,7 @@ interface TodoListProps {
 
 export function TodoList({ data = [] }: TodoListProps) {
   const removeTodo = useRemoveTodoMutation();
+  const { open } = useEditTodoModal();
 
   return (
     <MotionStack layout>
@@ -27,6 +29,7 @@ export function TodoList({ data = [] }: TodoListProps) {
             <TodoItem
               label={todo.label}
               onCheck={() => removeTodo.mutate(todo.id)}
+              onEdit={() => open({ todoId: todo.id })}
               tag={todo.tag}
             />
           </motion.div>
