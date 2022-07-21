@@ -14,6 +14,7 @@ import { useState } from "react";
 import { GetServerSidePropsContext } from "next";
 import { getCookie, setCookie } from "cookies-next";
 import { CustomErrorBoundary } from "../common/components/CustomErrorBoundary";
+import { EditTodoModal } from "../modules/todo/components/EditTodoModal";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -46,11 +47,13 @@ function MyApp({ Component, pageProps, color }: AppPropsWithLayout) {
             headings: { fontFamily: "Montserrat" },
           }}
         >
-          <CustomErrorBoundary>
-            <SessionProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </SessionProvider>
-          </CustomErrorBoundary>
+          <ModalsProvider modals={{ [Modal.EDIT_TODO]: EditTodoModal }}>
+            <CustomErrorBoundary>
+              <SessionProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </SessionProvider>
+            </CustomErrorBoundary>
+          </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </QueryClientProvider>

@@ -1,13 +1,13 @@
 import { useModals } from "@mantine/modals";
 import { Modal } from "../../../common/types/modal.enum";
 
-export function useAddTodoModal() {
+export function useEditTodoModal() {
   const modal = useModals();
 
   const open = () => {
-    modal.openContextModal(Modal.ADD_TODO, {
-      title: "Add Todo",
+    modal.openContextModal(Modal.EDIT_TODO, {
       innerProps: {},
+      withCloseButton: false,
     });
   };
 
