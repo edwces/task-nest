@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -16,6 +17,7 @@ import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import { TagService } from '../tag/tag.service';
 import { CreateTodoDTO } from '../todo/dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-params.dto';
+import { UpdateTodoDTO } from '../todo/dto/update-todo.dto';
 import { TodoService } from '../todo/todo.service';
 import { UserService } from '../user/user.service';
 
@@ -47,6 +49,15 @@ export class MeController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     return this.todoService.findByUserIdAndId(user.id, id);
+  }
+
+  @Patch('todos/:id')
+  update(
+    @User() user: SessionUser,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTodoDTO,
+  ) {
+    return this.todoService.updateByUserIdAndId(user.id, id, dto);
   }
 
   @Post('todos')

@@ -4,8 +4,8 @@ import { AlignLeft, Edit } from "tabler-icons-react";
 import { z } from "zod";
 
 const editTodoSchema = z.object({
-  label: z.string().min(1).max(20),
-  description: z.string().min(1).max(1000),
+  label: z.string().min(1).max(20).optional(),
+  description: z.string().max(1000).optional(),
 });
 
 type EditTodoDTO = z.infer<typeof editTodoSchema>;

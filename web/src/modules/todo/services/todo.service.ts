@@ -29,3 +29,7 @@ export function removeTodo(id: number) {
 export function getTodoById(id: number): Promise<Todo> {
   return http.get(`me/todos/${id}`).then((response) => response.data);
 }
+
+export function updateTodo(id: number, dto: Partial<Todo>) {
+  return http.patch(`me/todos/${id}`, dto);
+}

@@ -46,7 +46,7 @@ export function TodoCreator({
       <form onSubmit={form.onSubmit(handleCreate)}>
         <Group position="apart">
           <Group>
-            <Checkbox checked={false} radius="xl" size="xl" />
+            <Checkbox readOnly checked={false} radius="xl" size="xl" />
             <TextInput
               variant="unstyled"
               placeholder="Add Todo"

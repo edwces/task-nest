@@ -60,8 +60,8 @@ export class TodoService {
     return await this.findByOptions(query, { tag: { author: id, label } });
   }
 
-  async updateById(id: number, dto: UpdateTodoDTO) {
-    const todo = await this.todoRepository.findOneOrFail(id);
+  async updateByUserIdAndId(userId: number, id: number, dto: UpdateTodoDTO) {
+    const todo = await this.findByUserIdAndId(userId, id);
     wrap(todo).assign(dto);
     await this.todoRepository.flush();
   }
