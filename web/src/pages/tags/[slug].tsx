@@ -1,11 +1,13 @@
-import { Stack } from "@mantine/core";
+import { Box, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { PageMetadata } from "../../common/components/PageMetadata";
 import { useFilters } from "../../common/store/useFilters";
 import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
 import { DashboardLayout } from "../../modules/layout/components/DashboardLayout";
 import { TodoControlBar } from "../../modules/todo/components/TodoControlBar";
+import { TodoCreator } from "../../modules/todo/components/TodoCreator";
 import { TodoList } from "../../modules/todo/components/TodoList";
+import { useAddTodoMutation } from "../../modules/todo/hooks/useAddTodoMutation";
 import { useTodosByTagLabel } from "../../modules/todo/hooks/useTodosByTagLabel";
 
 const Tag: NextPageWithLayout = () => {
@@ -14,13 +16,19 @@ const Tag: NextPageWithLayout = () => {
   const { data } = useTodosByTagLabel(router.query.slug as string, values, {
     enabled: router.isReady,
   });
+  const createTodo = useAddTodoMutation();
 
   return (
     <>
       <PageMetadata title="Todo clone" />
       <Stack spacing={40}>
         <TodoControlBar />
-        {data && <TodoList data={data} />}
+        <TodoCreator onCreate={(dto) => createTodo.mutate(dto)} />
+        {data && (
+          <Box p={10}>
+            <TodoList data={data} />
+          </Box>
+        )}
       </Stack>
     </>
   );
