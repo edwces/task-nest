@@ -11,6 +11,9 @@ export class Todo extends BasicEntity {
   @Property()
   label!: string;
 
+  @Property({ columnType: 'Text' })
+  description = '';
+
   @ManyToOne(() => User)
   author!: User;
 

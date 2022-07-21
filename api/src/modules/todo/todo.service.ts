@@ -1,10 +1,11 @@
-import { QBFilterQuery } from '@mikro-orm/core';
+import { QBFilterQuery, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
+import { UpdateTodoDTO } from './dto/update-todo.dto';
 import { Todo } from './todo.entity';
 
 // TODO: Find a way to make relations and query params
@@ -57,5 +58,11 @@ export class TodoService {
     query: FindAllTodosQueryParamsDTO,
   ) {
     return await this.findByOptions(query, { tag: { author: id, label } });
+  }
+
+  async updateById(id: number, dto: UpdateTodoDTO) {
+    const todo = await this.todoRepository.findOneOrFail(id);
+    wrap(todo).assign(dto);
+    await this.todoRepository.flush();
   }
 }
