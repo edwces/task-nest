@@ -65,4 +65,12 @@ export class TodoService {
     wrap(todo).assign(dto);
     await this.todoRepository.flush();
   }
+
+  async findByUserIdAndId(userId: number, id: number) {
+    const todo = await this.todoRepository.findOneOrFail({
+      author: userId,
+      id,
+    });
+    return todo;
+  }
 }

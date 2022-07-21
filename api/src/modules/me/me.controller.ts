@@ -41,6 +41,14 @@ export class MeController {
     return this.todoService.findByUserId(user.id, query);
   }
 
+  @Get('todos/:id')
+  getTodoById(
+    @User() user: SessionUser,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.todoService.findByUserIdAndId(user.id, id);
+  }
+
   @Post('todos')
   createTodo(
     @User() user: SessionUser,

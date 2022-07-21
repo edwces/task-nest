@@ -1,5 +1,5 @@
 import { http } from "../../../config/httpClient";
-import { AddTodoDTO } from "../components/AddTodoForm";
+import { AddTodoDTO } from "../components/TodoCreator";
 import { Todo } from "../models/todo.model";
 import { TodosQuery } from "../types/todos-query.interface";
 
@@ -24,4 +24,8 @@ export function getTodosByTagLabel(
 
 export function removeTodo(id: number) {
   return http.delete(`me/todos/${id}`);
+}
+
+export function getTodoById(id: number): Promise<Todo> {
+  return http.get(`me/todos/${id}`).then((response) => response.data);
 }
