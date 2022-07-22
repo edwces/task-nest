@@ -1,4 +1,11 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  ManyToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
 import { Tag } from '../tag/tag.entity';
 import { User } from '../user/user.entity';
@@ -17,6 +24,6 @@ export class Todo extends BasicEntity {
   @ManyToOne(() => User)
   author!: User;
 
-  @ManyToOne(() => Tag, { nullable: true })
-  tag?: Tag;
+  @ManyToMany(() => Tag, (tag) => tag.todos)
+  tags = new Collection<Tag>(this);
 }

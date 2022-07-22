@@ -2,7 +2,7 @@ import {
   Collection,
   Entity,
   ManyToOne,
-  OneToMany,
+  ManyToMany,
   PrimaryKey,
   Property,
   Unique,
@@ -23,6 +23,6 @@ export class Tag extends BasicEntity {
   @ManyToOne(() => User)
   author!: User;
 
-  @OneToMany(() => Todo, (todo) => todo.tag)
+  @ManyToMany(() => Todo, (todo) => todo.tags, { owner: true })
   todos = new Collection<Todo>(this);
 }

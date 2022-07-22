@@ -1,8 +1,14 @@
-import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class CreateTodoDTO {
   @IsNumber() @IsPositive() readonly authorId: number;
   @IsString() readonly label: string;
-  @IsOptional() @IsNumber() @IsPositive() readonly tagId?: number;
+  @IsOptional() @IsArray() readonly tagIds?: number[];
   @IsOptional() @IsString() readonly description?: string;
 }

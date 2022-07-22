@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';

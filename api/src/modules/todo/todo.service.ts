@@ -32,16 +32,16 @@ export class TodoService {
     const em = this.todoRepository
       .createQueryBuilder('t')
       .select('*')
-      .leftJoinAndSelect('t.tag', 'g');
+      .leftJoinAndSelect('t.tags', 'g');
     if (where) em.where(where);
     if (sort) em.orderBy({ [sort]: direction });
     return await em.getResult();
   }
 
-  async create({ authorId, tagId, ...dto }: CreateTodoDTO) {
+  async create({ authorId, tagIds, ...dto }: CreateTodoDTO) {
     const todo = this.todoRepository.create({
       author: authorId,
-      tag: tagId,
+      tags: tagIds,
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);
@@ -52,12 +52,21 @@ export class TodoService {
     await this.todoRepository.removeAndFlush(todo);
   }
 
+  // TODO: Try making this better by using findByOptions better
   async findByTagLabel(
     id: number,
     label: string,
     query: FindAllTodosQueryParamsDTO,
   ) {
-    return await this.findByOptions(query, { tag: { author: id, label } });
+    const todos = await this.findByOptions(query, { author: id });
+    const results = await Promise.all(
+      todos.map(async (todo) => {
+        const match = await todo.tags.matching({ where: { label } });
+        console.log(match.length === 0);
+        return match.length !== 0;
+      }),
+    );
+    return todos.filter((todo, i) => results[i]);
   }
 
   async updateByUserIdAndId(userId: number, id: number, dto: UpdateTodoDTO) {
