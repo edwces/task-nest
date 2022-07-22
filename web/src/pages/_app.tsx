@@ -15,6 +15,7 @@ import { GetServerSidePropsContext } from "next";
 import { getCookie, setCookie } from "cookies-next";
 import { CustomErrorBoundary } from "../common/components/CustomErrorBoundary";
 import { EditTodoModal } from "../modules/todo/components/EditTodoModal";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -51,6 +52,7 @@ function MyApp({ Component, pageProps, color }: AppPropsWithLayout) {
             <CustomErrorBoundary>
               <SessionProvider>
                 {getLayout(<Component {...pageProps} />)}
+                <ReactQueryDevtools initialIsOpen={false} />
               </SessionProvider>
             </CustomErrorBoundary>
           </ModalsProvider>

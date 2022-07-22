@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback } from "react";
 import { http } from "../../config/httpClient";
@@ -31,13 +31,17 @@ export function HttpClientInterceptors({
       const requestUrl = error.config.url;
 
       if (statusCode === 401 && !requestUrl!.includes("/auth")) {
-        refreshToken({})
+        return refreshToken({})
           .then((data) => {
             setSignedIn(data.user, data.token);
+            // new fetch does not trigger react query
+            http(request);
+            return Promise.resolve();
           })
           .catch((error) => {
             if (error.response)
               logout.mutate({}, { onSuccess: () => router.push("/") });
+            return Promise.reject(error);
           });
       }
     }
