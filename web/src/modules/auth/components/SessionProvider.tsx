@@ -22,6 +22,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
           setSignedOut();
         }
       });
+
     return () => controller.abort();
   }, []);
 
