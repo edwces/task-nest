@@ -1,8 +1,9 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { http } from "../../config/httpClient";
 import { useLogoutMutation } from "../../modules/auth/hooks/useLogoutMutation";
+import { refreshToken } from "../../modules/auth/services/auth.service";
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useSession } from "../store/useSession";
 
@@ -13,11 +14,11 @@ interface HttpClientInterceptorsProps {
 export function HttpClientInterceptors({
   children,
 }: HttpClientInterceptorsProps) {
-  const { token, status } = useSession();
+  const { token, status, setSignedIn } = useSession();
   const logout = useLogoutMutation();
   const router = useRouter();
 
-  const handleRequest = async (config: AxiosRequestConfig<any>) => {
+  const attachAuthHeaderIfExists = async (config: AxiosRequestConfig<any>) => {
     if (status === "signOut" || status === "idle") return config;
     config.headers!.Authorization = `Bearer ${token}`;
     return config;
@@ -25,14 +26,25 @@ export function HttpClientInterceptors({
 
   const handleResponseError = async (error: AxiosError) => {
     if (error.response) {
+      const request = error.config;
       const statusCode = error.response?.status;
       const requestUrl = error.config.url;
 
-      if (statusCode === 401 && !requestUrl!.includes("/auth"))
-        logout.mutate({}, { onSuccess: () => router.push("/") });
+      if (statusCode === 401 && !requestUrl!.includes("/auth")) {
+        refreshToken({})
+          .then((data) => {
+            setSignedIn(data.user, data.token);
+          })
+          .catch((error) => {
+            if (error.response)
+              logout.mutate({}, { onSuccess: () => router.push("/") });
+          });
+      }
     }
     return Promise.reject(error);
   };
+
+  const handleRequest = useCallback(attachAuthHeaderIfExists, [token, status]);
 
   useIsomorphicLayoutEffect(() => {
     const id = http.interceptors.request.use(handleRequest);
