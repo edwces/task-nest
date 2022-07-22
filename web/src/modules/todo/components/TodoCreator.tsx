@@ -9,7 +9,7 @@ import { TagSelectPopover } from "./TagSelectPopover";
 
 const addTodoSchema = z.object({
   label: z.string().min(1).max(20),
-  tagId: z.number().positive().optional(),
+  tagIds: z.number().array().optional(),
 });
 
 export type AddTodoDTO = z.infer<typeof addTodoSchema>;
@@ -31,9 +31,9 @@ export function TodoCreator({
     return data.map((tag) => ({ value: tag.id.toString(), label: tag.label }));
   };
 
-  const handleTagChange = (value: null | string) => {
-    const finalValue = value ? Number.parseInt(value) : undefined;
-    form.setFieldValue("tagId", finalValue);
+  const handleTagChange = (values: string[]) => {
+    const tagIds = values.map((value) => Number.parseInt(value));
+    form.setFieldValue("tagIds", tagIds);
   };
 
   const handleCreate = (dto: AddTodoDTO) => {

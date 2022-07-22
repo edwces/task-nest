@@ -30,7 +30,7 @@ export function TodoList({ data = [] }: TodoListProps) {
               label={todo.label}
               onCheck={() => removeTodo.mutate(todo.id)}
               onEdit={() => open({ todoId: todo.id })}
-              tag={todo.tag}
+              tags={todo.tags}
             />
           </motion.div>
         ))}

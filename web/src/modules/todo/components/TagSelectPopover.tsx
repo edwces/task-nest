@@ -1,11 +1,11 @@
-import { ActionIcon, Popover, Select, SelectItem } from "@mantine/core";
+import { ActionIcon, MultiSelect, Popover, SelectItem } from "@mantine/core";
 import { useState } from "react";
 import { Tag } from "tabler-icons-react";
 
 interface TagSelectPopoverProps {
   tagsChoices?: (string | SelectItem)[];
   onTagCreate?: (label: string) => void;
-  onTagChange?: (value: string) => void;
+  onTagChange?: (values: string[]) => void;
 }
 
 export function TagSelectPopover({
@@ -25,7 +25,7 @@ export function TagSelectPopover({
         </ActionIcon>
       }
     >
-      <Select
+      <MultiSelect
         data={tagsChoices}
         placeholder="Pick a tag"
         onChange={onTagChange}
