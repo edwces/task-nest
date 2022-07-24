@@ -20,7 +20,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   );
 }
 
-export function CustomErrorBoundary({ children }: CustomErrorBoundaryProps) {
+export function AppErrorBoundary({ children }: CustomErrorBoundaryProps) {
   const router = useRouter();
 
   return (
