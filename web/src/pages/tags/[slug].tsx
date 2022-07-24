@@ -7,8 +7,8 @@ import { DashboardLayout } from "../../modules/layout/components/DashboardLayout
 import { TodoControlBar } from "../../modules/todo/components/TodoControlBar";
 import { TodoCreator } from "../../modules/todo/components/TodoCreator";
 import { TodoList } from "../../modules/todo/components/TodoList";
-import { useAddTodoMutation } from "../../modules/todo/hooks/useAddTodoMutation";
-import { useTodosByTagLabel } from "../../modules/todo/hooks/useTodosByTagLabel";
+import { useAddTodoMutation } from "../../modules/todo/api/useCreateTodoMutation";
+import { useTodosByTagLabel } from "../../modules/todo/api/useTodosByTagLabel";
 
 const Tag: NextPageWithLayout = () => {
   const router = useRouter();

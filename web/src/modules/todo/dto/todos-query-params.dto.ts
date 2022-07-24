@@ -1,4 +1,4 @@
-export interface TodosQuery {
+export interface TodosQueryParamsDTO {
   sort?: string;
   direction?: string;
 }

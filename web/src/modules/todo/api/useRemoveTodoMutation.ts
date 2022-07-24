@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
-import { AddTodoDTO } from "../components/AddTodoForm";
-import { createTodo } from "../services/todo.service";
+import { http } from "../../../config/httpClient";
 
-export function useAddTodoMutation() {
+function removeTodo(id: number) {
+  return http.delete<void>(`me/todos/${id}`);
+}
+
+export function useRemoveTodoMutation() {
   const queryClient = useQueryClient();
-  return useMutation((data: AddTodoDTO) => createTodo(data), {
+  return useMutation((id: number) => removeTodo(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(["me", "todos"]);
       queryClient.invalidateQueries(["me", "tags", "todos"]);

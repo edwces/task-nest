@@ -2,17 +2,16 @@ import { Button, Group, Stack, Textarea, TextInput, Text } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { AlignLeft, Edit } from "tabler-icons-react";
 import { z } from "zod";
+import { UpdateTodoDTO } from "../dto/update-todo.dto";
 
 const editTodoSchema = z.object({
   label: z.string().min(1).max(20).optional(),
   description: z.string().max(1000).optional(),
 });
 
-type EditTodoDTO = z.infer<typeof editTodoSchema>;
-
 interface EditTodoFormProps {
-  initialValues: EditTodoDTO;
-  onSubmit?: (values: EditTodoDTO) => void;
+  initialValues: UpdateTodoDTO;
+  onSubmit?: (values: UpdateTodoDTO) => void;
   isSubmitting?: boolean;
 }
 

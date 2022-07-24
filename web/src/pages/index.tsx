@@ -6,8 +6,8 @@ import { DashboardLayout } from "../modules/layout/components/DashboardLayout";
 import { TodoControlBar } from "../modules/todo/components/TodoControlBar";
 import { TodoCreator } from "../modules/todo/components/TodoCreator";
 import { TodoList } from "../modules/todo/components/TodoList";
-import { useAddTodoMutation } from "../modules/todo/hooks/useAddTodoMutation";
-import { useTodos } from "../modules/todo/hooks/useTodos";
+import { useAddTodoMutation } from "../modules/todo/api/useCreateTodoMutation";
+import { useTodos } from "../modules/todo/api/useTodos";
 
 const Home: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);

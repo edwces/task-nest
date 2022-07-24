@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useTagCreateMutation } from "../../navigation/hooks/useTagCreateMutation";
 import { useTags } from "../../navigation/hooks/useTags";
 import { Tag } from "../../navigation/models/tag.model";
+import { CreateTodoDTO } from "../dto/create-todo.dto";
 import { TagSelectPopover } from "./TagSelectPopover";
 
 const addTodoSchema = z.object({
@@ -12,11 +13,9 @@ const addTodoSchema = z.object({
   tagIds: z.number().array().optional(),
 });
 
-export type AddTodoDTO = z.infer<typeof addTodoSchema>;
-
 interface TodoCreatorProps {
-  initialValues?: AddTodoDTO;
-  onCreate?: (dto: AddTodoDTO) => void;
+  initialValues?: CreateTodoDTO;
+  onCreate?: (dto: CreateTodoDTO) => void;
 }
 
 export function TodoCreator({
@@ -36,7 +35,7 @@ export function TodoCreator({
     form.setFieldValue("tagIds", tagIds);
   };
 
-  const handleCreate = (dto: AddTodoDTO) => {
+  const handleCreate = (dto: CreateTodoDTO) => {
     onCreate(dto);
     form.reset();
   };

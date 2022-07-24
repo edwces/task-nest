@@ -1,8 +1,8 @@
 import { ActionIcon, Group } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
 import { X } from "tabler-icons-react";
-import { useTodoById } from "../hooks/useTodoById";
-import { useUpdateTodoMutation } from "../hooks/useUpdateTodoMutation";
+import { useTodoById } from "../api/useTodoById";
+import { useUpdateTodoMutation } from "../api/useUpdateTodoMutation";
 import { EditTodoForm } from "./EditTodoForm";
 
 export function EditTodoModal({

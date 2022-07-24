@@ -1,4 +1,4 @@
-import { useRemoveTodoMutation } from "../hooks/useRemoveTodoMutation";
+import { useRemoveTodoMutation } from "../api/useRemoveTodoMutation";
 import { Todo } from "../models/todo.model";
 import { TodoItem } from "./TodoItem";
 import { AnimatePresence, motion } from "framer-motion";
