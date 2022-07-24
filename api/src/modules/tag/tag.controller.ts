@@ -1,14 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
-import { UserRole } from '../user/enums/user-role.enum';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Private } from 'src/common/decorators/private.decorator';
 import { CreateTagDTO } from './dto/create-tag.dto';
 import { TagService } from './tag.service';
 
+@Private()
 @Controller('tags')
-@Roles(UserRole.ADMIN)
-@UseGuards(JWTAccessGuard, RolesGuard)
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 

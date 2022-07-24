@@ -5,22 +5,16 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { UserRole } from 'src/modules/user/enums/user-role.enum';
-import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
+import { Private } from 'src/common/decorators/private.decorator';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { TodoService } from './todo.service';
 
+@Private()
 @Controller('todos')
-@Roles(UserRole.ADMIN)
-@UseGuards(JWTAccessGuard, RolesGuard)
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
