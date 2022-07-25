@@ -7,11 +7,11 @@ import { ModalsProvider } from "@mantine/modals";
 import { setCookie } from "cookies-next";
 import { ReactNode, useState } from "react";
 import { QueryClientProvider } from "react-query";
-import { AppErrorBoundary } from "../common/components/CustomErrorBoundary";
 import { Modal } from "../common/types/modal.enum";
 import { queryClient } from "../config/queryClient";
 import { SessionProvider } from "../modules/auth/components/SessionProvider";
 import { EditTodoModal } from "../modules/todo/components/EditTodoModal";
+import { AppErrorBoundary } from "./AppErrorBoundary";
 
 interface AppProvidersProps {
   children: ReactNode;

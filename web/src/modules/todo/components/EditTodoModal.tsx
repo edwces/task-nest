@@ -19,9 +19,9 @@ export function EditTodoModal({
         <Group align="start" sx={{ justifyContent: "space-around" }}>
           <EditTodoForm
             initialValues={{ label: data.label, description: data.description }}
-            onSubmit={(dto) =>
+            onSubmit={(data) =>
               updateTodo.mutate(
-                { id: innerProps.todoId, dto },
+                { id: innerProps.todoId, data },
                 { onSuccess: () => context.closeModal(id) }
               )
             }
