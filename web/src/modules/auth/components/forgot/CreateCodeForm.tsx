@@ -2,16 +2,15 @@ import { Anchor, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import { z } from "zod";
+import { CreateResetCodeDTO } from "../../dto/create-reset-code.dto";
 
 const createCodeSchema = z.object({
   email: z.string().email(),
 });
 
-export type CreateCodeFieldsDTO = z.infer<typeof createCodeSchema>;
-
 interface CreateCodeFormProps {
-  handleSubmit: (values: CreateCodeFieldsDTO) => void;
-  initialValues?: CreateCodeFieldsDTO;
+  handleSubmit: (values: CreateResetCodeDTO) => void;
+  initialValues?: CreateResetCodeDTO;
   isSubmitting?: boolean;
 }
 

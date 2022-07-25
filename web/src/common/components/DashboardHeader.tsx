@@ -1,6 +1,6 @@
 import { Avatar, Group, Header, Title, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useLogoutMutation } from "../../modules/auth/hooks/useLogoutMutation";
+import { useLogoutMutation } from "../../modules/auth/api/useLogoutMutation";
 import { UserMenu } from "../../modules/user/components/UserMenu";
 import { ColorSchemeSwitch } from "./ColorSchemeSwitch";
 

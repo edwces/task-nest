@@ -1,15 +1,9 @@
-import {
-  Button,
-  PasswordInput,
-  TextInput,
-  Stack,
-  Text,
-  Anchor,
-} from "@mantine/core";
+import { Button, PasswordInput, TextInput, Stack, Anchor } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import { Lock, Mail } from "tabler-icons-react";
 import { z } from "zod";
+import { SignInDTO } from "../dto/sign-in.dto";
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -18,11 +12,9 @@ const signInSchema = z.object({
     .min(5, { message: "Password must contain at least 5 characters" }),
 });
 
-export type SignInFieldsDTO = z.infer<typeof signInSchema>;
-
 interface SignInFormProps {
-  handleSubmit: (values: SignInFieldsDTO) => void;
-  initialValues?: SignInFieldsDTO;
+  handleSubmit: (values: SignInDTO) => void;
+  initialValues?: SignInDTO;
   isSubmitting?: boolean;
 }
 
@@ -31,7 +23,7 @@ export function SignInForm({
   initialValues = { email: "", password: "" },
   isSubmitting = false,
 }: SignInFormProps) {
-  const form = useForm<SignInFieldsDTO>({
+  const form = useForm<SignInDTO>({
     initialValues,
     schema: zodResolver(signInSchema),
   });

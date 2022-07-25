@@ -1,6 +1,3 @@
-import { SessionUser } from "../../../common/types/session-user.type";
+import { SignUpDTO } from "./sign-up.dto";
 
-export interface SignInDTO {
-  token: string;
-  user: SessionUser;
-}
+export type SignInDTO = Omit<SignUpDTO, "name">;

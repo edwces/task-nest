@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PageMetadata } from "../../common/components/PageMetadata";
 import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
 import { SignInForm } from "../../modules/auth/components/SignInForm";
-import { useSignInMutation } from "../../modules/auth/hooks/useSignInMutation";
+import { useSignInMutation } from "../../modules/auth/api/useSignInMutation";
 import { AuthLayout } from "../../modules/layout/components/AuthLayout";
 
 const SignIn: NextPageWithLayout = () => {

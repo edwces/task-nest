@@ -2,8 +2,8 @@ import { ActionIcon, Checkbox, Group, Paper, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Plus } from "tabler-icons-react";
 import { z } from "zod";
-import { useTagCreateMutation } from "../../navigation/hooks/useTagCreateMutation";
-import { useTags } from "../../navigation/hooks/useTags";
+import { useCreateTagMutation } from "../../navigation/api/useCreateTagMutation";
+import { useTags } from "../../navigation/api/useTags";
 import { Tag } from "../../navigation/models/tag.model";
 import { CreateTodoDTO } from "../dto/create-todo.dto";
 import { TagSelectPopover } from "./TagSelectPopover";
@@ -23,7 +23,7 @@ export function TodoCreator({
   onCreate = () => {},
 }: TodoCreatorProps) {
   const form = useForm({ initialValues, schema: zodResolver(addTodoSchema) });
-  const createTag = useTagCreateMutation();
+  const createTag = useCreateTagMutation();
   const { data } = useTags();
 
   const tagsToChoices = (data: Tag[]) => {

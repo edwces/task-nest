@@ -7,16 +7,19 @@ import { DashboardLayout } from "../../modules/layout/components/DashboardLayout
 import { TodoControlBar } from "../../modules/todo/components/TodoControlBar";
 import { TodoCreator } from "../../modules/todo/components/TodoCreator";
 import { TodoList } from "../../modules/todo/components/TodoList";
-import { useAddTodoMutation } from "../../modules/todo/api/useCreateTodoMutation";
 import { useTodosByTagLabel } from "../../modules/todo/api/useTodosByTagLabel";
+import { useCreateTodoMutation } from "../../modules/todo/api/useCreateTodoMutation";
 
 const Tag: NextPageWithLayout = () => {
   const router = useRouter();
   const { values } = useFilters();
-  const { data } = useTodosByTagLabel(router.query.slug as string, values, {
-    enabled: router.isReady,
-  });
-  const createTodo = useAddTodoMutation();
+  const { data } = useTodosByTagLabel(
+    { label: router.query.slug as string, query: values },
+    {
+      enabled: router.isReady,
+    }
+  );
+  const createTodo = useCreateTodoMutation();
 
   return (
     <>

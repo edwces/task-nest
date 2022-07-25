@@ -2,8 +2,8 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback } from "react";
 import { http } from "../../config/httpClient";
-import { useLogoutMutation } from "../../modules/auth/hooks/useLogoutMutation";
-import { refreshToken } from "../../modules/auth/services/auth.service";
+import { useLogoutMutation } from "../../modules/auth/api/useLogoutMutation";
+import { refreshToken } from "../../modules/auth/util/refresh-token.util";
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useSession } from "../store/useSession";
 

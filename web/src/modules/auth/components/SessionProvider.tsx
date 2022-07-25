@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { HttpClientInterceptors } from "../../../common/components/HttpClientInterceptors";
 import { useSession } from "../../../common/store/useSession";
-import { refreshToken } from "../services/auth.service";
+import { refreshToken } from "../util/refresh-token.util";
 
 interface SessionProviderProps {
   children: ReactNode;

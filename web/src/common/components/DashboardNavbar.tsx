@@ -1,9 +1,9 @@
 import { Divider, Navbar, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { Activity, BoxMultiple } from "tabler-icons-react";
+import { useTags } from "../../modules/navigation/api/useTags";
 import { NavigationItem } from "../../modules/navigation/components/NavigationItem";
 import { NavigationItemsList } from "../../modules/navigation/components/NavigationItemsList";
-import { useTags } from "../../modules/navigation/hooks/useTags";
 
 export function DashboardNavbar() {
   const router = useRouter();

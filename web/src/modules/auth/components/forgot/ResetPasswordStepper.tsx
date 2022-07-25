@@ -2,29 +2,30 @@ import { Alert, Center, Paper, Stepper, Text } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Mail } from "tabler-icons-react";
-import { ResetPasswordDTO } from "../../dto/reset-password.dto";
-import { useValidateResetCodeMutation } from "../../hooks/useValidateResetCodeMutation";
-import { useCreateResetCodeMutation } from "../../hooks/useCreateResetCodeMutation";
-import { useResetPasswordMutation } from "../../hooks/useResetPasswordMutation";
+import { useValidateResetCodeMutation } from "../../api/useValidateResetCodeMutation";
+import { useCreateResetCodeMutation } from "../../api/useCreateResetCodeMutation";
 import { ValidateCodeFieldsDTO, ValidateCodeForm } from "./ValidateCodeForm";
-import { CreateCodeFieldsDTO, CreateCodeForm } from "./CreateCodeForm";
+import { CreateCodeForm } from "./CreateCodeForm";
 import { ResetPasswordFieldsDTO, ResetPasswordForm } from "./ResetPasswordForm";
+import { useChangePasswordMutation } from "../../api/useChangePasswordMutation";
+import { ChangePasswordDTO } from "../../dto/change-password.dto";
+import { CreateResetCodeDTO } from "../../dto/create-reset-code.dto";
 
 export function ResetPasswordStepper() {
   const [active, setActive] = useState(0);
-  const [savedFields, setSavedFields] = useState<ResetPasswordDTO>({
+  const [savedFields, setSavedFields] = useState<ChangePasswordDTO>({
     email: "",
     code: "",
     password: "",
   });
   const createResetCode = useCreateResetCodeMutation();
   const validateResetCode = useValidateResetCodeMutation();
-  const resetPassword = useResetPasswordMutation();
+  const resetPassword = useChangePasswordMutation();
   const router = useRouter();
 
   const nextStep = () => setActive(active + 1);
 
-  const handleCreateCode = (values: CreateCodeFieldsDTO) => {
+  const handleCreateCode = (values: CreateResetCodeDTO) => {
     createResetCode.mutate(values, {
       onSuccess: () => {
         setSavedFields({ ...savedFields, email: values.email });
