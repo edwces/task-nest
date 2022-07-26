@@ -29,14 +29,14 @@ export function TodoCreatorActions({ control }: TodoCreatorActionsProps) {
       <TagSelectPopover
         control={(opened, setOpened) => (
           <ActionIcon onClick={() => setOpened(!opened)}>
-            <TagIcon size={20} />
+            <TagIcon size={30} />
           </ActionIcon>
         )}
         options={data && handleTagOptions(data)}
         onCreateTag={handleCreateTag}
         onChangeTag={handleChangeTag}
       />
-      <ActionIcon type="submit" mr={10}>
+      <ActionIcon type="submit">
         <Plus size={30} />
       </ActionIcon>
     </Group>

@@ -27,7 +27,7 @@ export function TodoCreator({
   return (
     <Paper withBorder p={10} radius="lg">
       <form onSubmit={form.onSubmit(handleCreateTodo)}>
-        <Group position="apart">
+        <Group position="apart" pr={10}>
           <CheckboxTextInput {...form.getInputProps("label")} />
           <TodoCreatorActions control={form} />
         </Group>

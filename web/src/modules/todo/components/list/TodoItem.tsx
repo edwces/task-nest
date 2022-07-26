@@ -1,7 +1,7 @@
 import { ActionIcon, Badge, Checkbox, Group } from "@mantine/core";
 import { ChangeEventHandler, MouseEventHandler } from "react";
 import { Edit } from "tabler-icons-react";
-import { Tag } from "../../navigation/models/tag.model";
+import { Tag } from "../../../navigation/models/tag.model";
 
 interface TodoItemProps {
   label?: string;

@@ -4,9 +4,9 @@ import { PageMetadata } from "../../common/components/PageMetadata";
 import { useFilters } from "../../common/store/useFilters";
 import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
 import { DashboardLayout } from "../../modules/layout/components/DashboardLayout";
-import { TodoControlBar } from "../../modules/todo/components/TodoControlBar";
+import { TodoControlBar } from "../../modules/todo/components/list/TodoControlBar";
 import { TodoCreator } from "../../modules/todo/components/create/TodoCreator";
-import { TodoList } from "../../modules/todo/components/TodoList";
+import { TodoList } from "../../modules/todo/components/list/TodoList";
 import { useTodosByTagLabel } from "../../modules/todo/api/useTodosByTagLabel";
 
 const Tag: NextPageWithLayout = () => {
@@ -24,11 +24,9 @@ const Tag: NextPageWithLayout = () => {
       <Stack spacing={40}>
         <TodoControlBar />
         <TodoCreator />
-        {data && (
-          <Box p={10}>
-            <TodoList todos={data} />
-          </Box>
-        )}
+        <Box px={10}>
+          <TodoList todos={data} />
+        </Box>
       </Stack>
     </>
   );
