@@ -10,12 +10,7 @@ interface TodoItemProps {
   tags?: ReadonlyArray<Tag>;
 }
 
-export function TodoItem({
-  label = "",
-  onCheck,
-  onEdit,
-  tags = [],
-}: TodoItemProps) {
+export function TodoItem({ label, onCheck, onEdit, tags = [] }: TodoItemProps) {
   return (
     <Group position="apart">
       <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />

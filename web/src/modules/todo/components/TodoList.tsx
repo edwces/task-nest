@@ -8,17 +8,27 @@ import { useEditTodoModal } from "../hooks/useEditTodoModal";
 const MotionStack = motion(Stack);
 
 interface TodoListProps {
-  data?: ReadonlyArray<Todo>;
+  todos?: ReadonlyArray<Todo>;
 }
 
-export function TodoList({ data = [] }: TodoListProps) {
+// 1 Approach - same as here logic in TodoList
+// - Not to Many Props
+// - handles both logic and UI
+// 2 Approach - onEdit, onCheck Props that give todoId
+// - extra Props + unnecesary rerenders
+// - pure component without Logic
+
+export function TodoList({ todos = [] }: TodoListProps) {
   const removeTodo = useRemoveTodoMutation();
   const { open } = useEditTodoModal();
+
+  const handleCheck = (id: number) => removeTodo.mutate(id);
+  const handleEdit = (id: number) => open({ todoId: id });
 
   return (
     <MotionStack layout>
       <AnimatePresence>
-        {data.map((todo) => (
+        {todos.map((todo) => (
           <motion.div
             layout
             key={todo.id}
@@ -28,8 +38,8 @@ export function TodoList({ data = [] }: TodoListProps) {
           >
             <TodoItem
               label={todo.label}
-              onCheck={() => removeTodo.mutate(todo.id)}
-              onEdit={() => open({ todoId: todo.id })}
+              onCheck={() => handleCheck(todo.id)}
+              onEdit={() => handleEdit(todo.id)}
               tags={todo.tags}
             />
           </motion.div>
