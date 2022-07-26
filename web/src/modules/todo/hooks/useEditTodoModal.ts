@@ -1,12 +1,11 @@
 import { useModals } from "@mantine/modals";
 import { Modal } from "../../../common/types/modal.enum";
-
-type EditModalProps = { todoId: number };
+import { EditTodoModalProps } from "../components/edit/EditTodoModal";
 
 export function useEditTodoModal() {
   const modal = useModals();
 
-  const open = (innerProps: EditModalProps) => {
+  const open = (innerProps: EditTodoModalProps) => {
     modal.openContextModal(Modal.EDIT_TODO, {
       innerProps,
       withCloseButton: false,

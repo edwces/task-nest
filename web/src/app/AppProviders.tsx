@@ -10,7 +10,7 @@ import { QueryClientProvider } from "react-query";
 import { Modal } from "../common/types/modal.enum";
 import { queryClient } from "../config/queryClient";
 import { SessionProvider } from "../modules/auth/components/SessionProvider";
-import { EditTodoModal } from "../modules/todo/components/EditTodoModal";
+import { EditTodoModal } from "../modules/todo/components/edit/EditTodoModal";
 import { AppErrorBoundary } from "./AppErrorBoundary";
 
 interface AppProvidersProps {

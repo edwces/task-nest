@@ -2,7 +2,7 @@ import { Button, Group, Stack, Textarea, TextInput, Text } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { AlignLeft, Edit } from "tabler-icons-react";
 import { z } from "zod";
-import { UpdateTodoDTO } from "../dto/update-todo.dto";
+import { UpdateTodoDTO } from "../../dto/update-todo.dto";
 
 const editTodoSchema = z.object({
   label: z.string().min(1).max(20).optional(),
@@ -11,18 +11,19 @@ const editTodoSchema = z.object({
 
 interface EditTodoFormProps {
   initialValues: UpdateTodoDTO;
-  onSubmit?: (values: UpdateTodoDTO) => void;
+  onEdit?: (values: UpdateTodoDTO) => void;
   isSubmitting?: boolean;
 }
 
 export function EditTodoForm({
   initialValues,
-  onSubmit = () => {},
+  onEdit = () => {},
+  isSubmitting = false,
 }: EditTodoFormProps) {
   const form = useForm({ initialValues, schema: zodResolver(editTodoSchema) });
 
   return (
-    <form onSubmit={form.onSubmit(onSubmit)}>
+    <form onSubmit={form.onSubmit(onEdit)}>
       <Stack justify="flex-start">
         <TextInput
           icon={<Edit size={25} />}
@@ -41,10 +42,20 @@ export function EditTodoForm({
           {...form.getInputProps("description")}
         />
         <Group mt={25} position="right">
-          <Button variant="default" onClick={() => form.reset()}>
+          <Button
+            variant="default"
+            onClick={() => form.reset()}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
             Cancel
           </Button>
-          <Button variant="filled" type="submit">
+          <Button
+            variant="filled"
+            type="submit"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
             Save
           </Button>
         </Group>
