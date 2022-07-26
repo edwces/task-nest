@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 import { ColorScheme } from "@mantine/core";
-import { NextPageWithLayout } from "../common/types/next-page-with-layout.interface";
+import { NextPageWithLayout } from "../common/interfaces/next-page-with-layout.interface";
 import { GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
 import { ReactQueryDevtools } from "react-query/devtools";

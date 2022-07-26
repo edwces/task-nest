@@ -2,10 +2,10 @@ import { Paper, Stack, Title, Text, Anchor, Container } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import { PageMetadata } from "../../common/components/PageMetadata";
-import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
+import { NextPageWithLayout } from "../../common/interfaces/next-page-with-layout.interface";
 import { SignInForm } from "../../modules/auth/components/SignInForm";
 import { useSignInMutation } from "../../modules/auth/api/useSignInMutation";
-import { AuthLayout } from "../../modules/layout/components/AuthLayout";
+import { AuthLayout } from "../../modules/auth/components/AuthLayout";
 
 const SignIn: NextPageWithLayout = () => {
   const signIn = useSignInMutation();

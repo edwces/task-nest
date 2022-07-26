@@ -1,4 +1,4 @@
-import { SessionUser } from "../../../common/types/session-user.type";
+import { SessionUser } from "../../../common/interfaces/session-user.interface";
 
 export interface SignInResponseDTO {
   token: string;

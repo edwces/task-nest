@@ -1,7 +1,7 @@
 import { PageMetadata } from "../../common/components/PageMetadata";
-import { NextPageWithLayout } from "../../common/types/next-page-with-layout.interface";
+import { NextPageWithLayout } from "../../common/interfaces/next-page-with-layout.interface";
 import { ResetPasswordStepper } from "../../modules/auth/components/forgot/ResetPasswordStepper";
-import { AuthLayout } from "../../modules/layout/components/AuthLayout";
+import { AuthLayout } from "../../modules/auth/components/AuthLayout";
 
 const ForgotPassword: NextPageWithLayout = () => {
   return (

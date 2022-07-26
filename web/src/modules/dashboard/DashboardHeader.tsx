@@ -1,12 +1,15 @@
 import { Avatar, Group, Header, Title, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useLogoutMutation } from "../../modules/auth/api/useLogoutMutation";
-import { UserMenu } from "../../modules/user/components/UserMenu";
+import { useLogoutMutation } from "../auth/api/useLogoutMutation";
+import { UserMenu } from "../user/components/UserMenu";
 import { ColorSchemeSwitch } from "./ColorSchemeSwitch";
 
 export function DashboardHeader() {
   const logout = useLogoutMutation();
   const router = useRouter();
+
+  const handleLogout = () =>
+    logout.mutate(undefined, { onSuccess: () => router.push("/") });
 
   return (
     <Header px="xl" height={80}>
@@ -20,9 +23,7 @@ export function DashboardHeader() {
                 <Avatar radius="xl" size="md" />
               </UnstyledButton>
             }
-            onLogout={() =>
-              logout.mutate(undefined, { onSuccess: () => router.push("/") })
-            }
+            onLogout={handleLogout}
           />
         </Group>
       </Group>

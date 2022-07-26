@@ -1,5 +1,5 @@
 import create from "zustand";
-import { SessionUser } from "../types/session-user.type";
+import { SessionUser } from "../interfaces/session-user.interface";
 
 type Nullable<T> = { [K in keyof T]: T | null };
 

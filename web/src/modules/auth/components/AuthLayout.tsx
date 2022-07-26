@@ -1,4 +1,4 @@
-import { AppShell, Center, Container } from "@mantine/core";
+import { AppShell, Center } from "@mantine/core";
 import { ReactNode } from "react";
 import { DefaultFooter } from "../../../common/components/DefaultFooter";
 

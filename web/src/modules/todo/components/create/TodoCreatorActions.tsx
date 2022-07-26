@@ -1,10 +1,10 @@
 import { ActionIcon, Group } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form/lib/use-form";
 import { Plus, Tag as TagIcon } from "tabler-icons-react";
-import { useCreateTagMutation } from "../../../navigation/api/useCreateTagMutation";
-import { useTags } from "../../../navigation/api/useTags";
-import { Tag } from "../../../navigation/models/tag.model";
-import { TagSelectPopover } from "./TagSelectPopover";
+import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
+import { useTags } from "../../../tag/api/useTags";
+import { Tag } from "../../../tag/models/tag.model";
+import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 
 interface TodoCreatorActionsProps {
   control: UseFormReturnType<any>;

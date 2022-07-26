@@ -1,5 +1,5 @@
 import { useModals } from "@mantine/modals";
-import { Modal } from "../../../common/types/modal.enum";
+import { Modal } from "../../../common/enums/modal.enum";
 import { EditTodoModalProps } from "../components/edit/EditTodoModal";
 
 export function useEditTodoModal() {
