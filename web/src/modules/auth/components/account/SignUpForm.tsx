@@ -2,7 +2,7 @@ import { Button, PasswordInput, TextInput, Stack } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Lock, Mail, User } from "tabler-icons-react";
 import { z } from "zod";
-import { SignUpDTO } from "../dto/sign-up.dto";
+import { SignUpDTO } from "../../dto/sign-up.dto";
 
 const signUpSchema = z.object({
   name: z.string().min(2),
@@ -11,13 +11,13 @@ const signUpSchema = z.object({
 });
 
 interface SignUpFormProps {
-  handleSubmit: (values: SignUpDTO) => void;
+  onSignUp?: (values: SignUpDTO) => void;
   initialValues?: SignUpDTO;
   isSubmitting?: boolean;
 }
 
 export function SignUpForm({
-  handleSubmit,
+  onSignUp = () => {},
   initialValues = { email: "", name: "", password: "" },
   isSubmitting = false,
 }: SignUpFormProps) {
@@ -27,7 +27,7 @@ export function SignUpForm({
   });
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(onSignUp)}>
       <Stack spacing={25}>
         <TextInput
           required

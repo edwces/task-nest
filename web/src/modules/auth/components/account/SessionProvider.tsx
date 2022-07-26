@@ -1,13 +1,14 @@
 import { ReactNode, useEffect } from "react";
-import { HttpClientInterceptors } from "../../../common/components/HttpClientInterceptors";
-import { useSession } from "../../../common/store/useSession";
-import { refreshToken } from "../util/refresh-token.util";
+import { useSession } from "../../../../common/store/useSession";
+import { useHttpInterceptors } from "../../hooks/useHttpInterceptors";
+import { refreshToken } from "../../util/refresh-token.util";
 
 interface SessionProviderProps {
   children: ReactNode;
 }
 
 export function SessionProvider({ children }: SessionProviderProps) {
+  useHttpInterceptors();
   const { setSignedIn, setSignedOut } = useSession();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [setSignedIn, setSignedOut]);
 
-  return <HttpClientInterceptors>{children}</HttpClientInterceptors>;
+  return <>{children}</>;
 }

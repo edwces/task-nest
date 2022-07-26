@@ -3,13 +3,17 @@ import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import { PageMetadata } from "../../common/components/PageMetadata";
 import { NextPageWithLayout } from "../../common/interfaces/next-page-with-layout.interface";
-import { SignInForm } from "../../modules/auth/components/SignInForm";
+import { SignInForm } from "../../modules/auth/components/account/SignInForm";
 import { useSignInMutation } from "../../modules/auth/api/useSignInMutation";
 import { AuthLayout } from "../../modules/auth/components/AuthLayout";
+import { SignInDTO } from "../../modules/auth/dto/sign-in.dto";
 
 const SignIn: NextPageWithLayout = () => {
   const signIn = useSignInMutation();
   const router = useRouter();
+
+  const handleSignIn = (values: SignInDTO) =>
+    signIn.mutate(values, { onSuccess: () => router.push("/") });
 
   return (
     <Container size={460} sx={{ width: "100%" }}>
@@ -24,12 +28,7 @@ const SignIn: NextPageWithLayout = () => {
         </Text>
       </Stack>
       <Paper withBorder p={30}>
-        <SignInForm
-          handleSubmit={(values) =>
-            signIn.mutate(values, { onSuccess: () => router.push("/") })
-          }
-          isSubmitting={signIn.isLoading}
-        />
+        <SignInForm onSignIn={handleSignIn} isSubmitting={signIn.isLoading} />
       </Paper>
     </Container>
   );

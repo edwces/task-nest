@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
-import { useSession } from "../../../common/store/useSession";
+import { useSession } from "../../../../common/store/useSession";
 
 interface AuthGateProps {
   children: ReactNode;
@@ -12,12 +12,10 @@ export function AuthGate({ children, redirectUrl }: AuthGateProps) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(status);
-
     if (status === "signOut") router.push(redirectUrl);
-  }, [status, redirectUrl]);
+  }, [status, redirectUrl, router]);
 
   if (status === "signIn") return <>{children}</>;
 
-  return <div>Loading</div>;
+  return <></>;
 }

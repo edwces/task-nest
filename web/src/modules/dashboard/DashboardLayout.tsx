@@ -2,7 +2,7 @@ import { AppShell, Container } from "@mantine/core";
 import { ReactNode } from "react";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardNavbar } from "./DashboardNavbar";
-import { AuthGate } from "../auth/components/AuthGate";
+import { AuthGate } from "../auth/components/account/AuthGate";
 
 interface DashboardLayoutProps {
   children: ReactNode;

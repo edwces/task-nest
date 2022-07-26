@@ -3,7 +3,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import { Lock, Mail } from "tabler-icons-react";
 import { z } from "zod";
-import { SignInDTO } from "../dto/sign-in.dto";
+import { SignInDTO } from "../../dto/sign-in.dto";
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -13,13 +13,13 @@ const signInSchema = z.object({
 });
 
 interface SignInFormProps {
-  handleSubmit: (values: SignInDTO) => void;
+  onSignIn?: (values: SignInDTO) => void;
   initialValues?: SignInDTO;
   isSubmitting?: boolean;
 }
 
 export function SignInForm({
-  handleSubmit,
+  onSignIn = () => {},
   initialValues = { email: "", password: "" },
   isSubmitting = false,
 }: SignInFormProps) {
@@ -29,7 +29,7 @@ export function SignInForm({
   });
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(onSignIn)}>
       <Stack spacing={25}>
         <TextInput
           required

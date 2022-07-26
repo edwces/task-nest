@@ -1,19 +1,12 @@
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { useRouter } from "next/router";
-import { ReactNode, useCallback } from "react";
-import { http } from "../../config/httpClient";
-import { useLogoutMutation } from "../../modules/auth/api/useLogoutMutation";
-import { refreshToken } from "../../modules/auth/util/refresh-token.util";
-import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
-import { useSession } from "../store/useSession";
+import { useIsomorphicLayoutEffect } from "../../../common/hooks/useIsomorphicLayoutEffect";
+import { useSession } from "../../../common/store/useSession";
+import { http } from "../../../config/httpClient";
+import { useLogoutMutation } from "../api/useLogoutMutation";
+import { refreshToken } from "../util/refresh-token.util";
 
-interface HttpClientInterceptorsProps {
-  children: ReactNode;
-}
-
-export function HttpClientInterceptors({
-  children,
-}: HttpClientInterceptorsProps) {
+export function useHttpInterceptors() {
   const { token, status, setSignedIn } = useSession();
   const logout = useLogoutMutation();
   const router = useRouter();
@@ -24,23 +17,25 @@ export function HttpClientInterceptors({
     return config;
   };
 
-  const handleResponseError = async (error: AxiosError) => {
+  const logoutOrRefreshOnError = async (error: AxiosError) => {
     if (error.response) {
       const request = error.config;
       const statusCode = error.response?.status;
       const requestUrl = error.config.url;
 
+      // Refresh token and refetch request or
+      // on if Refresh Token is invalid
+      // Logout and redirect to signIn screen
       if (statusCode === 401 && !requestUrl!.includes("/auth")) {
         return refreshToken({})
           .then((data) => {
             setSignedIn(data.user, data.token);
-            // new fetch does not trigger react query
             http(request);
             return Promise.resolve();
           })
           .catch((error) => {
             if (error.response)
-              logout.mutate({}, { onSuccess: () => router.push("/") });
+              logout.mutate(undefined, { onSuccess: () => router.push("/") });
             return Promise.reject(error);
           });
       }
@@ -48,20 +43,16 @@ export function HttpClientInterceptors({
     return Promise.reject(error);
   };
 
-  const handleRequest = useCallback(attachAuthHeaderIfExists, [token, status]);
-
   useIsomorphicLayoutEffect(() => {
-    const id = http.interceptors.request.use(handleRequest);
-    const id2 = http.interceptors.response.use(
+    const requestId = http.interceptors.request.use(attachAuthHeaderIfExists);
+    const responseId = http.interceptors.response.use(
       (response) => response,
-      handleResponseError
+      logoutOrRefreshOnError
     );
 
     return () => {
-      http.interceptors.request.eject(id);
-      http.interceptors.response.eject(id2);
+      http.interceptors.request.eject(requestId);
+      http.interceptors.response.eject(responseId);
     };
   }, [token]);
-
-  return <>{children}</>;
 }
