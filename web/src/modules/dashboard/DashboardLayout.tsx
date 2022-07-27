@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardNavbar } from "./DashboardNavbar";
 import { AuthGate } from "../auth/components/account/AuthGate";
+import { Route } from "../../common/enums/route.enum";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -10,7 +11,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <AuthGate redirectUrl="/account/sign-in">
+    <AuthGate redirectUrl={Route.SIGN_IN}>
       <AppShell
         fixed
         header={<DashboardHeader />}

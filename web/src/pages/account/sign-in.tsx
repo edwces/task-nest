@@ -7,6 +7,7 @@ import { SignInForm } from "../../modules/auth/components/account/SignInForm";
 import { useSignInMutation } from "../../modules/auth/api/useSignInMutation";
 import { AuthLayout } from "../../modules/auth/components/AuthLayout";
 import { SignInDTO } from "../../modules/auth/dto/sign-in.dto";
+import { Route } from "../../common/enums/route.enum";
 
 const SignIn: NextPageWithLayout = () => {
   const signIn = useSignInMutation();
@@ -22,7 +23,7 @@ const SignIn: NextPageWithLayout = () => {
         <Title align="center">Sign in for access</Title>
         <Text size="sm" color="dimmed" align="center">
           Don&apos;t have an account yet?{" "}
-          <Anchor size="sm" component={NextLink} href="/account/sign-up">
+          <Anchor size="sm" component={NextLink} href={Route.SIGN_UP}>
             Sign up here
           </Anchor>
         </Text>

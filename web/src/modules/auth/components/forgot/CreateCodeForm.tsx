@@ -2,6 +2,7 @@ import { Anchor, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import { z } from "zod";
+import { Route } from "../../../../common/enums/route.enum";
 import { CreateResetCodeDTO } from "../../dto/create-reset-code.dto";
 
 const createCodeSchema = z.object({
@@ -29,7 +30,7 @@ export function CreateCodeForm({
       <Stack spacing={25}>
         <TextInput required label="Email" {...form.getInputProps("email")} />
         <Group position="apart">
-          <Anchor size="sm" component={NextLink} href="/account/sign-in">
+          <Anchor size="sm" component={NextLink} href={Route.SIGN_IN}>
             Return to Sign In Page
           </Anchor>
           <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

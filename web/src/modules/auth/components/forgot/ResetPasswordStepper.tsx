@@ -10,6 +10,7 @@ import { ResetPasswordFieldsDTO, ResetPasswordForm } from "./ResetPasswordForm";
 import { useChangePasswordMutation } from "../../api/useChangePasswordMutation";
 import { ChangePasswordDTO } from "../../dto/change-password.dto";
 import { CreateResetCodeDTO } from "../../dto/create-reset-code.dto";
+import { Route } from "../../../../common/enums/route.enum";
 
 export function ResetPasswordStepper() {
   const [active, setActive] = useState(0);
@@ -53,7 +54,7 @@ export function ResetPasswordStepper() {
       { email, code, ...values },
       {
         onSuccess: () => {
-          router.push("/account/sign-in");
+          router.push(Route.SIGN_IN);
         },
       }
     );
