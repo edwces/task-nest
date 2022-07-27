@@ -8,6 +8,8 @@ import { TodoControlBar } from "../../modules/todo/components/list/TodoControlBa
 import { TodoCreator } from "../../modules/todo/components/create/TodoCreator";
 import { TodoList } from "../../modules/todo/components/list/TodoList";
 import { useTodosByTagLabel } from "../../modules/todo/api/useTodosByTagLabel";
+import { AuthGate } from "../../modules/auth/components/account/AuthGate";
+import { Route } from "../../common/enums/route.enum";
 
 const Tag: NextPageWithLayout = () => {
   const router = useRouter();
@@ -33,7 +35,11 @@ const Tag: NextPageWithLayout = () => {
 };
 
 Tag.getLayout = (page) => {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return (
+    <AuthGate redirectUrl={Route.SIGN_IN}>
+      <DashboardLayout>{page}</DashboardLayout>
+    </AuthGate>
+  );
 };
 
 export default Tag;

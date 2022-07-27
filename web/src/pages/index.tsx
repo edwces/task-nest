@@ -7,6 +7,8 @@ import { TodoControlBar } from "../modules/todo/components/list/TodoControlBar";
 import { TodoCreator } from "../modules/todo/components/create/TodoCreator";
 import { TodoList } from "../modules/todo/components/list/TodoList";
 import { useTodos } from "../modules/todo/api/useTodos";
+import { AuthGate } from "../modules/auth/components/account/AuthGate";
+import { Route } from "../common/enums/route.enum";
 
 const Home: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
@@ -27,7 +29,11 @@ const Home: NextPageWithLayout = () => {
 };
 
 Home.getLayout = (page) => {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return (
+    <AuthGate redirectUrl={Route.SIGN_IN}>
+      <DashboardLayout>{page}</DashboardLayout>;
+    </AuthGate>
+  );
 };
 
 export default Home;
