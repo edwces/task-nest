@@ -5,8 +5,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/user.service';
-import { SignInFieldsDTO } from '../dto/sign-in-fields.dto';
-import { SignUpFieldsDTO } from '../dto/sign-up-fields.dto';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
@@ -17,6 +15,8 @@ import {
 import { User } from '../../user/user.entity';
 import { JWTAccessPayload } from '../interfaces/jwt-access-payload.interface';
 import { JWTRefreshPayload } from '../interfaces/jwt-refresh-payload.interface';
+import { SignUpDTO } from '../dto/sign-up.dto';
+import { SignInDTO } from '../dto/sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +26,7 @@ export class AuthService {
     private readonly configService: ConfigService<EnvironmentVariables>,
   ) {}
 
-  async singUp(dto: SignUpFieldsDTO) {
+  async singUp(dto: SignUpDTO) {
     const doesExist = await this.userService.findOne({ email: dto.email });
     if (doesExist)
       throw new ConflictException('User with that email already exists');
@@ -34,7 +34,7 @@ export class AuthService {
     await this.userService.create(dto);
   }
 
-  async signIn({ email, password }: SignInFieldsDTO) {
+  async signIn({ email, password }: SignInDTO) {
     const user = await this.findUserByCredentials({ email, password });
 
     const payload = this.toJWTPayload(user);
@@ -57,7 +57,7 @@ export class AuthService {
     };
   }
 
-  private async findUserByCredentials({ email, password }: SignInFieldsDTO) {
+  private async findUserByCredentials({ email, password }: SignInDTO) {
     const user = await this.userService.findOne({ email });
     if (!user)
       throw new UnauthorizedException('User with that email does not exist');

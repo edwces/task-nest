@@ -9,12 +9,12 @@ import Redis from 'ioredis';
 import { EmailService } from 'src/modules/email/email.service';
 import { UserService } from 'src/modules/user/user.service';
 import { RESET_CODE_EXPIRE_TIME } from '../auth.constants';
-import { ResetPasswordFieldsDTO } from '../dto/reset-password-fields.dto';
 import * as crypto from 'node:crypto';
 import * as argon2 from 'argon2';
 import * as nodemailer from 'nodemailer';
 import { CreateResetCodeDTO } from '../dto/create-reset-code.dto';
-import { CheckResetCodeDTO } from '../dto/check-reset-code.dto';
+import { ResetPasswordDTO } from '../dto/reset-password.dto';
+import { ValidateResetCodeDTO } from '../dto/validate-reset-code.dto';
 
 @Injectable()
 export class ResetService {
@@ -42,7 +42,7 @@ export class ResetService {
     this.logger.log(`Mail Preview: ${nodemailer.getTestMessageUrl(info)}`);
   }
 
-  async resetPassword({ email, password, code }: ResetPasswordFieldsDTO) {
+  async resetPassword({ email, password, code }: ResetPasswordDTO) {
     const user = await this.userService.findOneByEmail(email);
 
     await this.validateCode(code, user.id);
@@ -51,7 +51,7 @@ export class ResetService {
     await this.userService.updatePasswordById(user.id, password);
   }
 
-  async validateResetCodeByEmail({ email, code }: CheckResetCodeDTO) {
+  async validateResetCodeByEmail({ email, code }: ValidateResetCodeDTO) {
     const user = await this.userService.findOneByEmail(email);
 
     await this.validateCode(code, user.id);

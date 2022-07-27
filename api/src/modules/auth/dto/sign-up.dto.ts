@@ -6,7 +6,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class SignUpFieldsDTO {
+export class SignUpDTO {
   @IsNotEmpty()
   @IsString()
   @MaxLength(30)

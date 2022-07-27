@@ -11,11 +11,11 @@ import { Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
 import { JWT_REFRESH_COOKIE_NAME } from '../auth.constants';
 import { AuthService } from '../services/auth.service';
-import { SignInFieldsDTO } from '../dto/sign-in-fields.dto';
-import { SignUpFieldsDTO } from '../dto/sign-up-fields.dto';
 import { JWTRefreshGuard } from '../guards/jwt-refresh.guard';
 import { SessionUser } from '../interfaces/session-user.interface';
 import { Throttle } from '@nestjs/throttler';
+import { SignInDTO } from '../dto/sign-in.dto';
+import { SignUpDTO } from '../dto/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +25,7 @@ export class AuthController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signIn(
-    @Body() dto: SignInFieldsDTO,
+    @Body() dto: SignInDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
     const { refreshToken, accessToken, user } = await this.authService.signIn(
@@ -41,7 +41,7 @@ export class AuthController {
   }
   @Throttle(15, 60)
   @Post('signup')
-  signUp(@Body() dto: SignUpFieldsDTO) {
+  signUp(@Body() dto: SignUpDTO) {
     return this.authService.singUp(dto);
   }
 

@@ -31,7 +31,7 @@ const Home: NextPageWithLayout = () => {
 Home.getLayout = (page) => {
   return (
     <AuthGate redirectUrl={Route.SIGN_IN}>
-      <DashboardLayout>{page}</DashboardLayout>;
+      <DashboardLayout>{page}</DashboardLayout>
     </AuthGate>
   );
 };

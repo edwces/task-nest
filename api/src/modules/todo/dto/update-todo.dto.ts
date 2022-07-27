@@ -1,14 +1,4 @@
-import {
-  IsArray,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-} from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateTodoDTO } from './create-todo.dto';
 
-export class UpdateTodoDTO {
-  @IsOptional() @IsNumber() @IsPositive() readonly authorId?: number;
-  @IsOptional() @IsString() readonly label?: string;
-  @IsOptional() @IsArray() readonly tagIds?: number[];
-  @IsOptional() @IsString() readonly description?: string;
-}
+export class UpdateTodoDTO extends PartialType(CreateTodoDTO) {}
