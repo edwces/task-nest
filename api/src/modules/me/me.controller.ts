@@ -20,6 +20,7 @@ import { FindAllTodosQueryParamsDTO } from '../todo/dto/find-all-todos-query-par
 import { UpdateTodoDTO } from '../todo/dto/update-todo.dto';
 import { TodoService } from '../todo/todo.service';
 import { UserService } from '../user/user.service';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('me')
 @UseGuards(JWTAccessGuard)
@@ -35,6 +36,7 @@ export class MeController {
     return this.userService.findOneById(user.id);
   }
 
+  @SkipThrottle()
   @Get('todos')
   getTodos(
     @User() user: SessionUser,
@@ -84,6 +86,7 @@ export class MeController {
     return this.tagService.findOneByUserLabel(user.id, label);
   }
 
+  @SkipThrottle()
   @Get('tags/:label/todos')
   getTodosByTagLabel(
     @User() user: SessionUser,

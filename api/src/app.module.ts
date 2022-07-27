@@ -17,6 +17,8 @@ import { TodoModule } from './modules/todo/todo.module';
 import { UserModule } from './modules/user/user.module';
 import * as nodemailer from 'nodemailer';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -43,12 +45,14 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         };
       },
     }),
+    ThrottlerModule.forRoot({ ttl: 60, limit: 25 }),
     TodoModule,
     TagModule,
     UserModule,
     AuthModule,
     MeModule,
   ],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule implements NestModule, OnModuleInit {
   constructor(private readonly orm: MikroORM) {}

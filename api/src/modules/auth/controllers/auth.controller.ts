@@ -15,11 +15,13 @@ import { SignInFieldsDTO } from '../dto/sign-in-fields.dto';
 import { SignUpFieldsDTO } from '../dto/sign-up-fields.dto';
 import { JWTRefreshGuard } from '../guards/jwt-refresh.guard';
 import { SessionUser } from '../interfaces/session-user.interface';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Throttle(15, 60)
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signIn(
@@ -37,7 +39,7 @@ export class AuthController {
       user: { id: user.id, email: user.email, name: user.name },
     };
   }
-
+  @Throttle(15, 60)
   @Post('signup')
   signUp(@Body() dto: SignUpFieldsDTO) {
     return this.authService.singUp(dto);
