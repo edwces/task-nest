@@ -2,30 +2,30 @@ import { Button, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 
-const resetPasswordSchema = z.object({
+const changePasswordSchema = z.object({
   password: z.string().min(5),
 });
 
-export type ResetPasswordFieldsDTO = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordFieldsDTO = z.infer<typeof changePasswordSchema>;
 
-interface ResetPasswordFormProps {
-  handleSubmit: (values: ResetPasswordFieldsDTO) => void;
-  initialValues?: ResetPasswordFieldsDTO;
+interface ChangePasswordFormProps {
+  onChangePassword: (values: ChangePasswordFieldsDTO) => void;
+  initialValues?: ChangePasswordFieldsDTO;
   isSubmitting?: boolean;
 }
 
-export function ResetPasswordForm({
-  handleSubmit,
+export function ChangePasswordForm({
+  onChangePassword,
   initialValues = { password: "" },
   isSubmitting = false,
-}: ResetPasswordFormProps) {
+}: ChangePasswordFormProps) {
   const form = useForm({
     initialValues,
-    schema: zodResolver(resetPasswordSchema),
+    schema: zodResolver(changePasswordSchema),
   });
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(onChangePassword)}>
       <Stack spacing={25}>
         <TextInput
           required

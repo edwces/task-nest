@@ -10,13 +10,13 @@ const createCodeSchema = z.object({
 });
 
 interface CreateCodeFormProps {
-  handleSubmit: (values: CreateResetCodeDTO) => void;
+  onCreateCode: (values: CreateResetCodeDTO) => void;
   initialValues?: CreateResetCodeDTO;
   isSubmitting?: boolean;
 }
 
 export function CreateCodeForm({
-  handleSubmit,
+  onCreateCode,
   initialValues = { email: "" },
   isSubmitting = false,
 }: CreateCodeFormProps) {
@@ -26,7 +26,7 @@ export function CreateCodeForm({
   });
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(onCreateCode)}>
       <Stack spacing={25}>
         <TextInput required label="Email" {...form.getInputProps("email")} />
         <Group position="apart">

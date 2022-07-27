@@ -6,13 +6,16 @@ import { useValidateResetCodeMutation } from "../../api/useValidateResetCodeMuta
 import { useCreateResetCodeMutation } from "../../api/useCreateResetCodeMutation";
 import { ValidateCodeFieldsDTO, ValidateCodeForm } from "./ValidateCodeForm";
 import { CreateCodeForm } from "./CreateCodeForm";
-import { ResetPasswordFieldsDTO, ResetPasswordForm } from "./ResetPasswordForm";
+import {
+  ChangePasswordFieldsDTO,
+  ChangePasswordForm,
+} from "./ChangePasswordForm";
 import { useChangePasswordMutation } from "../../api/useChangePasswordMutation";
 import { ChangePasswordDTO } from "../../dto/change-password.dto";
 import { CreateResetCodeDTO } from "../../dto/create-reset-code.dto";
 import { Route } from "../../../../common/enums/route.enum";
 
-export function ResetPasswordStepper() {
+export function ChangePasswordStepper() {
   const [active, setActive] = useState(0);
   const [savedFields, setSavedFields] = useState<ChangePasswordDTO>({
     email: "",
@@ -21,19 +24,18 @@ export function ResetPasswordStepper() {
   });
   const createResetCode = useCreateResetCodeMutation();
   const validateResetCode = useValidateResetCodeMutation();
-  const resetPassword = useChangePasswordMutation();
+  const changePassword = useChangePasswordMutation();
   const router = useRouter();
 
   const nextStep = () => setActive(active + 1);
 
-  const handleCreateCode = (values: CreateResetCodeDTO) => {
+  const handleCreateCode = (values: CreateResetCodeDTO) =>
     createResetCode.mutate(values, {
       onSuccess: () => {
         setSavedFields({ ...savedFields, email: values.email });
         nextStep();
       },
     });
-  };
 
   const handleValidateCode = (values: ValidateCodeFieldsDTO) => {
     const { email } = savedFields;
@@ -48,14 +50,12 @@ export function ResetPasswordStepper() {
     );
   };
 
-  const handleResetPassword = (values: ResetPasswordFieldsDTO) => {
+  const handleChangePassword = (values: ChangePasswordFieldsDTO) => {
     const { email, code } = savedFields;
-    resetPassword.mutate(
+    changePassword.mutate(
       { email, code, ...values },
       {
-        onSuccess: () => {
-          router.push(Route.SIGN_IN);
-        },
+        onSuccess: () => router.push(Route.SIGN_IN),
       }
     );
   };
@@ -70,7 +70,7 @@ export function ResetPasswordStepper() {
               send you an Reset code to your address
             </Text>
             <CreateCodeForm
-              handleSubmit={handleCreateCode}
+              onCreateCode={handleCreateCode}
               isSubmitting={createResetCode.isLoading}
             />
           </Paper>
@@ -86,7 +86,7 @@ export function ResetPasswordStepper() {
             icon={<Mail size={22} />}
           >{`Enter code that was sent to your email: ${savedFields.email}`}</Alert>
           <ValidateCodeForm
-            handleSubmit={handleValidateCode}
+            onValidateCode={handleValidateCode}
             isSubmitting={validateResetCode.isLoading}
             onResendCode={() =>
               createResetCode.mutate({ email: savedFields.email })
@@ -94,14 +94,14 @@ export function ResetPasswordStepper() {
           />
         </Paper>
       </Stepper.Step>
-      <Stepper.Step label="Reset Password" mb={50}>
+      <Stepper.Step label="Change Password" mb={50}>
         <Paper withBorder p={30}>
           <Text mb={20} size="sm" color="dimmed">
             This is going to be a new password that will be used from now on
           </Text>
-          <ResetPasswordForm
-            handleSubmit={handleResetPassword}
-            isSubmitting={resetPassword.isLoading}
+          <ChangePasswordForm
+            onChangePassword={handleChangePassword}
+            isSubmitting={changePassword.isLoading}
           />
         </Paper>
       </Stepper.Step>
