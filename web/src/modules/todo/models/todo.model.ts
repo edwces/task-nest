@@ -6,4 +6,6 @@ export interface Todo extends Basic {
   label: string;
   tags: Tag[];
   description: string;
+  expiresAt: string;
+  isExpired: boolean;
 }
