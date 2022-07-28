@@ -10,7 +10,7 @@ async function bootstrap() {
   app.use(helmet());
   app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
   app.use(cookieParser());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(3000);
 }
 bootstrap();

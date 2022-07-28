@@ -29,10 +29,7 @@ export class Todo extends BasicEntity {
 
   @Property({ persist: false })
   get isExpired() {
-    return (
-      this.expiresAt.toISOString().split('T')[0] ===
-      new Date().toISOString().split('T')[0]
-    );
+    return !!this.expiresAt && this.expiresAt.getTime() < new Date().getTime();
   }
 
   @ManyToMany(() => Tag, (tag) => tag.todos)
