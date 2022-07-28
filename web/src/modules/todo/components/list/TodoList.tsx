@@ -4,6 +4,7 @@ import { TodoItem } from "./TodoItem";
 import { AnimatePresence, motion } from "framer-motion";
 import { Stack } from "@mantine/core";
 import { useEditTodoModal } from "../../hooks/useEditTodoModal";
+import { formatDate } from "../../../dates/util/date.util";
 
 const MotionStack = motion(Stack);
 
@@ -27,6 +28,8 @@ export function TodoList({ todos = [] }: TodoListProps) {
             animate={{ opacity: 1 }}
           >
             <TodoItem
+              expiresAt={todo.expiresAt && formatDate(new Date(todo.expiresAt))}
+              isExpired={todo.isExpired}
               label={todo.label}
               onCheck={() => removeTodo.mutate(todo.id)}
               onEdit={() => open({ todoId: todo.id })}
