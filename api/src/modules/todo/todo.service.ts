@@ -26,7 +26,7 @@ export class TodoService {
   }
 
   private async findByOptions(
-    { sort, direction = QueryOrder.ASC }: FindAllTodosQueryParamsDTO,
+    { due, sort, direction = QueryOrder.ASC }: FindAllTodosQueryParamsDTO,
     where?: QBFilterQuery<Todo>,
   ) {
     const em = this.todoRepository
@@ -34,14 +34,21 @@ export class TodoService {
       .select('*')
       .leftJoinAndSelect('t.tags', 'g');
     if (where) em.where(where);
+    if (due) {
+      switch (due) {
+        case 'today':
+          em.where({ expiresAt: new Date().toISOString().split('T')[0] });
+      }
+    }
     if (sort) em.orderBy({ [sort]: direction });
     return await em.getResult();
   }
 
-  async create({ authorId, tagIds, ...dto }: CreateTodoDTO) {
+  async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
     const todo = this.todoRepository.create({
       author: authorId,
       tags: tagIds,
+      expiresAt: expiresAt ? new Date(expiresAt) : undefined,
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);

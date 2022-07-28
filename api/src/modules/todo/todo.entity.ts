@@ -5,6 +5,7 @@ import {
   ManyToMany,
   PrimaryKey,
   Property,
+  DateType,
 } from '@mikro-orm/core';
 import { BasicEntity } from 'src/common/entities/basic.entity';
 import { Tag } from '../tag/tag.entity';
@@ -24,12 +25,14 @@ export class Todo extends BasicEntity {
   @ManyToOne(() => User)
   author!: User;
 
-  @Property({ nullable: true })
+  @Property({ type: DateType, nullable: true })
   expiresAt?: Date;
 
   @Property({ persist: false })
   get isExpired() {
-    return !!this.expiresAt && this.expiresAt.getTime() < new Date().getTime();
+    const now = new Date();
+    now.setDate(now.getDate() - 1);
+    return !!this.expiresAt && this.expiresAt.getTime() < now.getTime();
   }
 
   @ManyToMany(() => Tag, (tag) => tag.todos)
