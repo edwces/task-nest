@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsDateString,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -11,4 +12,5 @@ export class CreateTodoDTO {
   @IsString() readonly label: string;
   @IsOptional() @IsArray() readonly tagIds?: number[];
   @IsOptional() @IsString() readonly description?: string;
+  @IsOptional() @IsDateString() readonly expiresAt?: string;
 }

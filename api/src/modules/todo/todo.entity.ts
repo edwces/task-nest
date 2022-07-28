@@ -24,6 +24,17 @@ export class Todo extends BasicEntity {
   @ManyToOne(() => User)
   author!: User;
 
+  @Property({ nullable: true })
+  expiresAt?: Date;
+
+  @Property({ persist: false })
+  get isExpired() {
+    return (
+      this.expiresAt.toISOString().split('T')[0] ===
+      new Date().toISOString().split('T')[0]
+    );
+  }
+
   @ManyToMany(() => Tag, (tag) => tag.todos)
   tags = new Collection<Tag>(this);
 }
