@@ -4,7 +4,6 @@ import { z } from "zod";
 import { TodoDateBadge } from "../../../dates/components/TodoDateBadge";
 import { formatDate } from "../../../dates/util/date.util";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
-import { CreateTodoDTO } from "../../dto/create-todo.dto";
 import { CheckboxTextInput } from "./CheckboxTextInput";
 import { TodoCreatorActions } from "./TodoCreatorActions";
 
@@ -14,8 +13,10 @@ const addTodoSchema = z.object({
   expiresAt: z.date().optional(),
 });
 
+type CreateTodoFields = z.infer<typeof addTodoSchema>;
+
 interface TodoCreatorProps {
-  initialValues?: CreateTodoDTO;
+  initialValues?: CreateTodoFields;
 }
 
 export function TodoCreator({
@@ -24,9 +25,16 @@ export function TodoCreator({
   const form = useForm({ initialValues, schema: zodResolver(addTodoSchema) });
   const createTodo = useCreateTodoMutation();
 
-  const handleCreateTodo = (data: CreateTodoDTO) =>
-    createTodo.mutate(data, { onSuccess: () => form.reset() });
+  const handleCreateTodo = (data: CreateTodoFields) => {
+    const formattedDate = data.expiresAt
+      ? formatDate(data.expiresAt!)
+      : undefined;
 
+    createTodo.mutate(
+      { ...data, expiresAt: formattedDate },
+      { onSuccess: () => form.reset() }
+    );
+  };
   return (
     <Paper withBorder p={10} radius="lg">
       <form onSubmit={form.onSubmit(handleCreateTodo)}>

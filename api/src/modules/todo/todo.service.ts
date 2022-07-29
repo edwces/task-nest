@@ -38,6 +38,9 @@ export class TodoService {
       switch (due) {
         case 'today':
           em.where({ expiresAt: new Date().toISOString().split('T')[0] });
+          break;
+        case 'week':
+          em.where(`YEARWEEK("t"."expires_at", 1) = YEARWEEK(CURDATE(), 1)`);
       }
     }
     if (sort) em.orderBy({ [sort]: direction });
