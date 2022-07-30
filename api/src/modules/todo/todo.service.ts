@@ -40,7 +40,9 @@ export class TodoService {
           em.where({ expiresAt: new Date().toISOString().split('T')[0] });
           break;
         case 'week':
-          em.where(`YEARWEEK("t"."expires_at", 1) = YEARWEEK(CURDATE(), 1)`);
+          em.where(
+            `to_char("t"."expires_at", 'IW') = to_char(CURRENT_DATE, 'IW')`,
+          );
       }
     }
     if (sort) em.orderBy({ [sort]: direction });
