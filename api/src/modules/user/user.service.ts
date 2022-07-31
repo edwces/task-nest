@@ -1,17 +1,13 @@
 import { FilterQuery, wrap } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './user.entity';
 import * as argon2 from 'argon2';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async findAll() {
     return await this.userRepository.findAll();

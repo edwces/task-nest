@@ -7,8 +7,8 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { BasicEntity } from 'src/common/entities/basic.entity';
-import { UserRole } from 'src/modules/user/enums/user-role.enum';
+import { BasicEntity } from '../../common/entities/basic.entity';
+import { UserRole } from '../user/enums/user-role.enum';
 import { Todo } from '../todo/todo.entity';
 
 @Entity()
