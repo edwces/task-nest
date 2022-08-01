@@ -14,12 +14,21 @@ const Week: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
   const { data } = useTodos({ ...values, due: "week" });
 
+  const getSundayDate = () => {
+    const now = new Date();
+    const day = now.getDate() - now.getDay() + 7;
+    now.setDate(day);
+    return now;
+  };
+
   return (
     <>
       <PageMetadata title="Todo clone" />
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="This Week" />
-        <TodoCreator />
+        <TodoCreator
+          initialValues={{ label: "", expiresAt: getSundayDate() }}
+        />
         <Box px={10}>
           <TodoList todos={data} />
         </Box>
