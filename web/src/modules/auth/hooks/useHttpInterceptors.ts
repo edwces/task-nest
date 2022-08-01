@@ -1,5 +1,6 @@
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "../../../common/hooks/useIsomorphicLayoutEffect";
 import { useSession } from "../../../common/store/useSession";
 import { http } from "../../../config/httpClient";
@@ -28,10 +29,10 @@ export function useHttpInterceptors() {
       // Logout and redirect to signIn screen
       if (statusCode === 401 && !requestUrl!.includes("/auth")) {
         return refreshToken({})
-          .then((data) => {
+          .then(async (data) => {
             setSignedIn(data.user, data.token);
-            http(request);
-            return Promise.resolve();
+            const response = await http(request);
+            return Promise.resolve(response.data);
           })
           .catch((error) => {
             if (error.response)
