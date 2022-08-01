@@ -1,5 +1,5 @@
 import { AppShell, Container } from "@mantine/core";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardNavbar } from "./DashboardNavbar";
 
@@ -8,11 +8,19 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [isBurgerOpen, setBurgerOpen] = useState(false);
+
   return (
     <AppShell
       fixed
-      header={<DashboardHeader />}
-      navbar={<DashboardNavbar />}
+      navbarOffsetBreakpoint="sm"
+      header={
+        <DashboardHeader
+          isBurgerOpen={isBurgerOpen}
+          onBurgerClick={() => setBurgerOpen(!isBurgerOpen)}
+        />
+      }
+      navbar={<DashboardNavbar isHidden={!isBurgerOpen} />}
       styles={(theme) => ({
         main: {
           backgroundColor:

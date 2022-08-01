@@ -5,7 +5,11 @@ import { useTags } from "../tag/api/useTags";
 import { NavigationItem } from "./NavigationItem";
 import { TagLinksList } from "./TagLinksList";
 
-export function DashboardNavbar() {
+interface DashboardNavbarProps {
+  isHidden: boolean;
+}
+
+export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
   const router = useRouter();
   const { data } = useTags();
 
@@ -14,7 +18,12 @@ export function DashboardNavbar() {
   const isWeekActive = router.isReady && router.pathname === "/week";
 
   return (
-    <Navbar p={20} width={{ base: 250 }}>
+    <Navbar
+      p={20}
+      hidden={isHidden}
+      hiddenBreakpoint="sm"
+      width={{ sm: 250, lg: 300 }}
+    >
       <Navbar.Section>
         <Stack spacing={5}>
           <NavigationItem

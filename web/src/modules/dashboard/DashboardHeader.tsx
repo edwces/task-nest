@@ -1,10 +1,26 @@
-import { Avatar, Group, Header, Title, UnstyledButton } from "@mantine/core";
+import {
+  Avatar,
+  Burger,
+  Group,
+  Header,
+  MediaQuery,
+  Title,
+  UnstyledButton,
+} from "@mantine/core";
 import { useRouter } from "next/router";
 import { useLogoutMutation } from "../auth/api/useLogoutMutation";
 import { UserMenu } from "../user/components/UserMenu";
 import { ColorSchemeSwitch } from "./ColorSchemeSwitch";
 
-export function DashboardHeader() {
+interface DashboardHeaderProps {
+  isBurgerOpen: boolean;
+  onBurgerClick: () => void;
+}
+
+export function DashboardHeader({
+  isBurgerOpen,
+  onBurgerClick,
+}: DashboardHeaderProps) {
   const logout = useLogoutMutation();
   const router = useRouter();
 
@@ -14,7 +30,12 @@ export function DashboardHeader() {
   return (
     <Header px="xl" height={80}>
       <Group align="center" position="apart" sx={{ height: "100%" }}>
-        <Title>Logo</Title>
+        <Group>
+          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <Burger opened={isBurgerOpen} onClick={onBurgerClick} size="sm" />
+          </MediaQuery>
+          <Title>Logo</Title>
+        </Group>
         <Group spacing={20}>
           <ColorSchemeSwitch />
           <UserMenu
