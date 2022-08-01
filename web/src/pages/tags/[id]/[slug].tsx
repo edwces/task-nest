@@ -20,12 +20,17 @@ const Tag: NextPageWithLayout = () => {
       enabled: router.isReady,
     }
   );
+
+  // We need to add key to TodoCreator, because useRouter does not
+  // change beetwen dynamic pages and it also causes that our page will not
+  // refetch
   return (
     <>
       <PageMetadata title="Todo clone" />
       <Stack spacing={40} pt={20}>
         <TodoControlBar title={router.query.slug as string} />
         <TodoCreator
+          key={`tag_${router.query.id}`}
           initialValues={{
             label: "",
             tagIds: [Number.parseInt(router.query.id as string)],

@@ -1,8 +1,9 @@
-import { Group, Paper, Stack } from "@mantine/core";
+import { Badge, Group, Paper, Stack } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { TodoDateBadge } from "../../../dates/components/TodoDateBadge";
 import { formatDate } from "../../../dates/util/date.util";
+import { useTags } from "../../../tag/api/useTags";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
 import { CheckboxTextInput } from "./CheckboxTextInput";
 import { TodoCreatorActions } from "./TodoCreatorActions";
@@ -23,6 +24,7 @@ export function TodoCreator({
   initialValues = { label: "" },
 }: TodoCreatorProps) {
   const form = useForm({ initialValues, schema: zodResolver(addTodoSchema) });
+  const { data } = useTags();
   const createTodo = useCreateTodoMutation();
 
   const handleCreateTodo = (data: CreateTodoFields) => {
@@ -41,7 +43,7 @@ export function TodoCreator({
         <Stack>
           <Group position="apart" pr={10}>
             <CheckboxTextInput {...form.getInputProps("label")} />
-            <TodoCreatorActions control={form} />
+            <TodoCreatorActions control={form} tags={data} />
           </Group>
           <Group>
             {form.values.expiresAt && (
@@ -50,6 +52,13 @@ export function TodoCreator({
                 onClear={() => form.setFieldValue("expiresAt", undefined)}
               />
             )}
+            {form.values.tagIds &&
+              data &&
+              form.values.tagIds.map((id) => (
+                <Badge key={id}>
+                  {data?.find((tag) => tag.id === id)?.label}
+                </Badge>
+              ))}
           </Group>
         </Stack>
       </form>
