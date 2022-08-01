@@ -15,7 +15,7 @@ export function TagLinksList({ tags = [], activeItem }: TagLinksListProps) {
         <NavigationItem
           key={tag.id}
           label={tag.label}
-          link={`/tags/${tag.label}`}
+          link={`/tags/${tag.id}/${tag.label}`}
           icon={<TagIcon size={20} />}
           isActive={activeItem === tag.label}
         ></NavigationItem>

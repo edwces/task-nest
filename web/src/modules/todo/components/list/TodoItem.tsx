@@ -27,7 +27,7 @@ export function TodoItem({
         <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />
         <Group>
           {tags.map((tag) => (
-            <Link key={tag.id} href={`/tags/${tag.label}`} passHref>
+            <Link key={tag.id} href={`/tags/${tag.id}/${tag.label}`} passHref>
               <Badge
                 component="a"
                 sx={{
