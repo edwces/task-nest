@@ -23,8 +23,8 @@ const Tag: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Todo clone" />
-      <Stack spacing={40}>
-        <TodoControlBar />
+      <Stack spacing={40} p={20}>
+        <TodoControlBar title={router.query.slug as string} />
         <TodoCreator />
         <Box px={10}>
           <TodoList todos={data} />

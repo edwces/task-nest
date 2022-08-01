@@ -17,8 +17,8 @@ const Today: NextPageWithLayout = () => {
   return (
     <>
       <PageMetadata title="Todo clone" />
-      <Stack spacing={40}>
-        <TodoControlBar />
+      <Stack spacing={40} pt={20}>
+        <TodoControlBar title="Today" />
         <TodoCreator />
         <Box px={10}>
           <TodoList todos={data} />
