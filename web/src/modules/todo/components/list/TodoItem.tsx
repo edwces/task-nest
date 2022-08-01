@@ -1,4 +1,5 @@
 import { ActionIcon, Badge, Checkbox, Group, Stack, Text } from "@mantine/core";
+import Link from "next/link";
 import { ChangeEventHandler, MouseEventHandler } from "react";
 import { Calendar, Edit } from "tabler-icons-react";
 import { Tag } from "../../../tag/models/tag.model";
@@ -26,7 +27,16 @@ export function TodoItem({
         <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />
         <Group>
           {tags.map((tag) => (
-            <Badge key={tag.id}>{tag.label}</Badge>
+            <Link key={tag.id} href={`/tags/${tag.label}`} passHref>
+              <Badge
+                component="a"
+                sx={{
+                  cursor: "pointer",
+                }}
+              >
+                {tag.label}
+              </Badge>
+            </Link>
           ))}
           <ActionIcon onClick={onEdit}>
             <Edit size={25} />
