@@ -4,10 +4,10 @@ import {
   Group,
   Header,
   MediaQuery,
-  Title,
   UnstyledButton,
 } from "@mantine/core";
 import { useRouter } from "next/router";
+import { BrandLogo } from "../../common/components/BrandLogo";
 import { useLogoutMutation } from "../auth/api/useLogoutMutation";
 import { UserMenu } from "../user/components/UserMenu";
 import { ColorSchemeSwitch } from "./ColorSchemeSwitch";
@@ -34,7 +34,7 @@ export function DashboardHeader({
           <MediaQuery largerThan="sm" styles={{ display: "none" }}>
             <Burger opened={isBurgerOpen} onClick={onBurgerClick} size="sm" />
           </MediaQuery>
-          <Title>Logo</Title>
+          <BrandLogo />
         </Group>
         <Group spacing={20}>
           <ColorSchemeSwitch />

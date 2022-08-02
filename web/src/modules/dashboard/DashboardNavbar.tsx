@@ -24,7 +24,7 @@ export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
       hiddenBreakpoint="sm"
       width={{ sm: 250, lg: 300 }}
     >
-      <Navbar.Section>
+      <Navbar.Section mt={10}>
         <Stack spacing={5}>
           <NavigationItem
             leftIcon={<BoxMultiple size={20} />}
