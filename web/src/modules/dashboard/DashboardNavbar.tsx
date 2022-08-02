@@ -1,4 +1,4 @@
-import { Divider, Navbar, Stack } from "@mantine/core";
+import { Divider, Navbar, ScrollArea, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { Article, BoxMultiple, CalendarTime } from "tabler-icons-react";
 import { useTags } from "../tag/api/useTags";
@@ -19,7 +19,7 @@ export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
 
   return (
     <Navbar
-      p={20}
+      p={10}
       hidden={isHidden}
       hiddenBreakpoint="sm"
       width={{ sm: 250, lg: 300 }}
@@ -47,7 +47,14 @@ export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
         </Stack>
       </Navbar.Section>
       <Divider my={20} />
-      <Navbar.Section grow>
+      <Navbar.Section
+        component={ScrollArea}
+        offsetScrollbars
+        scrollbarSize={8}
+        mx={-10}
+        pl={10}
+        grow
+      >
         {data && router.isReady && (
           <TagLinksList tags={data} activeItem={router.query.slug as string} />
         )}
