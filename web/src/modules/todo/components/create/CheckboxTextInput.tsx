@@ -19,6 +19,7 @@ export function CheckboxTextInput({
         variant="unstyled"
         placeholder="Add Todo"
         size="lg"
+        autoComplete="off"
         {...props}
       />
     </Group>
