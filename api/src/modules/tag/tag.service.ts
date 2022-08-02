@@ -28,4 +28,9 @@ export class TagService {
   async findOneByUserLabel(id: number, label: string) {
     return await this.tagRepository.findOneOrFail({ author: id, label });
   }
+
+  async deleteByUserLabel(id: number, label: string) {
+    const tag = await this.findOneByUserLabel(id, label);
+    await this.tagRepository.removeAndFlush(tag);
+  }
 }

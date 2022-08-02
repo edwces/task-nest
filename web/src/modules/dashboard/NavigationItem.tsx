@@ -4,7 +4,8 @@ import { ReactNode } from "react";
 
 interface NavigationItemProps {
   link?: string;
-  icon?: ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   children?: ReactNode;
   label?: string;
   isActive?: boolean;
@@ -44,7 +45,8 @@ const useStyles = createStyles((theme, params: NavigationItemStylesParams) => ({
 }));
 
 export function NavigationItem({
-  icon,
+  leftIcon,
+  rightIcon,
   link = "#",
   children,
   label = "",
@@ -55,9 +57,12 @@ export function NavigationItem({
   return (
     <Box component={NextLink} href={link} className={classes.wrapper}>
       {children || (
-        <Group className={classes.main}>
-          {icon ? icon : null}
-          <Text weight={600}>{label}</Text>
+        <Group position="apart" className={classes.main}>
+          <Group>
+            {leftIcon ? leftIcon : null}
+            <Text weight={600}>{label}</Text>
+          </Group>
+          {rightIcon ? rightIcon : null}
         </Group>
       )}
     </Box>

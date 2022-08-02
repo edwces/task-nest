@@ -27,19 +27,19 @@ export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
       <Navbar.Section>
         <Stack spacing={5}>
           <NavigationItem
-            icon={<BoxMultiple size={20} />}
+            leftIcon={<BoxMultiple size={20} />}
             link="/"
             label="All"
             isActive={isRootActive}
           />
           <NavigationItem
-            icon={<CalendarTime size={20} />}
+            leftIcon={<CalendarTime size={20} />}
             link="/today"
             label="Today"
             isActive={isTodayActive}
           />
           <NavigationItem
-            icon={<Article size={20} />}
+            leftIcon={<Article size={20} />}
             link="/week"
             label="Weekly"
             isActive={isWeekActive}

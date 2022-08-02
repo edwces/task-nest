@@ -103,4 +103,9 @@ export class MeController {
   ) {
     return this.tagService.create({ authorId: user.id, ...dto });
   }
+
+  @Delete('tags/:label')
+  deleteTagByLabel(@User() user: SessionUser, @Param('label') label: string) {
+    return this.tagService.deleteByUserLabel(user.id, label);
+  }
 }
