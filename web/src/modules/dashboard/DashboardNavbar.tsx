@@ -1,4 +1,4 @@
-import { Divider, Navbar, ScrollArea, Stack } from "@mantine/core";
+import { Divider, Navbar, ScrollArea, Stack, ThemeIcon } from "@mantine/core";
 import { useRouter } from "next/router";
 import { Article, BoxMultiple, CalendarTime } from "tabler-icons-react";
 import { useTags } from "../tag/api/useTags";
@@ -9,13 +9,41 @@ interface DashboardNavbarProps {
   isHidden: boolean;
 }
 
+const navigationData = [
+  {
+    icon: (
+      <ThemeIcon variant="light">
+        <BoxMultiple size={18} />
+      </ThemeIcon>
+    ),
+    link: "/",
+    label: "All",
+  },
+  {
+    icon: (
+      <ThemeIcon variant="light" color="green">
+        <CalendarTime size={18} />
+      </ThemeIcon>
+    ),
+    link: "/today",
+    label: "Today",
+  },
+  {
+    icon: (
+      <ThemeIcon variant="light" color="blue">
+        <Article size={18} />
+      </ThemeIcon>
+    ),
+    link: "/week",
+    label: "Week",
+  },
+];
+
 export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
   const router = useRouter();
   const { data } = useTags();
 
-  const isRootActive = router.isReady && router.pathname === "/";
-  const isTodayActive = router.isReady && router.pathname === "/today";
-  const isWeekActive = router.isReady && router.pathname === "/week";
+  const isActive = (path: string) => router.isReady && router.pathname === path;
 
   return (
     <Navbar
@@ -26,24 +54,15 @@ export function DashboardNavbar({ isHidden }: DashboardNavbarProps) {
     >
       <Navbar.Section mt={10}>
         <Stack spacing={5}>
-          <NavigationItem
-            leftIcon={<BoxMultiple size={20} />}
-            link="/"
-            label="All"
-            isActive={isRootActive}
-          />
-          <NavigationItem
-            leftIcon={<CalendarTime size={20} />}
-            link="/today"
-            label="Today"
-            isActive={isTodayActive}
-          />
-          <NavigationItem
-            leftIcon={<Article size={20} />}
-            link="/week"
-            label="Weekly"
-            isActive={isWeekActive}
-          />
+          {navigationData.map((item) => (
+            <NavigationItem
+              key={item.label}
+              leftIcon={item.icon}
+              link={item.link}
+              label={item.label}
+              isActive={isActive(item.link)}
+            />
+          ))}
         </Stack>
       </Navbar.Section>
       <Divider my={20} />

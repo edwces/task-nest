@@ -1,4 +1,4 @@
-import { ActionIcon, Stack } from "@mantine/core";
+import { ActionIcon, Stack, ThemeIcon } from "@mantine/core";
 import { useRouter } from "next/router";
 import { Tag as TagIcon, Trash } from "tabler-icons-react";
 import { useDeleteTagMutation } from "../tag/api/useDeleteTagMutation";
@@ -36,7 +36,11 @@ export function TagLinksList({ tags = [], activeItem }: TagLinksListProps) {
           key={tag.id}
           label={tag.label}
           link={`/tags/${tag.id}/${tag.label}`}
-          leftIcon={<TagIcon size={20} />}
+          leftIcon={
+            <ThemeIcon variant="light" color="gray">
+              <TagIcon size={20} />
+            </ThemeIcon>
+          }
           isActive={activeItem === tag.label}
           rightIcon={
             <ActionIcon
@@ -44,6 +48,16 @@ export function TagLinksList({ tags = [], activeItem }: TagLinksListProps) {
                 e.preventDefault();
                 handleOpenModal(tag);
               }}
+              variant="transparent"
+              color="gray"
+              sx={(theme) => ({
+                "&:hover": {
+                  color:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.red[4]
+                      : theme.colors.red[8],
+                },
+              })}
             >
               <Trash size={20} />
             </ActionIcon>

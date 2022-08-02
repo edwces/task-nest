@@ -19,8 +19,8 @@ const useStyles = createStyles((theme, params: NavigationItemStylesParams) => ({
   main: {
     backgroundColor: params.isActive
       ? theme.colorScheme === "dark"
-        ? theme.colors.dark[5]
-        : theme.colors.gray[2]
+        ? theme.colors.dark[6]
+        : theme.colors.gray[0]
       : "transparent",
     borderRadius: theme.radius.sm,
     padding: 10,
@@ -31,8 +31,8 @@ const useStyles = createStyles((theme, params: NavigationItemStylesParams) => ({
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[2],
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
     },
   },
   wrapper: {
