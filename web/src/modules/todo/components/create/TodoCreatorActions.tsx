@@ -5,7 +5,7 @@ import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
 import { Tag } from "../../../tag/models/tag.model";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TodoCreatorActionsProps {
   control: UseFormReturnType<any>;
@@ -19,6 +19,11 @@ export function TodoCreatorActions({
   const createTag = useCreateTagMutation();
   const [expiredAt, setExpiredAt] = useState<Date | null>(new Date());
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!control.values.tagIds || control.values.tagIds === [])
+      setSelectedTagsIds([]);
+  }, [control.values.tagIds]);
 
   const handleDateSelect = (value: Date | null) => {
     control.setFieldValue("expiresAt", value);
