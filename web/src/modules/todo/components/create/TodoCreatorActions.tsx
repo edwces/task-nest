@@ -18,20 +18,47 @@ export function TodoCreatorActions({
 }: TodoCreatorActionsProps) {
   const createTag = useCreateTagMutation();
   const [expiredAt, setExpiredAt] = useState<Date | null>(new Date());
+  const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
 
   const handleDateSelect = (value: Date | null) => {
     control.setFieldValue("expiresAt", value);
     setExpiredAt(value);
   };
 
-  const handleCreateTag = (label: string) => createTag.mutate({ label });
+  const handleCreateTag = (label: string) => {
+    createTag.mutate(
+      { label },
+      {
+        onSuccess: (tag) => {
+          // set form and select fields with a new id
+          // from a tag created by label in select
+          // Note: We don't use state value here because
+          // it doesn't change yet ? Maybe i could use something
+          // like flushSync
+          setSelectedTagsIds([...selectedTagsIds, tag.id.toString()]);
+          const tagIds = [...selectedTagsIds, tag.id.toString()].map((value) =>
+            Number.parseInt(value)
+          );
+          control.setFieldValue("tagIds", tagIds);
+        },
+      }
+    );
+  };
 
   const handleChangeTag = (values: string[]) => {
-    const tagIds = values.map((value) => Number.parseInt(value));
+    // if a value is a newly created label for a tag
+    // that doesn't exist yet omit it
+    const convertedValues = values.filter((value) => {
+      const num = Number(values[values.length - 1]);
+      return Number.isInteger(num);
+    });
+
+    setSelectedTagsIds(convertedValues);
+    const tagIds = convertedValues.map((value) => Number.parseInt(value));
     control.setFieldValue("tagIds", tagIds);
   };
 
-  const handleTagOptions = (data: Tag[]) =>
+  const handleTagOptions = (data: readonly Tag[]) =>
     data.map((tag) => ({ value: tag.id.toString(), label: tag.label }));
 
   return (
@@ -51,6 +78,7 @@ export function TodoCreatorActions({
             <TagIcon size={30} />
           </ActionIcon>
         )}
+        value={selectedTagsIds}
         options={tags && handleTagOptions(tags)}
         onCreateTag={handleCreateTag}
         onChangeTag={handleChangeTag}

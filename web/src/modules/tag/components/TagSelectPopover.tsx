@@ -11,6 +11,7 @@ interface TagSelectPopoverProps {
   onCreateTag?: (label: string) => void;
   onChangeTag?: (values: string[]) => void;
   control: ControlFn;
+  value: string[];
 }
 
 export function TagSelectPopover({
@@ -18,6 +19,7 @@ export function TagSelectPopover({
   onCreateTag,
   onChangeTag,
   control,
+  value,
 }: TagSelectPopoverProps) {
   const [opened, setOpened] = useState(false);
 
@@ -30,6 +32,7 @@ export function TagSelectPopover({
       target={control(opened, setOpened)}
     >
       <MultiSelect
+        value={value}
         data={options}
         placeholder="Pick a tag"
         onChange={onChangeTag}
