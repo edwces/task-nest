@@ -23,9 +23,15 @@ export function TodoItem({
 }: TodoItemProps) {
   return (
     <Stack spacing={3}>
-      <Group position="apart">
-        <Checkbox label={label} size="xl" radius="xl" onChange={onCheck} />
-        <Group>
+      <Group position="apart" noWrap align="flex-start">
+        <Checkbox
+          label={label}
+          size="xl"
+          radius="xl"
+          styles={{ root: { alignItems: "flex-start" } }}
+          onChange={onCheck}
+        />
+        <Group noWrap>
           {tags.map((tag) => (
             <Link key={tag.id} href={`/tags/${tag.id}/${tag.label}`} passHref>
               <Badge

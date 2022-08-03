@@ -1,15 +1,14 @@
-import { Badge, Group, Paper, Stack } from "@mantine/core";
+import { Badge, Checkbox, Group, Paper, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { TodoDateBadge } from "../../../dates/components/TodoDateBadge";
 import { formatDate } from "../../../dates/util/date.util";
 import { useTags } from "../../../tag/api/useTags";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
-import { CheckboxTextInput } from "./CheckboxTextInput";
 import { TodoCreatorActions } from "./TodoCreatorActions";
 
 const addTodoSchema = z.object({
-  label: z.string().min(1).max(20),
+  label: z.string().min(1).max(300),
   tagIds: z.number().array().optional(),
   expiresAt: z.date().optional(),
 });
@@ -42,7 +41,15 @@ export function TodoCreator({
       <form onSubmit={form.onSubmit(handleCreateTodo)}>
         <Stack>
           <Group position="apart" pr={10}>
-            <CheckboxTextInput {...form.getInputProps("label")} />
+            <Checkbox readOnly checked={false} radius="xl" size="xl" />
+            <TextInput
+              variant="unstyled"
+              placeholder="Add Todo"
+              size="lg"
+              autoComplete="off"
+              sx={{ flexGrow: 2 }}
+              {...form.getInputProps("label")}
+            />
             <TodoCreatorActions control={form} tags={data} />
           </Group>
           <Group>
