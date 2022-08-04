@@ -1,6 +1,5 @@
-import { ActionIcon, Group } from "@mantine/core";
+import { Container } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
-import { X } from "tabler-icons-react";
 import { useTodoById } from "../../api/useTodoById";
 import { useUpdateTodoMutation } from "../../api/useUpdateTodoMutation";
 import { UpdateTodoDTO } from "../../dto/update-todo.dto";
@@ -23,19 +22,18 @@ export function EditTodoModal({
     updateTodo.mutate({ id: todoId, data }, { onSuccess: () => close() });
 
   return (
-    <Group align="start" sx={{ justifyContent: "space-around" }}>
+    <>
       {todo.data && (
-        <EditTodoForm
-          initialValues={{
-            label: todo.data.label,
-            description: todo.data.description,
-          }}
-          onEdit={handleEdit}
-        />
+        <Container px={20} py={10}>
+          <EditTodoForm
+            initialValues={{
+              label: todo.data.label,
+              description: todo.data.description,
+            }}
+            onEdit={handleEdit}
+          />
+        </Container>
       )}
-      <ActionIcon onClick={close}>
-        <X size={22} />
-      </ActionIcon>
-    </Group>
+    </>
   );
 }

@@ -1,6 +1,15 @@
-import { Button, Group, Stack, Textarea, TextInput, Text } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Stack,
+  Textarea,
+  TextInput,
+  Text,
+  Checkbox,
+  Divider,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { AlignLeft, Edit } from "tabler-icons-react";
+import { AlignLeft } from "tabler-icons-react";
 import { z } from "zod";
 import { UpdateTodoDTO } from "../../dto/update-todo.dto";
 
@@ -24,42 +33,50 @@ export function EditTodoForm({
 
   return (
     <form onSubmit={form.onSubmit(onEdit)}>
-      <Stack justify="flex-start">
-        <TextInput
-          icon={<Edit size={25} />}
-          size="xl"
-          variant="unstyled"
-          {...form.getInputProps("label")}
-        />
-        <Group ml={20}>
-          <AlignLeft size={25} />
-          <Text>Description:</Text>
-        </Group>
-        <Textarea
-          ml={20}
-          minRows={10}
-          autosize
-          {...form.getInputProps("description")}
-        />
-        <Group mt={25} position="right">
-          <Button
-            variant="default"
-            onClick={() => form.reset()}
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="filled"
-            type="submit"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          >
-            Save
-          </Button>
-        </Group>
-      </Stack>
+      <Group align="flex-start">
+        <Checkbox readOnly checked={false} radius="xl" size="xl" />
+        <Stack>
+          <TextInput
+            variant="unstyled"
+            autoComplete="off"
+            styles={{ input: { fontFamily: "Montserrat", fontSize: 30 } }}
+            {...form.getInputProps("label")}
+          />
+          <Divider />
+          <Stack>
+            <Text>Tags:</Text>
+            <Text>Expires In:</Text>
+          </Stack>
+          <Divider />
+          <Group>
+            <AlignLeft size={25} />
+            <Text>Description:</Text>
+          </Group>
+          <Textarea
+            minRows={10}
+            autosize
+            {...form.getInputProps("description")}
+          />
+          <Group position="right" mt={10}>
+            <Button
+              variant="default"
+              onClick={() => form.reset()}
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="filled"
+              type="submit"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
+              Save
+            </Button>
+          </Group>
+        </Stack>
+      </Group>
     </form>
   );
 }

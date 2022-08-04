@@ -8,7 +8,7 @@ export function useEditTodoModal() {
   const open = (innerProps: EditTodoModalProps) => {
     modal.openContextModal(Modal.EDIT_TODO, {
       innerProps,
-      withCloseButton: false,
+      size: "lg",
     });
   };
 
