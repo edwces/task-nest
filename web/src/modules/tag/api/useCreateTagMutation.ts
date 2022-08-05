@@ -12,6 +12,7 @@ export function useCreateTagMutation() {
   return useMutation((data: CreateTagDTO) => createTag(data), {
     onSuccess: () => {
       queryClient.invalidateQueries(["me", "tags"]);
+      queryClient.invalidateQueries(["me", "todos"]);
     },
   });
 }

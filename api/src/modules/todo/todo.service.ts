@@ -81,17 +81,25 @@ export class TodoService {
     return todos.filter((todo, i) => results[i]);
   }
 
-  async updateByUserIdAndId(userId: number, id: number, dto: UpdateTodoDTO) {
+  async updateByUserIdAndId(
+    userId: number,
+    id: number,
+    { tagIds, ...dto }: UpdateTodoDTO,
+  ) {
     const todo = await this.findByUserIdAndId(userId, id);
-    wrap(todo).assign(dto);
+    wrap(todo).assign({ ...dto, tags: tagIds });
+
     await this.todoRepository.flush();
   }
 
   async findByUserIdAndId(userId: number, id: number) {
-    const todo = await this.todoRepository.findOneOrFail({
-      author: userId,
-      id,
-    });
+    const todo = await this.todoRepository.findOneOrFail(
+      {
+        author: userId,
+        id,
+      },
+      { populate: ['tags'] },
+    );
     return todo;
   }
 }
