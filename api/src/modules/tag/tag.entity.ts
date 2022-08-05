@@ -23,6 +23,6 @@ export class Tag extends BasicEntity {
   @ManyToOne(() => User)
   author!: User;
 
-  @ManyToMany(() => Todo, (todo) => todo.tags, { owner: true })
+  @ManyToMany(() => Todo, (todo) => todo.tags)
   todos = new Collection<Todo>(this);
 }

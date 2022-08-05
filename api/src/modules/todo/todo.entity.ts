@@ -35,6 +35,6 @@ export class Todo extends BasicEntity {
     return !!this.expiresAt && this.expiresAt.getTime() < now.getTime();
   }
 
-  @ManyToMany(() => Tag, (tag) => tag.todos)
+  @ManyToMany(() => Tag, (tag) => tag.todos, { owner: true })
   tags = new Collection<Tag>(this);
 }

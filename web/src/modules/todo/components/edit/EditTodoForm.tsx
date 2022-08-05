@@ -12,7 +12,13 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useState } from "react";
-import { AlignLeft, Calendar, Edit, Plus } from "tabler-icons-react";
+import {
+  AlignLeft,
+  Calendar,
+  Edit,
+  Plus,
+  Tag as TagIcon,
+} from "tabler-icons-react";
 import { z } from "zod";
 import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
 import { formatDate } from "../../../dates/util/date.util";
@@ -25,7 +31,7 @@ const editTodoSchema = z.object({
   label: z.string().min(1).max(20).optional(),
   description: z.string().max(1000).optional(),
   tagIds: z.number().array().optional(),
-  expiresAt: z.string().optional(),
+  expiresAt: z.string().optional().nullable(),
 });
 
 interface EditTodoFormProps {
@@ -99,6 +105,7 @@ export function EditTodoForm({
           <Divider />
           <Stack>
             <Group>
+              <TagIcon size={18} />
               <Text>Tags:</Text>
               {form.values.tagIds?.map((id) => (
                 <Badge key={id}>
@@ -110,9 +117,8 @@ export function EditTodoForm({
                 options={handleTagOptions(tags)}
                 control={(opened, setOpened) => (
                   <ActionIcon
-                    color="gray"
                     size="sm"
-                    variant="filled"
+                    variant="light"
                     onClick={() => setOpened(!opened)}
                     radius="xl"
                   >
@@ -124,18 +130,17 @@ export function EditTodoForm({
               />
             </Group>
             <Group>
+              <Calendar size={18} />
               <Text>Expires In:</Text>
               <Group spacing={7}>
-                <Calendar size={18} />
                 <Text color="dimmed">
-                  {expiredAt ? formatDate(expiredAt) : null}
+                  {expiredAt ? formatDate(expiredAt) : "Not set"}
                 </Text>
               </Group>
               <CalendarSelectPopover
                 control={(opened, setOpened) => (
                   <ActionIcon
-                    color="gray"
-                    variant="filled"
+                    variant="light"
                     size="md"
                     radius="xl"
                     onClick={() => setOpened(!opened)}
@@ -171,6 +176,7 @@ export function EditTodoForm({
             <Button
               variant="filled"
               type="submit"
+              onClick={() => console.log(form.values)}
               loading={isSubmitting}
               disabled={isSubmitting}
             >
