@@ -32,7 +32,7 @@ const editTodoSchema = z.object({
   label: z.string().min(1).max(20).optional(),
   description: z.string().max(1000).optional(),
   tagIds: z.number().array().optional(),
-  expiresAt: z.string().optional().nullable(),
+  expiresAt: z.nullable(z.string()).optional(),
 });
 
 interface EditTodoFormProps {
@@ -143,7 +143,7 @@ export function EditTodoForm({
                       size="sm"
                       onClick={() => {
                         setExpiredAt(null);
-                        form.setFieldValue("expiresAt", undefined);
+                        form.setFieldValue("expiresAt", null);
                       }}
                     >
                       <X size={18} />
