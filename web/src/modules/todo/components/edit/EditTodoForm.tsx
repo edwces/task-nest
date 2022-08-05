@@ -12,8 +12,10 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useState } from "react";
-import { AlignLeft, Plus } from "tabler-icons-react";
+import { AlignLeft, Calendar, Edit, Plus } from "tabler-icons-react";
 import { z } from "zod";
+import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
+import { formatDate } from "../../../dates/util/date.util";
 import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import { Tag } from "../../../tag/models/tag.model";
@@ -23,6 +25,7 @@ const editTodoSchema = z.object({
   label: z.string().min(1).max(20).optional(),
   description: z.string().max(1000).optional(),
   tagIds: z.number().array().optional(),
+  expiresAt: z.string().optional(),
 });
 
 interface EditTodoFormProps {
@@ -46,6 +49,9 @@ export function EditTodoForm({
   const createTag = useCreateTagMutation();
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>(
     initialValues.tagIds!.map((item) => item.toString())
+  );
+  const [expiredAt, setExpiredAt] = useState<Date | null>(
+    initialValues.expiresAt ? new Date(initialValues.expiresAt) : null
   );
   const handleCreateTag = (label: string) => {
     createTag.mutate(
@@ -72,6 +78,11 @@ export function EditTodoForm({
     setSelectedTagsIds(convertedValues);
     const tagIds = convertedValues.map((value) => Number.parseInt(value));
     form.setFieldValue("tagIds", tagIds);
+  };
+
+  const handleDateSelect = (value: Date | null) => {
+    form.setFieldValue("expiresAt", value ? formatDate(value) : undefined);
+    setExpiredAt(value);
   };
 
   return (
@@ -112,7 +123,30 @@ export function EditTodoForm({
                 onChangeTag={handleChangeTag}
               />
             </Group>
-            <Text>Expires In:</Text>
+            <Group>
+              <Text>Expires In:</Text>
+              <Group spacing={7}>
+                <Calendar size={18} />
+                <Text color="dimmed">
+                  {expiredAt ? formatDate(expiredAt) : null}
+                </Text>
+              </Group>
+              <CalendarSelectPopover
+                control={(opened, setOpened) => (
+                  <ActionIcon
+                    color="gray"
+                    variant="filled"
+                    size="md"
+                    radius="xl"
+                    onClick={() => setOpened(!opened)}
+                  >
+                    <Edit size={20} />
+                  </ActionIcon>
+                )}
+                value={expiredAt}
+                onChange={handleDateSelect}
+              />
+            </Group>
           </Stack>
           <Divider />
           <Group>
@@ -127,6 +161,7 @@ export function EditTodoForm({
           <Group position="right" mt={10}>
             <Button
               variant="default"
+              type="reset"
               onClick={() => form.reset()}
               loading={isSubmitting}
               disabled={isSubmitting}

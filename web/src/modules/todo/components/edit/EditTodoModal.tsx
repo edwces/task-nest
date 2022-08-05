@@ -32,6 +32,7 @@ export function EditTodoModal({
               label: todo.data.label,
               description: todo.data.description,
               tagIds: todo.data.tags.map((tag) => tag.id),
+              expiresAt: todo.data.expiresAt,
             }}
             onEdit={handleEdit}
             tags={tags.data}
