@@ -18,6 +18,7 @@ import {
   Edit,
   Plus,
   Tag as TagIcon,
+  X,
 } from "tabler-icons-react";
 import { z } from "zod";
 import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
@@ -133,9 +134,24 @@ export function EditTodoForm({
               <Calendar size={18} />
               <Text>Expires In:</Text>
               <Group spacing={7}>
-                <Text color="dimmed">
-                  {expiredAt ? formatDate(expiredAt) : "Not set"}
-                </Text>
+                {expiredAt ? (
+                  <>
+                    <Text color="dimmed">{formatDate(expiredAt)}</Text>
+                    <ActionIcon
+                      radius="xl"
+                      variant="light"
+                      size="sm"
+                      onClick={() => {
+                        setExpiredAt(null);
+                        form.setFieldValue("expiresAt", undefined);
+                      }}
+                    >
+                      <X size={18} />
+                    </ActionIcon>
+                  </>
+                ) : (
+                  <Text color="dimmed">Not Set</Text>
+                )}
               </Group>
               <CalendarSelectPopover
                 control={(opened, setOpened) => (
