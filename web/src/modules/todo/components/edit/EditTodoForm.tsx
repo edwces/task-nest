@@ -38,6 +38,7 @@ const editTodoSchema = z.object({
 interface EditTodoFormProps {
   initialValues: UpdateTodoDTO;
   onEdit?: (values: UpdateTodoDTO) => void;
+  onCancel?: () => void;
   isSubmitting?: boolean;
   tags: ReadonlyArray<Tag>;
 }
@@ -45,6 +46,7 @@ interface EditTodoFormProps {
 export function EditTodoForm({
   initialValues,
   onEdit = () => {},
+  onCancel = () => {},
   isSubmitting = false,
   tags,
 }: EditTodoFormProps) {
@@ -94,13 +96,13 @@ export function EditTodoForm({
 
   return (
     <form onSubmit={form.onSubmit(onEdit)}>
-      <Group align="flex-start">
+      <Group align="flex-start" noWrap>
         <Checkbox readOnly checked={false} radius="xl" size="xl" />
         <Stack>
           <TextInput
             variant="unstyled"
             autoComplete="off"
-            styles={{ input: { fontFamily: "Montserrat", fontSize: 30 } }}
+            styles={{ input: { fontFamily: "Montserrat", fontSize: 27 } }}
             {...form.getInputProps("label")}
           />
           <Divider />
@@ -176,6 +178,7 @@ export function EditTodoForm({
           </Group>
           <Textarea
             minRows={10}
+            maxRows={10}
             autosize
             {...form.getInputProps("description")}
           />
@@ -183,7 +186,10 @@ export function EditTodoForm({
             <Button
               variant="default"
               type="reset"
-              onClick={() => form.reset()}
+              onClick={() => {
+                form.reset();
+                onCancel();
+              }}
               loading={isSubmitting}
               disabled={isSubmitting}
             >
@@ -192,7 +198,6 @@ export function EditTodoForm({
             <Button
               variant="filled"
               type="submit"
-              onClick={() => console.log(form.values)}
               loading={isSubmitting}
               disabled={isSubmitting}
             >

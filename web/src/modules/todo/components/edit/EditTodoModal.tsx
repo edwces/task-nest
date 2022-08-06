@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Center, Container } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
 import { useTags } from "../../../tag/api/useTags";
 import { useTodoById } from "../../api/useTodoById";
@@ -26,7 +26,7 @@ export function EditTodoModal({
   return (
     <>
       {todo.data && tags.data && (
-        <Container px={20} py={10}>
+        <Center pr={30}>
           <EditTodoForm
             initialValues={{
               label: todo.data.label,
@@ -36,8 +36,9 @@ export function EditTodoModal({
             }}
             onEdit={handleEdit}
             tags={tags.data}
+            onCancel={() => close()}
           />
-        </Container>
+        </Center>
       )}
     </>
   );
