@@ -13,7 +13,6 @@ COPY package.json package.json
 COPY yarn.lock yarn.lock
 
 # Development build
-# same but different CMD
 
 FROM base as dev
 
@@ -23,14 +22,13 @@ COPY . .
 
 RUN yarn build
 
-CMD ["yarn", "start:dev"]
+CMD ["yarn", "start:prod"]
 
 # Production build
-# same but different CMD
 
 FROM base as prod
 
-RUN yarn install
+RUN yarn install --production
 
 COPY . .
 
