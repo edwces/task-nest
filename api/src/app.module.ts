@@ -5,11 +5,11 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
+  NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggingMiddleware } from './common/middlewares/logging.middleware';
-import mikroOrmConfig from './config/mikro-orm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { MeModule } from './modules/me/me.module';
 import { TagModule } from './modules/tag/tag.module';
@@ -19,14 +19,38 @@ import * as nodemailer from 'nodemailer';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { EnvironmentVariables } from './common/interfaces/environment-variables.interface';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MikroOrmModule.forRoot(mikroOrmConfig),
-    RedisModule.forRoot({ config: { host: 'redis', port: 6379 } }),
+    MikroOrmModule.forRootAsync({
+      useFactory: async (
+        configService: ConfigService<EnvironmentVariables>,
+      ) => {
+        console.log(configService.get('DB_PASSWORD'));
+
+        return {
+          type: 'postgresql',
+          host: configService.get('DB_HOST'),
+          password: configService.get('DB_PASSWORD'),
+          user: configService.get('DB_USER'),
+          dbName: configService.get('DB_NAME'),
+          entities: ['dist/**/*.entity.js'],
+          findOneOrFailHandler: (entityName: string) =>
+            new NotFoundException(`${entityName} was not found`),
+        };
+      },
+      inject: [ConfigService],
+    }),
+    RedisModule.forRootAsync({
+      useFactory: async (
+        configService: ConfigService<EnvironmentVariables>,
+      ) => ({ config: { host: configService.get('REDIS_HOST') } }),
+      inject: [ConfigService],
+    }),
     MailerModule.forRootAsync({
       useFactory: async () => {
         const testAccount = await nodemailer.createTestAccount();
