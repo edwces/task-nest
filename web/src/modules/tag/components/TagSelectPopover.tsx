@@ -1,47 +1,53 @@
 import { MultiSelect, Popover, SelectItem } from "@mantine/core";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { useCreateTagMutation } from "../api/useCreateTagMutation";
+import { useTags } from "../api/useTags";
+import { Tag } from "../models/tag.model";
 
 type ControlFn = (
-  opened: boolean,
-  setOpened: Dispatch<SetStateAction<boolean>>
+  isOpened: boolean,
+  setIsOpened: Dispatch<SetStateAction<boolean>>
 ) => ReactNode;
 
 interface TagSelectPopoverProps {
-  options?: (string | SelectItem)[];
-  onCreateTag?: (label: string) => void;
-  onChangeTag?: (values: string[]) => void;
   control: ControlFn;
-  value: string[];
+  onSelect?: (values: string[]) => void;
+  value?: string[];
 }
 
 export function TagSelectPopover({
-  options = [],
-  onCreateTag,
-  onChangeTag,
   control,
-  value,
+  onSelect,
+  value = [],
 }: TagSelectPopoverProps) {
-  const [opened, setOpened] = useState(false);
+  const { data } = useTags();
+  const createTag = useCreateTagMutation();
+  const [isOpened, setIsOpened] = useState(false);
+
+  const toOptions = (data?: Tag[]) =>
+    data
+      ? data.map((tag) => ({ value: tag.id.toString(), label: tag.label }))
+      : [];
 
   const getCreateLabel = (query: string) => `+ Create ${query}`;
 
   return (
     <Popover
-      opened={opened}
-      onClose={() => setOpened(false)}
-      target={control(opened, setOpened)}
+      opened={isOpened}
+      onClose={() => setIsOpened(false)}
+      target={control(isOpened, setIsOpened)}
     >
       <MultiSelect
         value={value}
-        data={options}
+        data={toOptions(data)}
         placeholder="Pick a tag"
-        onChange={onChangeTag}
+        onChange={onSelect}
         clearable
         creatable
         searchable
         autoFocus
         getCreateLabel={getCreateLabel}
-        onCreate={onCreateTag}
+        onCreate={(label) => createTag.mutate({ label })}
         dropdownPosition="bottom"
       />
     </Popover>
