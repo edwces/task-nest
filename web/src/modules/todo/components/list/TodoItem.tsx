@@ -1,4 +1,12 @@
-import { ActionIcon, Badge, Checkbox, Group, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Checkbox,
+  Group,
+  Stack,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import Link from "next/link";
 import { ChangeEventHandler, MouseEventHandler } from "react";
 import { Bookmark, Calendar, Edit } from "tabler-icons-react";
@@ -25,6 +33,8 @@ export function TodoItem({
   tags = [],
   expiresAt,
 }: TodoItemProps) {
+  const theme = useMantineTheme();
+
   return (
     <Stack spacing={3}>
       <Group position="apart" noWrap align="flex-start">
@@ -48,15 +58,25 @@ export function TodoItem({
               </Badge>
             </Link>
           ))}
-          <ActionIcon
-            color={isBookmarked ? "red" : "gray"}
-            onClick={onBookmark}
-          >
-            <Bookmark size={25} />
-          </ActionIcon>
-          <ActionIcon onClick={onEdit}>
-            <Edit size={25} />
-          </ActionIcon>
+          <Group spacing={20}>
+            <ActionIcon
+              color={isBookmarked ? "red" : "gray"}
+              onClick={onBookmark}
+            >
+              <Bookmark
+                size={25}
+                fill={
+                  isBookmarked
+                    ? theme.fn.variant({ variant: "outline", color: "red" })
+                        .color
+                    : "transparent"
+                }
+              />
+            </ActionIcon>
+            <ActionIcon onClick={onEdit}>
+              <Edit size={25} />
+            </ActionIcon>
+          </Group>
         </Group>
       </Group>
       {expiresAt && (
