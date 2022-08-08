@@ -84,7 +84,7 @@ export class TodoService {
         return match.length !== 0;
       }),
     );
-    return todos.filter((todo, i) => results[i]);
+    return todos.filter((_, i) => results[i]);
   }
 
   async updateByUserIdAndId(
@@ -93,7 +93,8 @@ export class TodoService {
     { tagIds, ...dto }: UpdateTodoDTO,
   ) {
     const todo = await this.findByUserIdAndId(userId, id);
-    wrap(todo).assign({ ...dto, tags: tagIds });
+    const values = { ...dto, tags: tagIds ? tagIds : todo.tags };
+    wrap(todo).assign(values);
 
     await this.todoRepository.flush();
   }

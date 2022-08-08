@@ -8,4 +8,5 @@ export interface Todo extends Basic {
   description: string;
   expiresAt: string;
   isExpired: boolean;
+  isBookmarked: boolean;
 }

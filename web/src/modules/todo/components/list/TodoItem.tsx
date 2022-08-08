@@ -1,15 +1,17 @@
 import { ActionIcon, Badge, Checkbox, Group, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import { ChangeEventHandler, MouseEventHandler } from "react";
-import { Calendar, Edit } from "tabler-icons-react";
+import { Bookmark, Calendar, Edit } from "tabler-icons-react";
 import { Tag } from "../../../tag/models/tag.model";
 
 interface TodoItemProps {
   label?: string;
   expiresAt?: string;
   isExpired?: boolean;
+  isBookmarked?: boolean;
   onCheck?: ChangeEventHandler<HTMLInputElement>;
   onEdit?: MouseEventHandler<HTMLButtonElement>;
+  onBookmark?: MouseEventHandler<HTMLButtonElement>;
   tags?: ReadonlyArray<Tag>;
 }
 
@@ -17,7 +19,9 @@ export function TodoItem({
   label,
   onCheck,
   onEdit,
+  onBookmark,
   isExpired = false,
+  isBookmarked = false,
   tags = [],
   expiresAt,
 }: TodoItemProps) {
@@ -44,6 +48,12 @@ export function TodoItem({
               </Badge>
             </Link>
           ))}
+          <ActionIcon
+            color={isBookmarked ? "red" : "gray"}
+            onClick={onBookmark}
+          >
+            <Bookmark size={25} />
+          </ActionIcon>
           <ActionIcon onClick={onEdit}>
             <Edit size={25} />
           </ActionIcon>

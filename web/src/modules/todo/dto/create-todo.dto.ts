@@ -3,4 +3,5 @@ export interface CreateTodoDTO {
   tagIds?: number[];
   description?: string;
   expiresAt?: string | null;
+  isBookmarked?: boolean;
 }
