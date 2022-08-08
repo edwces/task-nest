@@ -26,21 +26,27 @@ export class TodoService {
   }
 
   private async findByOptions(
-    { due, sort, direction = QueryOrder.ASC }: FindAllTodosQueryParamsDTO,
+    {
+      due,
+      sort,
+      direction = QueryOrder.ASC,
+      isBookmarked,
+    }: FindAllTodosQueryParamsDTO,
     where?: QBFilterQuery<Todo>,
   ) {
     const em = this.todoRepository
       .createQueryBuilder('t')
       .select('*')
       .leftJoinAndSelect('t.tags', 'g');
-    if (where) em.where(where);
+    if (isBookmarked !== undefined) em.where({ isBookmarked });
+    if (where) em.andWhere(where);
     if (due) {
       switch (due) {
         case 'today':
-          em.where({ expiresAt: new Date().toISOString().split('T')[0] });
+          em.andWhere({ expiresAt: new Date().toISOString().split('T')[0] });
           break;
         case 'week':
-          em.where(
+          em.andWhere(
             `to_char("t"."expires_at", 'IW') = to_char(CURRENT_DATE, 'IW')`,
           );
       }

@@ -28,6 +28,9 @@ export class Todo extends BasicEntity {
   @Property({ type: DateType, nullable: true })
   expiresAt?: Date;
 
+  @Property()
+  isBookmarked: boolean = false;
+
   @Property({ persist: false })
   get isExpired() {
     const now = new Date();
