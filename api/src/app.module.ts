@@ -10,16 +10,12 @@ import {
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggingMiddleware } from './common/middlewares/logging.middleware';
-import { AuthModule } from './modules/auth/auth.module';
-import { MeModule } from './modules/me/me.module';
-import { TagModule } from './modules/tag/tag.module';
-import { TodoModule } from './modules/todo/todo.module';
-import { UserModule } from './modules/user/user.module';
 import * as nodemailer from 'nodemailer';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { EnvironmentVariables } from './common/interfaces/environment-variables.interface';
+import { CoreModule } from './modules/core.module';
 
 @Module({
   imports: [
@@ -30,8 +26,6 @@ import { EnvironmentVariables } from './common/interfaces/environment-variables.
       useFactory: async (
         configService: ConfigService<EnvironmentVariables>,
       ) => {
-        console.log(configService.get('DB_PASSWORD'));
-
         return {
           type: 'postgresql',
           host: configService.get('DB_HOST'),
@@ -88,11 +82,7 @@ import { EnvironmentVariables } from './common/interfaces/environment-variables.
       inject: [ConfigService],
     }),
     ThrottlerModule.forRoot({ ttl: 60, limit: 25 }),
-    TodoModule,
-    TagModule,
-    UserModule,
-    AuthModule,
-    MeModule,
+    CoreModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
