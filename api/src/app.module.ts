@@ -52,22 +52,40 @@ import { EnvironmentVariables } from './common/interfaces/environment-variables.
       inject: [ConfigService],
     }),
     MailerModule.forRootAsync({
-      useFactory: async () => {
-        const testAccount = await nodemailer.createTestAccount();
-        return {
-          transport: {
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false,
-            auth: {
-              type: 'LOGIN',
-              user: testAccount.user,
-              pass: testAccount.pass,
+      useFactory: async (
+        configService: ConfigService<EnvironmentVariables>,
+      ) => {
+        if (configService.get('NODE_ENV') === 'development') {
+          const testAccount = await nodemailer.createTestAccount();
+          return {
+            transport: {
+              host: 'smtp.ethereal.email',
+              port: 587,
+              secure: false,
+              auth: {
+                type: 'LOGIN',
+                user: testAccount.user,
+                pass: testAccount.pass,
+              },
             },
-          },
-          preview: true,
-        };
+            preview: true,
+          };
+        } else {
+          return {
+            transport: {
+              host: configService.get('SMTP_HOST'),
+              port: 587,
+              secure: false,
+              auth: {
+                type: 'LOGIN',
+                user: configService.get('SMTP_USER'),
+                pass: configService.get('SMTP_PASSWORD'),
+              },
+            },
+          };
+        }
       },
+      inject: [ConfigService],
     }),
     ThrottlerModule.forRoot({ ttl: 60, limit: 25 }),
     TodoModule,
