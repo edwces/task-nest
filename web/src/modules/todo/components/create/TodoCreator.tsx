@@ -11,6 +11,7 @@ const addTodoSchema = z.object({
   label: z.string().min(1).max(300),
   tagIds: z.number().array().optional(),
   expiresAt: z.date().optional(),
+  isBookmarked: z.boolean().optional(),
 });
 
 type CreateTodoFields = z.infer<typeof addTodoSchema>;

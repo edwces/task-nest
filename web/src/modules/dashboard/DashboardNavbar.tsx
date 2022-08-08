@@ -1,6 +1,11 @@
 import { Divider, Navbar, ScrollArea, Stack, ThemeIcon } from "@mantine/core";
 import { useRouter } from "next/router";
-import { Article, BoxMultiple, CalendarTime } from "tabler-icons-react";
+import {
+  Article,
+  Bookmarks,
+  BoxMultiple,
+  CalendarTime,
+} from "tabler-icons-react";
 import { useTags } from "../tag/api/useTags";
 import { NavigationItem } from "./NavigationItem";
 import { TagLinksList } from "./TagLinksList";
@@ -36,6 +41,15 @@ const navigationData = [
     ),
     link: "/week",
     label: "Week",
+  },
+  {
+    icon: (
+      <ThemeIcon variant="light" color="red">
+        <Bookmarks size={18} />
+      </ThemeIcon>
+    ),
+    link: "/bookmarks",
+    label: "Bookmarks",
   },
 ];
 
