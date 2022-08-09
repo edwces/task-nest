@@ -19,7 +19,9 @@ const Today: NextPageWithLayout = () => {
       <PageMetadata title="Todo clone" />
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="Today" />
-        <TodoCreator initialValues={{ label: "", expiresAt: new Date() }} />
+        <TodoCreator
+          initialValues={{ label: "", expiresAt: new Date(), tagIds: [] }}
+        />
         <Box px={10}>
           <TodoList todos={data} />
         </Box>

@@ -19,7 +19,9 @@ const Bookmarks: NextPageWithLayout = () => {
       <PageMetadata title="Todo clone" />
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="Bookmarks" />
-        <TodoCreator initialValues={{ label: "", isBookmarked: true }} />
+        <TodoCreator
+          initialValues={{ label: "", isBookmarked: true, tagIds: [] }}
+        />
         <Box px={10}>
           <TodoList todos={data} />
         </Box>

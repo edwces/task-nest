@@ -27,7 +27,7 @@ const Week: NextPageWithLayout = () => {
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="This Week" />
         <TodoCreator
-          initialValues={{ label: "", expiresAt: getSundayDate() }}
+          initialValues={{ label: "", expiresAt: getSundayDate(), tagIds: [] }}
         />
         <Box px={10}>
           <TodoList todos={data} />
