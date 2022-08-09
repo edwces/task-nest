@@ -1,8 +1,6 @@
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
-  IsDate,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -14,6 +12,6 @@ export class CreateTodoDTO {
   @IsString() readonly label: string;
   @IsOptional() @IsArray() readonly tagIds?: number[];
   @IsOptional() @IsString() readonly description?: string;
-  @IsOptional() @Type(() => Date) @IsDate() readonly expiresAt?: Date;
+  @IsOptional() @IsString() readonly expiresAt?: string;
   @IsOptional() @IsBoolean() isBookmarked: boolean;
 }

@@ -16,9 +16,14 @@ interface DateSelectPopoverProps {
 export const DateSelectPopover = ({
   control,
   value,
-  onSelect,
+  onSelect = () => {},
 }: DateSelectPopoverProps) => {
   const [isOpened, setIsOpened] = useState(false);
+
+  const handleChange = (value: Date | null) => {
+    onSelect(value);
+    setIsOpened(!isOpened);
+  };
 
   return (
     <Popover
@@ -27,7 +32,7 @@ export const DateSelectPopover = ({
       onClose={() => setIsOpened(false)}
       position="bottom"
     >
-      <Calendar value={value} onChange={onSelect} />
+      <Calendar value={value} onChange={handleChange} />
     </Popover>
   );
 };

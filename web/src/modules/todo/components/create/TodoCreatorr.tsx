@@ -73,7 +73,7 @@ export const TodoCreator = ({
               value={toStringArray(form.values.tagIds)}
               onSelect={(values) => {
                 const serializedTagIds = toNumberArray(filterNans(values));
-                return form.setFieldValue("tagIds", serializedTagIds);
+                form.setFieldValue("tagIds", serializedTagIds);
               }}
               onTagCreate={(tag) =>
                 form.setFieldValue("tagIds", [...form.values.tagIds, tag.id])

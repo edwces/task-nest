@@ -56,10 +56,13 @@ export class TodoService {
   }
 
   async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
+    // FIXME: Quick hack just to get correct day date
+    const serializedDate = expiresAt && new Date(expiresAt);
+    if (serializedDate) serializedDate.setDate(serializedDate.getDate() + 1);
     const todo = this.todoRepository.create({
       author: authorId,
       tags: tagIds,
-      expiresAt: expiresAt ? new Date(expiresAt) : undefined,
+      expiresAt: serializedDate,
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);
