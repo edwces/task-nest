@@ -18,6 +18,7 @@ const Week: NextPageWithLayout = () => {
     const now = new Date();
     const day = now.getDate() - now.getDay() + 7;
     now.setDate(day);
+    now.setHours(0, 0, 0, 0);
     return now;
   };
 

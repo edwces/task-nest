@@ -43,7 +43,9 @@ export class TodoService {
     if (due) {
       switch (due) {
         case 'today':
-          em.andWhere({ expiresAt: new Date().toISOString().split('T')[0] });
+          em.andWhere(`
+            to_char("t"."expires_at", 'HH:MM:DD') = to_char(CURRENT_DATE, 'HH:MM:DD') 
+          `);
           break;
         case 'week':
           em.andWhere(
@@ -56,9 +58,8 @@ export class TodoService {
   }
 
   async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
-    // FIXME: Quick hack just to get correct day date
     const serializedDate = expiresAt && new Date(expiresAt);
-    if (serializedDate) serializedDate.setDate(serializedDate.getDate() + 1);
+    if (expiresAt) serializedDate.setDate(serializedDate.getDate() + 1);
     const todo = this.todoRepository.create({
       author: authorId,
       tags: tagIds,
@@ -93,10 +94,16 @@ export class TodoService {
   async updateByUserIdAndId(
     userId: number,
     id: number,
-    { tagIds, ...dto }: UpdateTodoDTO,
+    { tagIds, expiresAt, ...dto }: UpdateTodoDTO,
   ) {
+    const serializedDate = expiresAt && new Date(expiresAt);
+    if (expiresAt) serializedDate.setDate(serializedDate.getDate() + 1);
     const todo = await this.findByUserIdAndId(userId, id);
-    const values = { ...dto, tags: tagIds ? tagIds : todo.tags };
+    const values = {
+      ...dto,
+      tags: tagIds ? tagIds : todo.tags,
+      expiresAt: serializedDate || todo.expiresAt,
+    };
     wrap(todo).assign(values);
 
     await this.todoRepository.flush();

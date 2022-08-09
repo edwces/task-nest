@@ -9,6 +9,7 @@ import { TodoList } from "../modules/todo/components/list/TodoList";
 import { useTodos } from "../modules/todo/api/useTodos";
 import { AuthGate } from "../modules/auth/components/account/AuthGate";
 import { Route } from "../common/enums/route.enum";
+import { getTodayDate } from "../modules/dates/util/date.util";
 
 const Today: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
@@ -20,7 +21,11 @@ const Today: NextPageWithLayout = () => {
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="Today" />
         <TodoCreator
-          initialValues={{ label: "", expiresAt: new Date(), tagIds: [] }}
+          initialValues={{
+            label: "",
+            expiresAt: getTodayDate(),
+            tagIds: [],
+          }}
         />
         <Box px={10}>
           <TodoList todos={data} />
