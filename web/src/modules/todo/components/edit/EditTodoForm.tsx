@@ -21,7 +21,7 @@ import {
   X,
 } from "tabler-icons-react";
 import { z } from "zod";
-import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
+import { CalendarSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { formatDate } from "../../../dates/util/date.util";
 import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";

@@ -13,10 +13,15 @@ import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
+import {
+  filterNans,
+  toNumberArray,
+  toStringArray,
+} from "../../util/array.util";
 
 const createTodoSchema = z.object({
   label: z.string().min(1).max(300),
-  tagIds: z.string().array().optional(),
+  tagIds: z.number().array(),
   expiresAt: z.date().nullable().optional(),
   isBookmarked: z.boolean().optional(),
 });
@@ -28,7 +33,7 @@ interface TodoCreatorProps {
 }
 
 export const TodoCreator = ({
-  initialValues = { label: "" },
+  initialValues = { label: "", tagIds: [] },
 }: TodoCreatorProps) => {
   const createTodo = useCreateTodoMutation();
   const form = useForm({
@@ -53,7 +58,7 @@ export const TodoCreator = ({
     <form onSubmit={form.onSubmit(handleCreateTodo)}>
       <Paper withBorder p={10} radius="lg">
         <Stack>
-          <Group position="apart" pr={10}>
+          <Group pr={10}>
             <Checkbox readOnly checked={false} radius="xl" size="xl" />
             <TextInput
               variant="unstyled"
@@ -63,21 +68,25 @@ export const TodoCreator = ({
               sx={{ flexGrow: 2 }}
               {...form.getInputProps("label")}
             />
-            <Group>
-              <TagSelectPopover
-                control={handleControl(<Tag size={30} />)}
-                value={form.values.tagIds}
-                onSelect={(values) => form.setFieldValue("tagIds", values)}
-              />
-              <DateSelectPopover
-                control={handleControl(<Calendar size={30} />)}
-                value={form.values.expiresAt}
-                onSelect={(value) => form.setFieldValue("expiresAt", value)}
-              />
-              <ActionIcon type="submit">
-                <Plus size={30} />
-              </ActionIcon>
-            </Group>
+            <TagSelectPopover
+              control={handleControl(<Tag size={30} />)}
+              value={toStringArray(form.values.tagIds)}
+              onSelect={(values) => {
+                const serializedTagIds = toNumberArray(filterNans(values));
+                return form.setFieldValue("tagIds", serializedTagIds);
+              }}
+              onTagCreate={(tag) =>
+                form.setFieldValue("tagIds", [...form.values.tagIds, tag.id])
+              }
+            />
+            <DateSelectPopover
+              control={handleControl(<Calendar size={30} />)}
+              value={form.values.expiresAt}
+              onSelect={(value) => form.setFieldValue("expiresAt", value)}
+            />
+            <ActionIcon type="submit">
+              <Plus size={30} />
+            </ActionIcon>
           </Group>
         </Stack>
       </Paper>

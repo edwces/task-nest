@@ -1,6 +1,6 @@
 export interface CreateTodoDTO {
   label: string;
-  tagIds?: string[];
+  tagIds?: number[];
   description?: string;
   expiresAt?: Date | null;
   isBookmarked?: boolean;

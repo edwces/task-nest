@@ -12,12 +12,14 @@ type ControlFn = (
 interface TagSelectPopoverProps {
   control: ControlFn;
   onSelect?: (values: string[]) => void;
+  onTagCreate?: (tag: Tag) => void;
   value?: string[];
 }
 
 export function TagSelectPopover({
   control,
   onSelect,
+  onTagCreate = () => {},
   value = [],
 }: TagSelectPopoverProps) {
   const { data } = useTags();
@@ -30,6 +32,10 @@ export function TagSelectPopover({
       : [];
 
   const getCreateLabel = (query: string) => `+ Create ${query}`;
+
+  const handleCreate = (label: string) => {
+    createTag.mutate({ label }, { onSuccess: (tag) => onTagCreate(tag) });
+  };
 
   return (
     <Popover
@@ -47,7 +53,7 @@ export function TagSelectPopover({
         searchable
         autoFocus
         getCreateLabel={getCreateLabel}
-        onCreate={(label) => createTag.mutate({ label })}
+        onCreate={handleCreate}
         dropdownPosition="bottom"
       />
     </Popover>

@@ -4,7 +4,7 @@ import { Calendar, Plus, Tag as TagIcon } from "tabler-icons-react";
 import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
 import { Tag } from "../../../tag/models/tag.model";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
-import { CalendarSelectPopover } from "../../../dates/components/CalendarSelectPopover";
+import { CalendarSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { useEffect, useState } from "react";
 
 interface TodoCreatorActionsProps {
