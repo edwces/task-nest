@@ -11,6 +11,8 @@ import { Dispatch, ReactNode, SetStateAction } from "react";
 import { Calendar, Plus, Tag } from "tabler-icons-react";
 import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
+import { DateBadge } from "../../../dates/components/DateBadge";
+import { formatDate } from "../../../dates/util/date.util";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
 import {
@@ -87,6 +89,14 @@ export const TodoCreator = ({
             <ActionIcon type="submit">
               <Plus size={30} />
             </ActionIcon>
+          </Group>
+          <Group>
+            {form.values.expiresAt && (
+              <DateBadge
+                date={formatDate(form.values.expiresAt)}
+                onClear={() => form.setFieldValue("expiresAt", null)}
+              />
+            )}
           </Group>
         </Stack>
       </Paper>

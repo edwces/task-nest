@@ -1,12 +1,12 @@
 import { ActionIcon, Badge } from "@mantine/core";
 import { Calendar, X } from "tabler-icons-react";
 
-interface TodoDateBadgeProps {
+interface DateBadgeProps {
   date: string;
   onClear?: () => void;
 }
 
-export const TodoDateBadge = ({ date, onClear }: TodoDateBadgeProps) => {
+export const DateBadge = ({ date, onClear }: DateBadgeProps) => {
   return (
     <Badge
       variant="light"

@@ -1,7 +1,7 @@
 import { Badge, Checkbox, Group, Paper, Stack, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
-import { TodoDateBadge } from "../../../dates/components/TodoDateBadge";
+import { TodoDateBadge } from "../../../dates/components/DateBadge";
 import { formatDate } from "../../../dates/util/date.util";
 import { useTags } from "../../../tag/api/useTags";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
