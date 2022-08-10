@@ -1,3 +1,5 @@
+
+
 # task-nest
 todo like app similiar to todoist built with nest.js and next.js
 
@@ -8,6 +10,8 @@ Features:
 - sorting todos
 - JWT refresh token Auth
 - forgot password / changing password
+- due dates
+- bookmarks
 
 ## Tech Used:
 
