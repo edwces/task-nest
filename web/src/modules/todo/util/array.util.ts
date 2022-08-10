@@ -10,6 +10,4 @@ export const toStringArray = (array: number[]) =>
   });
 
 export const filterNans = (array: string[]) =>
-  array.filter((item) => {
-    return !Number.isNaN(item);
-  });
+  array.filter((item) => !Number.isNaN(Number.parseInt(item)));

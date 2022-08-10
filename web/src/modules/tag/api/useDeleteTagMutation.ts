@@ -10,7 +10,7 @@ export function useDeleteTagMutation() {
   return useMutation((label: string) => deleteTag(label), {
     onSuccess: () => {
       queryClient.invalidateQueries(["me", "tags"]);
-      queryClient.invalidateQueries(["me", "todos"]);
+      queryClient.refetchQueries(["me", "todos"]);
     },
   });
 }
