@@ -1,98 +1,80 @@
 import {
+  ActionIcon,
+  Badge,
   Button,
+  Checkbox,
+  CloseButton,
+  Divider,
   Group,
   Stack,
+  Text,
   Textarea,
   TextInput,
-  Text,
-  Checkbox,
-  Divider,
-  Badge,
-  ActionIcon,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useState } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import {
   AlignLeft,
   Calendar,
   Edit,
   Plus,
   Tag as TagIcon,
-  X,
 } from "tabler-icons-react";
 import { z } from "zod";
-import { CalendarSelectPopover } from "../../../dates/components/DateSelectPopover";
+import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { formatDate } from "../../../dates/util/date.util";
-import { useCreateTagMutation } from "../../../tag/api/useCreateTagMutation";
+import { useTags } from "../../../tag/api/useTags";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
-import { Tag } from "../../../tag/models/tag.model";
-import { UpdateTodoDTO } from "../../dto/update-todo.dto";
+import {
+  filterNans,
+  toNumberArray,
+  toStringArray,
+} from "../../util/array.util";
 
-const editTodoSchema = z.object({
-  label: z.string().min(1).max(20).optional(),
-  description: z.string().max(1000).optional(),
-  tagIds: z.number().array().optional(),
-  expiresAt: z.nullable(z.string()).optional(),
+const updateTodoSchema = z.object({
+  label: z.string().min(1).max(300),
+  description: z.string().max(1000),
+  tagIds: z.number().array(),
+  expiresAt: z.date().nullable(),
 });
 
+type EditTodoFormInput = z.infer<typeof updateTodoSchema>;
+
 interface EditTodoFormProps {
-  initialValues: UpdateTodoDTO;
-  onEdit?: (values: UpdateTodoDTO) => void;
-  onCancel?: () => void;
+  initialValues: EditTodoFormInput;
+  onEdit: (values: EditTodoFormInput) => void;
+  onCancel: () => void;
   isSubmitting?: boolean;
-  tags: ReadonlyArray<Tag>;
 }
 
 export function EditTodoForm({
   initialValues,
-  onEdit = () => {},
-  onCancel = () => {},
+  onEdit,
+  onCancel,
   isSubmitting = false,
-  tags,
 }: EditTodoFormProps) {
-  const handleTagOptions = (data: readonly Tag[]) => {
-    return data.map((tag) => ({ value: tag.id.toString(), label: tag.label }));
-  };
+  const tags = useTags();
+  const form = useForm({
+    initialValues,
+    schema: zodResolver(updateTodoSchema),
+  });
 
-  const form = useForm({ initialValues, schema: zodResolver(editTodoSchema) });
-  const createTag = useCreateTagMutation();
-  const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>(
-    initialValues.tagIds!.map((item) => item.toString())
-  );
-  const [expiredAt, setExpiredAt] = useState<Date | null>(
-    initialValues.expiresAt ? new Date(initialValues.expiresAt) : null
-  );
-  const handleCreateTag = (label: string) => {
-    createTag.mutate(
-      { label },
-      {
-        onSuccess: (tag) => {
-          setSelectedTagsIds([...selectedTagsIds, tag.id.toString()]);
-          const tagIds = [...selectedTagsIds, tag.id.toString()].map((value) =>
-            Number.parseInt(value)
-          );
-          form.setFieldValue("tagIds", tagIds);
-        },
-      }
-    );
-  };
+  const handleControl = (icon: ReactNode) =>
+    function Control(
+      isOpened: boolean,
+      setIsOpened: Dispatch<SetStateAction<boolean>>
+    ) {
+      return (
+        <ActionIcon onClick={() => setIsOpened(!isOpened)}>{icon}</ActionIcon>
+      );
+    };
 
-  const handleChangeTag = (values: string[]) => {
-    // if a value is a newly created label for a tag
-    // that doesn't exist yet omit it
-    const convertedValues = values.filter((value) => {
-      const num = Number(value);
-      return Number.isInteger(num);
-    });
-    setSelectedTagsIds(convertedValues);
-    const tagIds = convertedValues.map((value) => Number.parseInt(value));
-    form.setFieldValue("tagIds", tagIds);
-  };
-
-  const handleDateSelect = (value: Date | null) => {
-    form.setFieldValue("expiresAt", value ? formatDate(value) : undefined);
-    setExpiredAt(value);
-  };
+  const TagsBadges =
+    form.values.tagIds &&
+    tags.data &&
+    form.values.tagIds.map((id) => (
+      <Badge key={id}>{tags.data.find((tag) => tag.id === id)?.label}</Badge>
+    ));
 
   return (
     <form onSubmit={form.onSubmit(onEdit)}>
@@ -110,64 +92,36 @@ export function EditTodoForm({
             <Group>
               <TagIcon size={18} />
               <Text>Tags:</Text>
-              {form.values.tagIds?.map((id) => (
-                <Badge key={id}>
-                  {tags.find((tag) => tag.id === id)?.label}
-                </Badge>
-              ))}
+              {TagsBadges}
               <TagSelectPopover
-                value={selectedTagsIds}
-                options={handleTagOptions(tags)}
-                control={(opened, setOpened) => (
-                  <ActionIcon
-                    size="sm"
-                    variant="light"
-                    onClick={() => setOpened(!opened)}
-                    radius="xl"
-                  >
-                    <Plus size={20} />
-                  </ActionIcon>
-                )}
-                onCreateTag={handleCreateTag}
-                onChangeTag={handleChangeTag}
+                control={handleControl(<Plus size={20} />)}
+                value={toStringArray(form.values.tagIds)}
+                onSelect={(values) => {
+                  const serializedTagIds = toNumberArray(filterNans(values));
+                  form.setFieldValue("tagIds", serializedTagIds);
+                }}
+                onTagCreate={(tag) =>
+                  form.setFieldValue("tagIds", [...form.values.tagIds, tag.id])
+                }
               />
             </Group>
             <Group>
               <Calendar size={18} />
               <Text>Expires In:</Text>
-              <Group spacing={7}>
-                {expiredAt ? (
-                  <>
-                    <Text color="dimmed">{formatDate(expiredAt)}</Text>
-                    <ActionIcon
-                      radius="xl"
-                      variant="light"
-                      size="sm"
-                      onClick={() => {
-                        setExpiredAt(null);
-                        form.setFieldValue("expiresAt", null);
-                      }}
-                    >
-                      <X size={18} />
-                    </ActionIcon>
-                  </>
-                ) : (
-                  <Text color="dimmed">Not Set</Text>
-                )}
-              </Group>
-              <CalendarSelectPopover
-                control={(opened, setOpened) => (
-                  <ActionIcon
-                    variant="light"
-                    size="md"
-                    radius="xl"
-                    onClick={() => setOpened(!opened)}
-                  >
-                    <Edit size={20} />
-                  </ActionIcon>
-                )}
-                value={expiredAt}
-                onChange={handleDateSelect}
+              <Text color="dimmed">
+                {form.values.expiresAt
+                  ? formatDate(form.values.expiresAt)
+                  : "Not set"}
+              </Text>
+              {form.values.expiresAt && (
+                <CloseButton
+                  onClick={() => form.setFieldValue("expiresAt", null)}
+                />
+              )}
+              <DateSelectPopover
+                control={handleControl(<Edit size={20} />)}
+                value={form.values.expiresAt}
+                onSelect={(value) => form.setFieldValue("expiresAt", value)}
               />
             </Group>
           </Stack>
@@ -184,8 +138,8 @@ export function EditTodoForm({
           />
           <Group position="right" mt={10}>
             <Button
-              variant="default"
               type="reset"
+              variant="default"
               onClick={() => {
                 form.reset();
                 onCancel();

@@ -1,6 +1,5 @@
-import { Center, Container } from "@mantine/core";
+import { Center } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
-import { useTags } from "../../../tag/api/useTags";
 import { useTodoById } from "../../api/useTodoById";
 import { useUpdateTodoMutation } from "../../api/useUpdateTodoMutation";
 import { UpdateTodoDTO } from "../../dto/update-todo.dto";
@@ -16,27 +15,29 @@ export function EditTodoModal({
   innerProps: { todoId },
 }: ContextModalProps<EditTodoModalProps>) {
   const todo = useTodoById(todoId);
-  const tags = useTags();
   const updateTodo = useUpdateTodoMutation();
 
-  const close = () => context.closeModal(id);
   const handleEdit = (data: UpdateTodoDTO) =>
-    updateTodo.mutate({ id: todoId, data }, { onSuccess: () => close() });
+    updateTodo.mutate(
+      { id: todoId, data },
+      { onSuccess: () => context.closeModal(id) }
+    );
 
   return (
     <>
-      {todo.data && tags.data && (
+      {todo.data && (
         <Center pr={30}>
           <EditTodoForm
             initialValues={{
               label: todo.data.label,
               description: todo.data.description,
               tagIds: todo.data.tags.map((tag) => tag.id),
-              expiresAt: todo.data.expiresAt,
+              expiresAt: todo.data.expiresAt
+                ? new Date(todo.data.expiresAt)
+                : null,
             }}
             onEdit={handleEdit}
-            tags={tags.data}
-            onCancel={() => close()}
+            onCancel={() => context.closeModal(id)}
           />
         </Center>
       )}

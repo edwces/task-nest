@@ -102,7 +102,7 @@ export class TodoService {
     const values = {
       ...dto,
       tags: tagIds ? tagIds : todo.tags,
-      expiresAt: serializedDate || todo.expiresAt,
+      expiresAt: serializedDate !== undefined ? serializedDate : todo.expiresAt,
     };
     wrap(todo).assign(values);
 
