@@ -1,6 +1,6 @@
-import { QBFilterQuery, wrap } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityRepository, QueryBuilder } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
@@ -8,8 +8,6 @@ import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dt
 import { UpdateTodoDTO } from './dto/update-todo.dto';
 import { Todo } from './todo.entity';
 
-// TODO: Find a way to make relations and query params
-// TODO: Easily distributed among all functions
 @Injectable()
 export class TodoService {
   constructor(
@@ -18,43 +16,58 @@ export class TodoService {
   ) {}
 
   async findAll(query: FindAllTodosQueryParamsDTO) {
-    return this.findByOptions(query);
+    const qb = this.todoRepository
+      .createQueryBuilder()
+      .select('*')
+      .leftJoinAndSelect('tags', 'g');
+    return this.applyFilters(qb, query).getResult();
   }
 
   async findByUserId(id: number, query: FindAllTodosQueryParamsDTO) {
-    return this.findByOptions(query, { author: id });
+    const qb = this.todoRepository
+      .createQueryBuilder()
+      .select('*')
+      .leftJoinAndSelect('tags', 'g')
+      .where({ author: id });
+    return this.applyFilters(qb, query).getResult();
   }
 
-  private async findByOptions(
-    {
-      due,
-      sort,
-      direction = QueryOrder.ASC,
-      isBookmarked,
-    }: FindAllTodosQueryParamsDTO,
-    where?: QBFilterQuery<Todo>,
+  async findByTagLabel(
+    id: number,
+    label: string,
+    query: FindAllTodosQueryParamsDTO,
   ) {
-    const em = this.todoRepository
-      .createQueryBuilder('t')
+    const qb = this.todoRepository
+      .createQueryBuilder()
       .select('*')
-      .leftJoinAndSelect('t.tags', 'g');
-    if (isBookmarked !== undefined) em.where({ isBookmarked });
-    if (where) em.andWhere(where);
+      .where({ tags: { label } })
+      .andWhere({ author: id });
+
+    // get all the todos that match conditions then populate all tags
+    const todos = await this.applyFilters(qb, query).getResult();
+    return this.todoRepository.populate(todos, ['tags']);
+  }
+
+  private applyFilters(
+    qb: QueryBuilder<Todo>,
+    filters: FindAllTodosQueryParamsDTO,
+  ) {
+    const { due, sort, direction = QueryOrder.ASC, isBookmarked } = filters;
+
+    if (isBookmarked ?? false) qb.andWhere({ isBookmarked });
     if (due) {
-      switch (due) {
-        case 'today':
-          em.andWhere(`
-            to_char("t"."expires_at", 'HH:MM:DD') = to_char(CURRENT_DATE, 'HH:MM:DD') 
+      if (due === 'today')
+        qb.andWhere(`
+            to_char("expires_at", 'HH:MM:DD') = to_char(CURRENT_DATE, 'HH:MM:DD') 
           `);
-          break;
-        case 'week':
-          em.andWhere(
-            `to_char("t"."expires_at", 'IW') = to_char(CURRENT_DATE, 'IW')`,
-          );
-      }
+      else if (due === 'week')
+        qb.andWhere(
+          `to_char("expires_at", 'IW') = to_char(CURRENT_DATE, 'IW')`,
+        );
     }
-    if (sort) em.orderBy({ [sort]: direction });
-    return await em.getResult();
+    if (sort) qb.orderBy({ [sort]: direction });
+
+    return qb;
   }
 
   async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
@@ -72,23 +85,6 @@ export class TodoService {
   async delete(id: number) {
     const todo = await this.todoRepository.findOneOrFail(id);
     await this.todoRepository.removeAndFlush(todo);
-  }
-
-  // TODO: Try making this better by using findByOptions better
-  async findByTagLabel(
-    id: number,
-    label: string,
-    query: FindAllTodosQueryParamsDTO,
-  ) {
-    const todos = await this.findByOptions(query, { author: id });
-    const results = await Promise.all(
-      todos.map(async (todo) => {
-        const match = await todo.tags.matching({ where: { label } });
-        console.log(match.length === 0);
-        return match.length !== 0;
-      }),
-    );
-    return todos.filter((_, i) => results[i]);
   }
 
   async updateByUserIdAndId(

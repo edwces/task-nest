@@ -13,6 +13,7 @@ export const mikroOrmProvider = {
       user: configService.get('DB_USER'),
       dbName: configService.get('DB_NAME'),
       entities: ['dist/**/*.entity.js'],
+      debug: true,
       findOneOrFailHandler: (entityName: string) =>
         new NotFoundException(`${entityName} was not found`),
     };
