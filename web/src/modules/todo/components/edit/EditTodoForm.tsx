@@ -65,7 +65,9 @@ export function EditTodoForm({
       setIsOpened: Dispatch<SetStateAction<boolean>>
     ) {
       return (
-        <ActionIcon onClick={() => setIsOpened(!isOpened)}>{icon}</ActionIcon>
+        <ActionIcon radius="xl" onClick={() => setIsOpened(!isOpened)}>
+          {icon}
+        </ActionIcon>
       );
     };
 
@@ -94,7 +96,7 @@ export function EditTodoForm({
               <Text>Tags:</Text>
               {TagsBadges}
               <TagSelectPopover
-                control={handleControl(<Plus size={20} />)}
+                control={handleControl(<Plus size={18} />)}
                 value={toStringArray(form.values.tagIds)}
                 onSelect={(values) => {
                   const serializedTagIds = toNumberArray(filterNans(values));
@@ -108,18 +110,21 @@ export function EditTodoForm({
             <Group>
               <Calendar size={18} />
               <Text>Expires In:</Text>
-              <Text color="dimmed">
-                {form.values.expiresAt
-                  ? formatDate(form.values.expiresAt)
-                  : "Not set"}
-              </Text>
-              {form.values.expiresAt && (
-                <CloseButton
-                  onClick={() => form.setFieldValue("expiresAt", null)}
-                />
-              )}
+              <Group spacing={5}>
+                <Text color="dimmed">
+                  {form.values.expiresAt
+                    ? formatDate(form.values.expiresAt)
+                    : "Not set"}
+                </Text>
+                {form.values.expiresAt && (
+                  <CloseButton
+                    radius="xl"
+                    onClick={() => form.setFieldValue("expiresAt", null)}
+                  />
+                )}
+              </Group>
               <DateSelectPopover
-                control={handleControl(<Edit size={20} />)}
+                control={handleControl(<Edit size={18} />)}
                 value={form.values.expiresAt}
                 onSelect={(value) => form.setFieldValue("expiresAt", value)}
               />
