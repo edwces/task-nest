@@ -1,11 +1,13 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
 } from 'class-validator';
+import { Repeat } from '../enums/repeat.enum';
 
 export class CreateTodoDTO {
   @IsNumber() @IsPositive() readonly authorId: number;
@@ -14,4 +16,5 @@ export class CreateTodoDTO {
   @IsOptional() @IsString() readonly description?: string;
   @IsOptional() @IsString() readonly expiresAt?: string;
   @IsOptional() @IsBoolean() isBookmarked: boolean;
+  @IsOptional() @IsEnum(Repeat) repeat: Repeat;
 }

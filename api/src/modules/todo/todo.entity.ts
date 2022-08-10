@@ -6,10 +6,12 @@ import {
   PrimaryKey,
   Property,
   DateType,
+  Enum,
 } from '@mikro-orm/core';
 import { BasicEntity } from '../../common/entities/basic.entity';
 import { Tag } from '../tag/tag.entity';
 import { User } from '../user/user.entity';
+import { Repeat } from './enums/repeat.enum';
 
 @Entity()
 export class Todo extends BasicEntity {
@@ -30,6 +32,12 @@ export class Todo extends BasicEntity {
 
   @Property()
   isBookmarked: boolean = false;
+
+  @Property()
+  isChecked: boolean = false;
+
+  @Enum(() => Repeat)
+  repeat: Repeat = Repeat.NONE;
 
   @Property({ persist: false })
   get isExpired() {
