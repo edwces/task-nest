@@ -1,6 +1,6 @@
 export enum Repeat {
-  NONE,
-  DAILY,
-  WEEKLY,
-  MONTHLY,
+  NONE = 'NONE',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
 }

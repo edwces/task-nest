@@ -1,4 +1,5 @@
 import { Basic } from "../../../common/models/basic.model";
+import { Repeat } from "../../dates/enums/repeat.enum";
 import { Tag } from "../../tag/models/tag.model";
 
 export interface Todo extends Basic {
@@ -9,4 +10,5 @@ export interface Todo extends Basic {
   expiresAt: string | null;
   isExpired: boolean;
   isBookmarked: boolean;
+  repeat: Repeat;
 }

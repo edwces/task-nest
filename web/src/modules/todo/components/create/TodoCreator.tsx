@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { Calendar, Plus, Tag } from "tabler-icons-react";
+import { Calendar, Plus, Repeat as RepeatIcon, Tag } from "tabler-icons-react";
 import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { DateBadge } from "../../../dates/components/DateBadge";
@@ -22,11 +22,14 @@ import {
   toStringArray,
 } from "../../util/array.util";
 import { useTags } from "../../../tag/api/useTags";
+import { RepeatSelectPopover } from "../../../dates/components/RepeatSelectPopover";
+import { Repeat } from "../../../dates/enums/repeat.enum";
 
 const createTodoSchema = z.object({
   label: z.string().min(1).max(300),
   tagIds: z.number().array(),
   expiresAt: z.date().nullable().optional(),
+  repeat: z.nativeEnum(Repeat).optional(),
   isBookmarked: z.boolean().optional(),
 });
 
@@ -90,6 +93,11 @@ export const TodoCreator = ({
               onTagCreate={(tag) =>
                 form.setFieldValue("tagIds", [...form.values.tagIds, tag.id])
               }
+            />
+            <RepeatSelectPopover
+              control={handleControl(<RepeatIcon size={30} />)}
+              value={form.values.repeat}
+              onSelect={(value) => form.setFieldValue("repeat", value)}
             />
             <DateSelectPopover
               control={handleControl(<Calendar size={30} />)}
