@@ -16,6 +16,7 @@ import { EnvironmentVariables } from './common/interfaces/environment-variables.
 import { CoreModule } from './modules/core.module';
 import { mikroOrmProvider } from './config/mikro-orm.provider';
 import { mailerProvider } from './config/mailer.provider';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { mailerProvider } from './config/mailer.provider';
       inject: [ConfigService],
     }),
     MailerModule.forRootAsync(mailerProvider),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot({ ttl: 60, limit: 25 }),
     CoreModule,
   ],
