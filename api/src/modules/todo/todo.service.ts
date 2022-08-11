@@ -75,6 +75,11 @@ export class TodoService {
     await this.todoRepository.removeAndFlush(todo);
   }
 
+  async removeById(id: number) {
+    const todo = await this.todoRepository.findOneOrFail(id);
+    await this.todoRepository.removeAndFlush(todo);
+  }
+
   async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
     const todo = this.todoRepository.create({
       author: authorId,
