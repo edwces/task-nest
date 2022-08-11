@@ -70,8 +70,8 @@ export class TodoService {
     return qb;
   }
 
-  async removeById(id: number) {
-    const todo = await this.todoRepository.findOneOrFail(id);
+  async removeByUserAndId(userId: number, id: number) {
+    const todo = await this.findOneByUserAndId(userId, id);
     await this.todoRepository.removeAndFlush(todo);
   }
 

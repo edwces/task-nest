@@ -71,8 +71,8 @@ export class MeController {
   }
 
   @Delete('todos/:id')
-  deleteTodo(@Param('id', ParseIntPipe) id: number) {
-    return this.todoService.removeById(id);
+  deleteTodo(@User() user: SessionUser, @Param('id', ParseIntPipe) id: number) {
+    return this.todoService.removeByUserAndId(user.id, id);
   }
 
   @Get('tags')
