@@ -15,7 +15,10 @@ const Tag: NextPageWithLayout = () => {
   const router = useRouter();
   const { values } = useFilters();
   const { data } = useTodosByTagLabel(
-    { label: router.query.slug as string, query: values },
+    {
+      label: router.query.slug as string,
+      query: { ...values, isChecked: false },
+    },
     {
       enabled: router.isReady,
     }

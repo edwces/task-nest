@@ -7,4 +7,5 @@ export class FindAllTodosQueryParamsDTO {
   @IsOptional() @IsEnum(QueryOrder) readonly direction?: QueryOrder;
   @IsOptional() @IsString() readonly due?: string;
   @IsOptional() readonly isBookmarked?: boolean;
+  @IsOptional() readonly isChecked?: boolean;
 }

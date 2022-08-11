@@ -6,6 +6,7 @@ import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { UpdateTodoDTO } from './dto/update-todo.dto';
+import { Repeat } from './enums/repeat.enum';
 import { Todo } from './todo.entity';
 
 @Injectable()
@@ -52,9 +53,16 @@ export class TodoService {
     qb: QueryBuilder<Todo>,
     filters: FindAllTodosQueryParamsDTO,
   ) {
-    const { due, sort, direction = QueryOrder.ASC, isBookmarked } = filters;
+    const {
+      due,
+      sort,
+      direction = QueryOrder.ASC,
+      isBookmarked,
+      isChecked,
+    } = filters;
 
     if (isBookmarked ?? false) qb.andWhere({ isBookmarked });
+    if (isChecked ?? false) qb.andWhere({ isChecked });
     if (due) {
       if (due === 'today')
         qb.andWhere(`
@@ -70,9 +78,14 @@ export class TodoService {
     return qb;
   }
 
-  async removeByUserAndId(userId: number, id: number) {
+  async markAsCheckedByUserAndId(userId: number, id: number) {
     const todo = await this.findOneByUserAndId(userId, id);
-    await this.todoRepository.removeAndFlush(todo);
+    if (todo.repeat === Repeat.NONE)
+      return await this.todoRepository.removeAndFlush(todo);
+    else {
+      todo.isChecked = true;
+      await this.todoRepository.flush();
+    }
   }
 
   async removeById(id: number) {
@@ -107,7 +120,7 @@ export class TodoService {
       tags: tagIds || todo.tags,
       expiresAt:
         expiresAt !== undefined
-          ? this.serializeDate(expiresAt)
+          ? expiresAt && this.serializeDate(expiresAt)
           : todo.expiresAt,
       ...dto,
     });

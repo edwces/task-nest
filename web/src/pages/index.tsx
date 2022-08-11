@@ -12,7 +12,7 @@ import { Route } from "../common/enums/route.enum";
 
 const Home: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
-  const { data } = useTodos(values);
+  const { data } = useTodos({ ...values, isChecked: false });
 
   return (
     <>

@@ -3,4 +3,5 @@ export interface TodosQueryParamsDTO {
   direction?: string;
   due?: string;
   isBookmarked?: boolean;
+  isChecked?: boolean;
 }

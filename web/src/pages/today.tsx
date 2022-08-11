@@ -13,7 +13,7 @@ import { getTodayDate } from "../modules/dates/util/date.util";
 
 const Today: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
-  const { data } = useTodos({ ...values, due: "today" });
+  const { data } = useTodos({ ...values, due: "today", isChecked: false });
 
   return (
     <>

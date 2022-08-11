@@ -12,7 +12,7 @@ import { Route } from "../common/enums/route.enum";
 
 const Week: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
-  const { data } = useTodos({ ...values, due: "week" });
+  const { data } = useTodos({ ...values, due: "week", isChecked: false });
 
   const getSundayDate = () => {
     const now = new Date();

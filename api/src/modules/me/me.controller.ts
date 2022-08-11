@@ -72,7 +72,7 @@ export class MeController {
 
   @Delete('todos/:id')
   deleteTodo(@User() user: SessionUser, @Param('id', ParseIntPipe) id: number) {
-    return this.todoService.removeByUserAndId(user.id, id);
+    return this.todoService.markAsCheckedByUserAndId(user.id, id);
   }
 
   @Get('tags')

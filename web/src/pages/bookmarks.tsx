@@ -12,7 +12,11 @@ import { Route } from "../common/enums/route.enum";
 
 const Bookmarks: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
-  const { data } = useTodos({ ...values, isBookmarked: true });
+  const { data } = useTodos({
+    ...values,
+    isBookmarked: true,
+    isChecked: false,
+  });
 
   return (
     <>
