@@ -42,7 +42,7 @@ export class MeController {
     @User() user: SessionUser,
     @Query() query: FindAllTodosQueryParamsDTO,
   ) {
-    return this.todoService.findByUserId(user.id, query);
+    return this.todoService.findByUser(user.id, query);
   }
 
   @Get('todos/:id')
@@ -50,7 +50,7 @@ export class MeController {
     @User() user: SessionUser,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.todoService.findByUserIdAndId(user.id, id);
+    return this.todoService.findOneByUserAndId(user.id, id);
   }
 
   @Patch('todos/:id')
@@ -59,7 +59,7 @@ export class MeController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateTodoDTO,
   ) {
-    return this.todoService.updateByUserIdAndId(user.id, id, dto);
+    return this.todoService.updateByUserAndId(user.id, id, dto);
   }
 
   @Post('todos')
@@ -70,10 +70,9 @@ export class MeController {
     return this.todoService.create({ authorId: user.id, ...dto });
   }
 
-  // TODO: find Better way to delete todos
   @Delete('todos/:id')
   deleteTodo(@Param('id', ParseIntPipe) id: number) {
-    return this.todoService.delete(id);
+    return this.todoService.removeById(id);
   }
 
   @Get('tags')

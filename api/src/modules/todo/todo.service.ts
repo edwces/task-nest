@@ -23,7 +23,7 @@ export class TodoService {
     return this.applyFilters(qb, query).getResult();
   }
 
-  async findByUserId(id: number, query: FindAllTodosQueryParamsDTO) {
+  async findByUser(id: number, query: FindAllTodosQueryParamsDTO) {
     const qb = this.todoRepository
       .createQueryBuilder()
       .select('*')
@@ -70,49 +70,53 @@ export class TodoService {
     return qb;
   }
 
+  async removeById(id: number) {
+    const todo = await this.todoRepository.findOneOrFail(id);
+    await this.todoRepository.removeAndFlush(todo);
+  }
+
   async create({ authorId, tagIds, expiresAt, ...dto }: CreateTodoDTO) {
-    const serializedDate = expiresAt && new Date(expiresAt);
-    if (expiresAt) serializedDate.setDate(serializedDate.getDate() + 1);
     const todo = this.todoRepository.create({
       author: authorId,
       tags: tagIds,
-      expiresAt: serializedDate,
+      expiresAt:
+        expiresAt !== undefined ? this.serializeDate(expiresAt) : undefined,
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);
   }
 
-  async delete(id: number) {
-    const todo = await this.todoRepository.findOneOrFail(id);
-    await this.todoRepository.removeAndFlush(todo);
+  private serializeDate(iso: string) {
+    const date = new Date(iso);
+    date.setDate(date.getDate() + 1);
+    return date;
   }
 
-  async updateByUserIdAndId(
+  async updateByUserAndId(
     userId: number,
     id: number,
     { tagIds, expiresAt, ...dto }: UpdateTodoDTO,
   ) {
-    const serializedDate = expiresAt && new Date(expiresAt);
-    if (expiresAt) serializedDate.setDate(serializedDate.getDate() + 1);
-    const todo = await this.findByUserIdAndId(userId, id);
-    const values = {
+    const todo = await this.findOneByUserAndId(userId, id);
+    wrap(todo).assign({
+      tags: tagIds || todo.tags,
+      expiresAt:
+        expiresAt !== undefined
+          ? this.serializeDate(expiresAt)
+          : todo.expiresAt,
       ...dto,
-      tags: tagIds ? tagIds : todo.tags,
-      expiresAt: serializedDate !== undefined ? serializedDate : todo.expiresAt,
-    };
-    wrap(todo).assign(values);
+    });
 
     await this.todoRepository.flush();
   }
 
-  async findByUserIdAndId(userId: number, id: number) {
-    const todo = await this.todoRepository.findOneOrFail(
+  async findOneByUserAndId(userId: number, id: number) {
+    return this.todoRepository.findOneOrFail(
       {
         author: userId,
         id,
       },
       { populate: ['tags'] },
     );
-    return todo;
   }
 }

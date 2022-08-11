@@ -30,6 +30,6 @@ export class TodoController {
 
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.todoService.delete(id);
+    return this.todoService.removeById(id);
   }
 }
