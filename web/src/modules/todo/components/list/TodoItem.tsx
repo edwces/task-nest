@@ -9,13 +9,14 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { ChangeEventHandler, MouseEventHandler } from "react";
-import { Bookmark, Calendar, Edit } from "tabler-icons-react";
+import { Bookmark, Calendar, Edit, Repeat } from "tabler-icons-react";
 import { Tag } from "../../../tag/models/tag.model";
 
 interface TodoItemProps {
   label?: string;
-  expiresAt?: string;
+  expiresAt?: string | null;
   isExpired?: boolean;
+  isRepeating?: boolean;
   isBookmarked?: boolean;
   onCheck?: ChangeEventHandler<HTMLInputElement>;
   onEdit?: MouseEventHandler<HTMLButtonElement>;
@@ -30,6 +31,7 @@ export function TodoItem({
   onBookmark,
   isExpired = false,
   isBookmarked = false,
+  isRepeating = false,
   tags = [],
   expiresAt,
 }: TodoItemProps) {
@@ -79,14 +81,17 @@ export function TodoItem({
           </Group>
         </Group>
       </Group>
-      {expiresAt && (
-        <Group ml={45} spacing={6}>
-          <Calendar size={15} color={isExpired ? "red" : undefined} />
-          <Text color={isExpired ? "red" : "dimmed"} size="xs">
-            {expiresAt}
-          </Text>
-        </Group>
-      )}
+      <Group ml={45} spacing={6}>
+        {isRepeating && <Repeat size={15} />}
+        {expiresAt && (
+          <>
+            <Calendar size={15} color={isExpired ? "red" : undefined} />
+            <Text color={isExpired ? "red" : "dimmed"} size="xs">
+              {expiresAt}
+            </Text>
+          </>
+        )}
+      </Group>
     </Stack>
   );
 }

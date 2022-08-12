@@ -147,7 +147,7 @@ export class TodoService {
   ) {
     const todo = await this.findOneByUserAndId(userId, id);
 
-    if (repeat !== todo.repeat) {
+    if (repeat && repeat !== todo.repeat) {
       this.schedulerRegistry.deleteCronJob(`TODO_${id}_REPEAT`);
       if (repeat !== Repeat.NONE) this.addRepeatJob(userId, id, repeat);
     }
@@ -157,7 +157,7 @@ export class TodoService {
         expiresAt !== undefined
           ? expiresAt && this.serializeDate(expiresAt)
           : todo.expiresAt,
-      repeat,
+      repeat: repeat !== undefined ? repeat : todo.repeat,
       ...dto,
     });
 

@@ -109,6 +109,9 @@ export const TodoCreator = ({
             </ActionIcon>
           </Group>
           <Group>
+            {form.values.repeat && form.values.repeat !== Repeat.NONE && (
+              <RepeatIcon size={18} />
+            )}
             {form.values.expiresAt && (
               <DateBadge
                 date={formatDate(form.values.expiresAt)}

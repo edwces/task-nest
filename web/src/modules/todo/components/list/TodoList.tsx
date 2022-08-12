@@ -6,6 +6,7 @@ import { Stack } from "@mantine/core";
 import { useEditTodoModal } from "../../hooks/useEditTodoModal";
 import { formatDate } from "../../../dates/util/date.util";
 import { useUpdateTodoMutation } from "../../api/useUpdateTodoMutation";
+import { Repeat } from "../../../dates/enums/repeat.enum";
 
 const MotionStack = motion(Stack);
 
@@ -33,6 +34,7 @@ export function TodoList({ todos = [] }: TodoListProps) {
               expiresAt={todo.expiresAt && formatDate(new Date(todo.expiresAt))}
               isExpired={todo.isExpired}
               isBookmarked={todo.isBookmarked}
+              isRepeating={todo.repeat !== Repeat.NONE}
               label={todo.label}
               onCheck={() => removeTodo.mutate(todo.id)}
               onEdit={() => open({ todoId: todo.id })}
