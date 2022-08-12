@@ -168,7 +168,8 @@ export class TodoService {
     const todo = await this.findOneByUserAndId(userId, id);
 
     if (repeat && repeat !== todo.repeat) {
-      this.schedulerRegistry.deleteCronJob(`TODO_${id}_REPEAT`);
+      if (todo.repeat !== Repeat.NONE)
+        this.schedulerRegistry.deleteCronJob(`TODO_${id}_REPEAT`);
       if (repeat !== Repeat.NONE) this.addRepeatJob(userId, id, repeat);
     }
     wrap(todo).assign({
