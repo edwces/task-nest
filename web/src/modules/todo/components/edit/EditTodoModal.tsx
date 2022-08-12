@@ -35,6 +35,7 @@ export function EditTodoModal({
               expiresAt: todo.data.expiresAt
                 ? new Date(todo.data.expiresAt)
                 : null,
+              repeat: todo.data.repeat,
             }}
             onEdit={handleEdit}
             onCancel={() => context.closeModal(id)}

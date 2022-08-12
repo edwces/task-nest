@@ -18,11 +18,17 @@ import {
   Calendar,
   Edit,
   Plus,
+  Repeat as RepeatIcon,
   Tag as TagIcon,
 } from "tabler-icons-react";
 import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
-import { formatDate } from "../../../dates/util/date.util";
+import {
+  repeatOptions,
+  RepeatSelectPopover,
+} from "../../../dates/components/RepeatSelectPopover";
+import { Repeat } from "../../../dates/enums/repeat.enum";
+import { formatDate, getTodayDate } from "../../../dates/util/date.util";
 import { useTags } from "../../../tag/api/useTags";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import {
@@ -36,6 +42,7 @@ const updateTodoSchema = z.object({
   description: z.string().max(1000),
   tagIds: z.number().array(),
   expiresAt: z.date().nullable(),
+  repeat: z.nativeEnum(Repeat),
 });
 
 type EditTodoFormInput = z.infer<typeof updateTodoSchema>;
@@ -127,6 +134,37 @@ export function EditTodoForm({
                 control={handleControl(<Edit size={18} />)}
                 value={form.values.expiresAt}
                 onSelect={(value) => form.setFieldValue("expiresAt", value)}
+              />
+            </Group>
+            <Group>
+              <RepeatIcon size={18} />
+              <Text>Repeats:</Text>
+              <Group spacing={5}>
+                <Text color="dimmed">
+                  {form.values.repeat !== Repeat.NONE
+                    ? repeatOptions.find(
+                        (item) => item.value === form.values.repeat
+                      )?.label
+                    : "Not set"}
+                </Text>
+                {form.values.repeat !== Repeat.NONE && (
+                  <CloseButton
+                    radius="xl"
+                    onClick={() => form.setFieldValue("repeat", Repeat.NONE)}
+                  />
+                )}
+              </Group>
+              <RepeatSelectPopover
+                control={handleControl(<Edit size={18} />)}
+                value={form.values.repeat}
+                onSelect={(value) => {
+                  if (
+                    form.values.repeat === Repeat.NONE &&
+                    !form.values.expiresAt
+                  )
+                    form.setFieldValue("expiresAt", getTodayDate());
+                  form.setFieldValue("repeat", value);
+                }}
               />
             </Group>
           </Stack>

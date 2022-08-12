@@ -98,7 +98,10 @@ export const TodoCreator = ({
               control={handleControl(<RepeatIcon size={30} />)}
               value={form.values.repeat}
               onSelect={(value) => {
-                if (!form.values.repeat || form.values.repeat === Repeat.NONE)
+                if (
+                  !form.values.repeat ||
+                  (form.values.repeat === Repeat.NONE && !form.values.expiresAt)
+                )
                   form.setFieldValue("expiresAt", getTodayDate());
                 form.setFieldValue("repeat", value);
               }}

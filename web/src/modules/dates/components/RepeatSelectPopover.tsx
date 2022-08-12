@@ -13,7 +13,7 @@ interface DateSelectPopoverProps {
   onSelect?: (value: Repeat) => void;
 }
 
-const options = [
+export const repeatOptions = [
   { value: Repeat.NONE, label: "None" },
   { value: Repeat.DAILY, label: "Daily" },
   { value: Repeat.WEEKLY, label: "Weekly" },
@@ -39,7 +39,7 @@ export const RepeatSelectPopover = ({
       onClose={() => setIsOpened(false)}
       position="bottom"
     >
-      <Select data={options} value={value} onChange={handleChange} />
+      <Select data={repeatOptions} value={value} onChange={handleChange} />
     </Popover>
   );
 };
