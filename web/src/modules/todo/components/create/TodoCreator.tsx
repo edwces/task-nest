@@ -13,7 +13,7 @@ import { Calendar, Plus, Repeat as RepeatIcon, Tag } from "tabler-icons-react";
 import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
 import { DateBadge } from "../../../dates/components/DateBadge";
-import { formatDate } from "../../../dates/util/date.util";
+import { formatDate, getTodayDate } from "../../../dates/util/date.util";
 import { TagSelectPopover } from "../../../tag/components/TagSelectPopover";
 import { useCreateTodoMutation } from "../../api/useCreateTodoMutation";
 import {
@@ -97,7 +97,11 @@ export const TodoCreator = ({
             <RepeatSelectPopover
               control={handleControl(<RepeatIcon size={30} />)}
               value={form.values.repeat}
-              onSelect={(value) => form.setFieldValue("repeat", value)}
+              onSelect={(value) => {
+                if (!form.values.repeat || form.values.repeat === Repeat.NONE)
+                  form.setFieldValue("expiresAt", getTodayDate());
+                form.setFieldValue("repeat", value);
+              }}
             />
             <DateSelectPopover
               control={handleControl(<Calendar size={30} />)}

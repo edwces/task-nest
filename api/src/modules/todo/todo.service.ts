@@ -84,6 +84,7 @@ export class TodoService {
   private async addRepeatJob(userId: number, id: number, repeat: Repeat) {
     const job = new CronJob(this.repeatToCronTime(repeat), async () => {
       const todo = await this.findOneByUserAndId(userId, id);
+      if (todo.expiresAt) this.addRepeatDateInterval(todo.expiresAt, repeat);
       todo.isChecked = false;
       await this.todoRepository.flush();
     });
@@ -102,6 +103,19 @@ export class TodoService {
         return '0 0 1 * * *';
       default:
         throw new Error('Incorrect type');
+    }
+  }
+
+  private addRepeatDateInterval(date: Date, type: Repeat) {
+    switch (type) {
+      case Repeat.DAILY:
+        date.setDate(date.getDate() + 1);
+        break;
+      case Repeat.WEEKLY:
+        date.setDate(date.getDate() + 7);
+        break;
+      case Repeat.MONTHLY:
+        date.setMonth(date.getMonth() + 1);
     }
   }
 
