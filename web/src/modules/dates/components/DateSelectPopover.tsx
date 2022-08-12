@@ -1,6 +1,8 @@
 import { Popover } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
+import dayjs from "dayjs";
 import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { getTodayDate } from "../util/date.util";
 
 type ControlFn = (
   isOpened: boolean,
@@ -32,7 +34,11 @@ export const DateSelectPopover = ({
       onClose={() => setIsOpened(false)}
       position="bottom"
     >
-      <Calendar value={value} onChange={handleChange} />
+      <Calendar
+        minDate={getTodayDate()}
+        value={value}
+        onChange={handleChange}
+      />
     </Popover>
   );
 };
