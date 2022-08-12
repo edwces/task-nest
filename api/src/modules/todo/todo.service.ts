@@ -121,6 +121,7 @@ export class TodoService {
 
   async removeByUserAndId(userId: number, id: number) {
     const todo = await this.findOneByUserAndId(userId, id);
+    this.schedulerRegistry.deleteCronJob(`TODO_${todo.id}_REPEAT`);
     await this.todoRepository.removeAndFlush(todo);
   }
 
@@ -136,6 +137,7 @@ export class TodoService {
 
   async removeById(id: number) {
     const todo = await this.todoRepository.findOne(id);
+    this.schedulerRegistry.deleteCronJob(`TODO_${todo.id}_REPEAT`);
     await this.todoRepository.removeAndFlush(todo);
   }
   async create({ authorId, tagIds, expiresAt, repeat, ...dto }: CreateTodoDTO) {

@@ -20,6 +20,7 @@ import {
   Plus,
   Repeat as RepeatIcon,
   Tag as TagIcon,
+  Trash,
 } from "tabler-icons-react";
 import { z } from "zod";
 import { DateSelectPopover } from "../../../dates/components/DateSelectPopover";
@@ -51,6 +52,7 @@ interface EditTodoFormProps {
   initialValues: EditTodoFormInput;
   onEdit: (values: EditTodoFormInput) => void;
   onCancel: () => void;
+  onDelete: () => void;
   isSubmitting?: boolean;
 }
 
@@ -58,6 +60,7 @@ export function EditTodoForm({
   initialValues,
   onEdit,
   onCancel,
+  onDelete,
   isSubmitting = false,
 }: EditTodoFormProps) {
   const tags = useTags();
@@ -95,6 +98,23 @@ export function EditTodoForm({
             autoComplete="off"
             styles={{ input: { fontFamily: "Montserrat", fontSize: 27 } }}
             {...form.getInputProps("label")}
+            rightSection={
+              <ActionIcon
+                variant="transparent"
+                color="gray"
+                sx={(theme) => ({
+                  "&:hover": {
+                    color:
+                      theme.colorScheme === "dark"
+                        ? theme.colors.red[4]
+                        : theme.colors.red[8],
+                  },
+                })}
+                onClick={onDelete}
+              >
+                <Trash size={20} />
+              </ActionIcon>
+            }
           />
           <Divider />
           <Stack>
