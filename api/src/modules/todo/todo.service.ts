@@ -130,7 +130,8 @@ export class TodoService {
       ...dto,
     });
     await this.todoRepository.persistAndFlush(todo);
-    if (repeat !== Repeat.NONE) this.addRepeatJob(authorId, todo.id, repeat);
+    if (todo.repeat !== Repeat.NONE)
+      this.addRepeatJob(authorId, todo.id, repeat);
   }
 
   private serializeDate(iso: string) {
@@ -142,15 +143,21 @@ export class TodoService {
   async updateByUserAndId(
     userId: number,
     id: number,
-    { tagIds, expiresAt, ...dto }: UpdateTodoDTO,
+    { tagIds, expiresAt, repeat, ...dto }: UpdateTodoDTO,
   ) {
     const todo = await this.findOneByUserAndId(userId, id);
+
+    if (repeat !== todo.repeat) {
+      this.schedulerRegistry.deleteCronJob(`TODO_${id}_REPEAT`);
+      if (repeat !== Repeat.NONE) this.addRepeatJob(userId, id, repeat);
+    }
     wrap(todo).assign({
       tags: tagIds || todo.tags,
       expiresAt:
         expiresAt !== undefined
           ? expiresAt && this.serializeDate(expiresAt)
           : todo.expiresAt,
+      repeat,
       ...dto,
     });
 

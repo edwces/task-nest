@@ -15,6 +15,6 @@ export class CreateTodoDTO {
   @IsOptional() @IsArray() readonly tagIds?: number[];
   @IsOptional() @IsString() readonly description?: string;
   @IsOptional() @IsString() readonly expiresAt?: string;
-  @IsOptional() @IsBoolean() isBookmarked: boolean;
-  @IsOptional() @IsEnum(Repeat) repeat: Repeat;
+  @IsOptional() @IsBoolean() readonly isBookmarked: boolean;
+  @IsOptional() @IsEnum(Repeat) readonly repeat?: Repeat;
 }
