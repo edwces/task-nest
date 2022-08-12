@@ -119,7 +119,12 @@ export class TodoService {
     }
   }
 
-  async markAsCheckedByUserAndId(userId: number, id: number) {
+  async removeByUserAndId(userId: number, id: number) {
+    const todo = await this.findOneByUserAndId(userId, id);
+    await this.todoRepository.removeAndFlush(todo);
+  }
+
+  async tickByUserAndId(userId: number, id: number) {
     const todo = await this.findOneByUserAndId(userId, id);
     if (todo.repeat === Repeat.NONE) {
       return await this.todoRepository.removeAndFlush(todo);
@@ -130,10 +135,9 @@ export class TodoService {
   }
 
   async removeById(id: number) {
-    const todo = await this.todoRepository.findOneOrFail(id);
+    const todo = await this.todoRepository.findOne(id);
     await this.todoRepository.removeAndFlush(todo);
   }
-
   async create({ authorId, tagIds, expiresAt, repeat, ...dto }: CreateTodoDTO) {
     const todo = this.todoRepository.create({
       author: authorId,

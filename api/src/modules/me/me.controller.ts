@@ -70,9 +70,14 @@ export class MeController {
     return this.todoService.create({ authorId: user.id, ...dto });
   }
 
+  @Post('todos/:id/tick')
+  tickTodo(@User() user: SessionUser, @Param('id', ParseIntPipe) id: number) {
+    return this.todoService.tickByUserAndId(user.id, id);
+  }
+
   @Delete('todos/:id')
-  deleteTodo(@User() user: SessionUser, @Param('id', ParseIntPipe) id: number) {
-    return this.todoService.markAsCheckedByUserAndId(user.id, id);
+  removeTodo(@User() user: SessionUser, @Param('id', ParseIntPipe) id: number) {
+    return this.todoService.removeByUserAndId(user.id, id);
   }
 
   @Get('tags')

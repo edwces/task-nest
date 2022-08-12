@@ -1,4 +1,3 @@
-import { useRemoveTodoMutation } from "../../api/useRemoveTodoMutation";
 import { Todo } from "../../models/todo.model";
 import { TodoItem } from "./TodoItem";
 import { AnimatePresence, motion } from "framer-motion";
@@ -7,6 +6,7 @@ import { useEditTodoModal } from "../../hooks/useEditTodoModal";
 import { formatDate } from "../../../dates/util/date.util";
 import { useUpdateTodoMutation } from "../../api/useUpdateTodoMutation";
 import { Repeat } from "../../../dates/enums/repeat.enum";
+import { useTickTodoMutation } from "../../api/useTickTodoMutation";
 
 const MotionStack = motion(Stack);
 
@@ -15,7 +15,7 @@ interface TodoListProps {
 }
 
 export function TodoList({ todos = [] }: TodoListProps) {
-  const removeTodo = useRemoveTodoMutation();
+  const removeTodo = useTickTodoMutation();
   const { open } = useEditTodoModal();
   const updateTodo = useUpdateTodoMutation();
 

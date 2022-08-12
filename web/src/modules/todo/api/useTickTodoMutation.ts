@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
 import { http } from "../../../config/httpClient";
 
-function removeTodo(id: number) {
-  return http.delete<void>(`me/todos/${id}`);
+function tickTodo(id: number) {
+  return http.post<void>(`me/todos/${id}/tick`);
 }
 
-export function useRemoveTodoMutation() {
+export function useTickTodoMutation() {
   const queryClient = useQueryClient();
-  return useMutation((id: number) => removeTodo(id), {
+  return useMutation((id: number) => tickTodo(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(["me", "todos"]);
       queryClient.invalidateQueries(["me", "tags", "todos"]);
