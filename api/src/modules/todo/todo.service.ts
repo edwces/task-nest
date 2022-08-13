@@ -62,10 +62,23 @@ export class TodoService {
       direction = QueryOrder.ASC,
       isBookmarked,
       isChecked,
+      isExpired,
     } = filters;
 
-    if (isBookmarked ?? false) qb.andWhere({ isBookmarked });
-    if (isChecked ?? false) qb.andWhere({ isChecked });
+    if (isBookmarked !== undefined) qb.andWhere({ isBookmarked });
+    if (isChecked !== undefined) qb.andWhere({ isChecked });
+    if (isExpired !== undefined) {
+      const now = new Date();
+      now.setDate(now.getDate() - 1);
+      // isExpired is not parsed as boolean
+      if ((isExpired as unknown as string) === 'true')
+        qb.andWhere({ expiresAt: { $lte: now } });
+      else
+        qb.andWhere({
+          $or: [{ expiresAt: { $gte: now } }, { expiresAt: null }],
+        });
+    }
+
     if (due) {
       if (due === 'today')
         qb.andWhere(`

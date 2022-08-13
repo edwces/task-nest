@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mantine/core";
+import { Accordion, Stack } from "@mantine/core";
 import { PageMetadata } from "../common/components/PageMetadata";
 import { useFilters } from "../common/store/useFilters";
 import { NextPageWithLayout } from "../common/interfaces/next-page-with-layout.interface";
@@ -12,7 +12,12 @@ import { Route } from "../common/enums/route.enum";
 
 const Home: NextPageWithLayout = () => {
   const values = useFilters((state) => state.values);
-  const { data } = useTodos({ ...values, isChecked: false });
+  const todos = useTodos({ ...values, isChecked: false, isExpired: false });
+  const expiredTodos = useTodos({
+    ...values,
+    isExpired: true,
+    isChecked: false,
+  });
 
   return (
     <>
@@ -20,9 +25,14 @@ const Home: NextPageWithLayout = () => {
       <Stack spacing={40} pt={20}>
         <TodoControlBar title="All" />
         <TodoCreator />
-        <Box px={10}>
-          <TodoList todos={data} />
-        </Box>
+        <Stack px={10}>
+          <TodoList todos={todos.data} />
+          <Accordion>
+            <Accordion.Item label="Expired">
+              <TodoList todos={expiredTodos.data} />
+            </Accordion.Item>
+          </Accordion>
+        </Stack>
       </Stack>
     </>
   );

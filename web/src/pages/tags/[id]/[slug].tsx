@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mantine/core";
+import { Accordion, Box, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { PageMetadata } from "../../../common/components/PageMetadata";
 import { useFilters } from "../../../common/store/useFilters";
@@ -14,10 +14,19 @@ import { Route } from "../../../common/enums/route.enum";
 const Tag: NextPageWithLayout = () => {
   const router = useRouter();
   const { values } = useFilters();
-  const { data } = useTodosByTagLabel(
+  const todos = useTodosByTagLabel(
     {
       label: router.query.slug as string,
-      query: { ...values, isChecked: false },
+      query: { ...values, isChecked: false, isExpired: false },
+    },
+    {
+      enabled: router.isReady,
+    }
+  );
+  const expiredTodos = useTodosByTagLabel(
+    {
+      label: router.query.slug as string,
+      query: { ...values, isChecked: false, isExpired: true },
     },
     {
       enabled: router.isReady,
@@ -39,9 +48,14 @@ const Tag: NextPageWithLayout = () => {
             tagIds: [Number.parseInt(router.query.id as string)],
           }}
         />
-        <Box px={10}>
-          <TodoList todos={data} />
-        </Box>
+        <Stack px={10}>
+          <TodoList todos={todos.data} />
+          <Accordion>
+            <Accordion.Item label="Expired">
+              <TodoList todos={expiredTodos.data} />
+            </Accordion.Item>
+          </Accordion>
+        </Stack>
       </Stack>
     </>
   );

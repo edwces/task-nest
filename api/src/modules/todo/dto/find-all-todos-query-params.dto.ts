@@ -8,4 +8,5 @@ export class FindAllTodosQueryParamsDTO {
   @IsOptional() @IsString() readonly due?: string;
   @IsOptional() readonly isBookmarked?: boolean;
   @IsOptional() readonly isChecked?: boolean;
+  @IsOptional() readonly isExpired?: boolean;
 }
