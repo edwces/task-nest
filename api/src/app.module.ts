@@ -17,6 +17,7 @@ import { CoreModule } from './modules/core.module';
 import { mikroOrmProvider } from './config/mikro-orm.provider';
 import { mailerProvider } from './config/mailer.provider';
 import { ScheduleModule } from '@nestjs/schedule';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot(),
     ThrottlerModule.forRoot({ ttl: 60, limit: 25 }),
     CoreModule,
+    JobsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
