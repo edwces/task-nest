@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
   MaxLength,
@@ -19,4 +20,8 @@ export class SignUpDTO {
   @IsString()
   @Length(5, 50)
   readonly password: string;
+
+  @IsOptional()
+  @IsString()
+  readonly timezone?: string;
 }

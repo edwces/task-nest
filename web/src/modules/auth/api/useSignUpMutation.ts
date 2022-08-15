@@ -7,5 +7,10 @@ function signUp(data: SignUpDTO) {
 }
 
 export function useSignUpMutation() {
-  return useMutation((dto: SignUpDTO) => signUp(dto));
+  return useMutation((dto: SignUpDTO) =>
+    signUp({
+      ...dto,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    })
+  );
 }
