@@ -34,6 +34,14 @@ services:
   redis:
     image: redis:7.0.2-alpine
 
+  pg-admin:
+    image: dpage/pgadmin4:6.12
+    ports:
+      - "80:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=pass
+
 
 volumes:
   postgres-data:
