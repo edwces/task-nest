@@ -18,6 +18,7 @@ interface TodoItemProps {
   isExpired?: boolean;
   isRepeating?: boolean;
   isBookmarked?: boolean;
+  isTicked?: boolean;
   onCheck?: ChangeEventHandler<HTMLInputElement>;
   onEdit?: MouseEventHandler<HTMLButtonElement>;
   onBookmark?: MouseEventHandler<HTMLButtonElement>;
@@ -32,6 +33,7 @@ export function TodoItem({
   isExpired = false,
   isBookmarked = false,
   isRepeating = false,
+  isTicked = false,
   tags = [],
   expiresAt,
 }: TodoItemProps) {
@@ -42,9 +44,15 @@ export function TodoItem({
       <Group position="apart" noWrap align="flex-start">
         <Checkbox
           label={label}
-          size="xl"
+          size="lg"
           radius="xl"
-          styles={{ root: { alignItems: "flex-start" } }}
+          disabled={isTicked}
+          styles={{
+            root: {
+              alignItems: "flex-start",
+              textDecoration: isTicked ? "line-through" : "",
+            },
+          }}
           onChange={onCheck}
         />
         <Group noWrap>
@@ -62,8 +70,9 @@ export function TodoItem({
           ))}
           <Group spacing={20}>
             <ActionIcon
+              variant="transparent"
               color={isBookmarked ? "red" : "gray"}
-              onClick={onBookmark}
+              onClick={isTicked ? () => {} : onBookmark}
             >
               <Bookmark
                 size={25}
@@ -75,9 +84,11 @@ export function TodoItem({
                 }
               />
             </ActionIcon>
-            <ActionIcon onClick={onEdit}>
-              <Edit size={25} />
-            </ActionIcon>
+            {isTicked || (
+              <ActionIcon onClick={onEdit}>
+                <Edit size={25} />
+              </ActionIcon>
+            )}
           </Group>
         </Group>
       </Group>

@@ -12,9 +12,10 @@ const MotionStack = motion(Stack);
 
 interface TodoListProps {
   todos?: ReadonlyArray<Todo>;
+  areTicked?: boolean;
 }
 
-export function TodoList({ todos = [] }: TodoListProps) {
+export function TodoList({ todos = [], areTicked = false }: TodoListProps) {
   const removeTodo = useTickTodoMutation();
   const { open } = useEditTodoModal();
   const updateTodo = useUpdateTodoMutation();
@@ -44,6 +45,7 @@ export function TodoList({ todos = [] }: TodoListProps) {
                   data: { isBookmarked: !todo.isBookmarked },
                 })
               }
+              isTicked={areTicked}
               tags={todo.tags}
             />
           </motion.div>

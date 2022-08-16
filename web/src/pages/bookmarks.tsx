@@ -1,4 +1,4 @@
-import { Accordion, Box, Stack } from "@mantine/core";
+import { Accordion, Box, Container, Stack } from "@mantine/core";
 import { PageMetadata } from "../common/components/PageMetadata";
 import { useFilters } from "../common/store/useFilters";
 import { NextPageWithLayout } from "../common/interfaces/next-page-with-layout.interface";
@@ -24,6 +24,12 @@ const Bookmarks: NextPageWithLayout = () => {
     isChecked: false,
     isExpired: true,
   });
+  const tickedTodos = useTodos({
+    ...values,
+    isBookmarked: true,
+    isChecked: true,
+    checkedAt: "today",
+  });
 
   return (
     <>
@@ -37,7 +43,14 @@ const Bookmarks: NextPageWithLayout = () => {
           <TodoList todos={todos.data} />
           <Accordion>
             <Accordion.Item label="Expired">
-              <TodoList todos={expiredTodos.data} />
+              <Container py={20} fluid>
+                <TodoList todos={expiredTodos.data} />
+              </Container>
+            </Accordion.Item>
+            <Accordion.Item label="Ticked today">
+              <Container py={20} fluid>
+                <TodoList areTicked todos={tickedTodos.data} />
+              </Container>
             </Accordion.Item>
           </Accordion>
         </Stack>
