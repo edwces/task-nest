@@ -2,6 +2,8 @@
 
 todo like app similiar to todoist built with nest.js and next.js
 
+![image](https://user-images.githubusercontent.com/68016750/184880022-cc2264f5-14e1-4431-88ca-7da7b13c37d1.png)
+
 Features:
 
 - create / list / edit todo
