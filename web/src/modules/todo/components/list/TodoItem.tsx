@@ -46,6 +46,7 @@ export function TodoItem({
           label={label}
           size="lg"
           radius="xl"
+          checked={isTicked}
           disabled={isTicked}
           styles={{
             root: {
