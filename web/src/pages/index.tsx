@@ -18,6 +18,11 @@ const Home: NextPageWithLayout = () => {
     isExpired: true,
     isChecked: false,
   });
+  const tickedTodos = useTodos({
+    ...values,
+    isChecked: true,
+    checkedAt: "today",
+  });
 
   return (
     <>
@@ -30,6 +35,9 @@ const Home: NextPageWithLayout = () => {
           <Accordion>
             <Accordion.Item label="Expired">
               <TodoList todos={expiredTodos.data} />
+            </Accordion.Item>
+            <Accordion.Item label="Ticked Today">
+              <TodoList todos={tickedTodos.data} />
             </Accordion.Item>
           </Accordion>
         </Stack>

@@ -5,4 +5,5 @@ export interface TodosQueryParamsDTO {
   isBookmarked?: boolean;
   isChecked?: boolean;
   isExpired?: boolean;
+  checkedAt?: string;
 }

@@ -10,5 +10,7 @@ export interface Todo extends Basic {
   expiresAt: string | null;
   isExpired: boolean;
   isBookmarked: boolean;
+  isChecked: boolean;
+  checkedAt: string | null;
   repeat: Repeat;
 }

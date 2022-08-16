@@ -6,7 +6,6 @@ import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { UpdateTodoDTO } from './dto/update-todo.dto';
-import { Repeat } from './enums/repeat.enum';
 import { Todo } from './todo.entity';
 
 @Injectable()
@@ -60,10 +59,14 @@ export class TodoService {
       isBookmarked,
       isChecked,
       isExpired,
+      checkedAt,
     } = filters;
 
     if (isBookmarked !== undefined) qb.andWhere({ isBookmarked });
     if (isChecked !== undefined) qb.andWhere({ isChecked });
+    if (checkedAt === 'today')
+      qb.andWhere(`
+            to_char("checked_at", 'HH:MM:DD') = to_char(CURRENT_DATE, 'HH:MM:DD')`);
     if (isExpired !== undefined) {
       const now = new Date();
       now.setDate(now.getDate() - 1);
@@ -98,12 +101,12 @@ export class TodoService {
 
   async tickByUserAndId(userId: number, id: number) {
     const todo = await this.findOneByUserAndId(userId, id);
-    if (todo.repeat === Repeat.NONE) {
-      return await this.todoRepository.removeAndFlush(todo);
-    } else {
-      todo.isChecked = true;
-      await this.todoRepository.flush();
-    }
+    todo.isChecked = true;
+    const now = new Date();
+    now.setHours(0, 0, 0);
+    todo.checkedAt = now;
+
+    await this.todoRepository.flush();
   }
 
   async removeById(id: number) {

@@ -36,6 +36,9 @@ export class Todo extends BasicEntity {
   @Property()
   isChecked: boolean = false;
 
+  @Property({ type: DateType, nullable: true })
+  checkedAt?: Date;
+
   @Enum(() => Repeat)
   repeat: Repeat = Repeat.NONE;
 

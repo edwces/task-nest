@@ -13,12 +13,24 @@ export class TodoScheduler {
   ) {}
 
   @Cron('0 0 * * * *')
-  async handleRepeatingTodos() {
+  async handleDailyRepeatingTodos() {
     const qb = this.todoRepository.createQueryBuilder();
 
-    await qb
-      .update({ isChecked: false })
-      .where({ repeat: { $ne: Repeat.NONE } });
+    await qb.update({ isChecked: false }).where({ repeat: Repeat.DAILY });
+  }
+
+  @Cron(`0 0 * * 0 *`)
+  async handleWeeklyRepeatingTodos() {
+    const qb = this.todoRepository.createQueryBuilder();
+
+    await qb.update({ isChecked: false }).where({ repeat: Repeat.WEEKLY });
+  }
+
+  @Cron(`0 0 1 * * *`)
+  async handleMonthlyRepeatingTodos() {
+    const qb = this.todoRepository.createQueryBuilder();
+
+    await qb.update({ isChecked: false }).where({ repeat: Repeat.MONTHLY });
   }
 
   @Cron('0 0 * * * *')
