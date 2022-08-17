@@ -5,6 +5,8 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { Repeat } from 'src/modules/todo/enums/repeat.enum';
 import { Todo } from 'src/modules/todo/todo.entity';
 
+// Probably should query for todos in considirations to
+// each user timezone
 @Injectable()
 export class TodoScheduler {
   private readonly logger = new Logger(TodoScheduler.name);

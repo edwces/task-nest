@@ -6,5 +6,4 @@ export class CreateUserDTO {
   @IsNotEmpty() readonly name: string;
   @IsNotEmpty() readonly password: string;
   @IsOptional() @IsEnum(UserRole) readonly role? = UserRole.USER;
-  @IsOptional() readonly timezone?: string;
 }

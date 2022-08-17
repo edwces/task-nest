@@ -26,9 +26,6 @@ export class User extends BasicEntity {
   @Property({ hidden: true })
   hash!: string;
 
-  @Property()
-  timezone: string = 'Europe/Warsaw';
-
   @Enum({ items: () => UserRole, array: true })
   roles: UserRole[] = [UserRole.USER];
 
