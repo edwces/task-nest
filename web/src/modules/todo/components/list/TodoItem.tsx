@@ -8,7 +8,12 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import Link from "next/link";
-import { ChangeEventHandler, MouseEventHandler } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  MouseEventHandler,
+  useState,
+} from "react";
 import { Bookmark, Calendar, Edit, Repeat } from "tabler-icons-react";
 import { Tag } from "../../../tag/models/tag.model";
 
@@ -27,7 +32,7 @@ interface TodoItemProps {
 
 export function TodoItem({
   label,
-  onCheck,
+  onCheck = () => {},
   onEdit,
   onBookmark,
   isExpired = false,
@@ -38,6 +43,12 @@ export function TodoItem({
   expiresAt,
 }: TodoItemProps) {
   const theme = useMantineTheme();
+  const [isChecked, setChecked] = useState(isTicked);
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setChecked(!isChecked);
+    onCheck(event);
+  };
 
   return (
     <Stack spacing={3}>
@@ -46,7 +57,7 @@ export function TodoItem({
           label={label}
           size="lg"
           radius="xl"
-          checked={isTicked}
+          checked={isChecked}
           disabled={isTicked}
           styles={{
             root: {
@@ -54,7 +65,7 @@ export function TodoItem({
               textDecoration: isTicked ? "line-through" : "",
             },
           }}
-          onChange={onCheck}
+          onChange={onChange}
         />
         <Group noWrap>
           {tags.map((tag) => (
