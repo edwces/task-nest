@@ -1,22 +1,23 @@
-import { Connection, IDatabaseDriver } from '@mikro-orm/core';
-import { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs';
+import { Options } from '@mikro-orm/core';
+import { MikroOrmModuleSyncOptions } from '@mikro-orm/nestjs';
 import { NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
 
-export const mikroOrmProvider = {
-  useFactory: async (configService: ConfigService<EnvironmentVariables>) => {
-    return {
-      type: 'postgresql',
-      host: configService.get('DB_HOST'),
-      password: configService.get('DB_PASSWORD'),
-      user: configService.get('DB_USER'),
-      dbName: configService.get('DB_NAME'),
-      entities: ['dist/**/*.entity.js'],
-      debug: true,
-      findOneOrFailHandler: (entityName: string) =>
-        new NotFoundException(`${entityName} was not found`),
-    };
+const MikroOrmConfig = {
+  type: 'postgresql',
+  host: process.env['DB_HOST'],
+  password: process.env['DB_PASSWORD'],
+  user: process.env['DB_USER'],
+  dbName: process.env['DB_NAME'],
+  entities: ['dist/**/*.entity.js'],
+  migrations: {
+    path: 'migrations',
+    pathTs: 'migrations',
   },
-  inject: [ConfigService],
-} as MikroOrmModuleAsyncOptions<IDatabaseDriver<Connection>>;
+  debug: true,
+  findOneOrFailHandler: (entityName: string) =>
+    new NotFoundException(`${entityName} was not found`),
+} as Options;
+
+export const mikroOrmProvider = MikroOrmConfig as MikroOrmModuleSyncOptions;
+
+export default MikroOrmConfig;

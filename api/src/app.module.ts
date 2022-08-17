@@ -24,7 +24,7 @@ import { JobsModule } from './jobs/jobs.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MikroOrmModule.forRootAsync(mikroOrmProvider),
+    MikroOrmModule.forRoot(mikroOrmProvider),
     RedisModule.forRootAsync({
       useFactory: async (
         configService: ConfigService<EnvironmentVariables>,
@@ -47,8 +47,6 @@ export class AppModule implements NestModule, OnModuleInit {
   }
 
   async onModuleInit() {
-    const generator = this.orm.getSchemaGenerator();
-    await generator.refreshDatabase();
-    await generator.updateSchema();
+    await this.orm.getMigrator().up();
   }
 }
