@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from '../../common/common.module';
 import { UserModule } from '../user/user.module';
 import { TodoController } from './todo.controller';
 import { Todo } from './todo.entity';

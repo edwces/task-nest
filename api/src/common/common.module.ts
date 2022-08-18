@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { UserModule } from 'src/modules/user/user.module';
+import { UserModule } from '../modules/user/user.module';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({

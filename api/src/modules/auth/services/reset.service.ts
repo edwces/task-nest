@@ -6,8 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import Redis from 'ioredis';
-import { EmailService } from 'src/modules/email/email.service';
-import { UserService } from 'src/modules/user/user.service';
 import { RESET_CODE_EXPIRE_TIME } from '../auth.constants';
 import * as crypto from 'node:crypto';
 import * as argon2 from 'argon2';
@@ -15,6 +13,8 @@ import * as nodemailer from 'nodemailer';
 import { CreateResetCodeDTO } from '../dto/create-reset-code.dto';
 import { ResetPasswordDTO } from '../dto/reset-password.dto';
 import { ValidateResetCodeDTO } from '../dto/validate-reset-code.dto';
+import { EmailService } from '../../email/email.service';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class ResetService {

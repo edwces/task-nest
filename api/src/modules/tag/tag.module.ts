@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from '../../common/common.module';
 import { UserModule } from '../user/user.module';
 import { TagController } from './tag.controller';
 import { Tag } from './tag.entity';

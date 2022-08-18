@@ -8,7 +8,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { User } from 'src/common/decorators/user.decorator';
 import { JWT_REFRESH_COOKIE_NAME } from '../auth.constants';
 import { AuthService } from '../services/auth.service';
 import { JWTRefreshGuard } from '../guards/jwt-refresh.guard';
@@ -16,6 +15,7 @@ import { SessionUser } from '../interfaces/session-user.interface';
 import { Throttle } from '@nestjs/throttler';
 import { SignInDTO } from '../dto/sign-in.dto';
 import { SignUpDTO } from '../dto/sign-up.dto';
+import { User } from '../../../common/decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {

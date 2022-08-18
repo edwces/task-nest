@@ -6,7 +6,7 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { Private } from 'src/common/decorators/private.decorator';
+import { Private } from '../../common/decorators/private.decorator';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 

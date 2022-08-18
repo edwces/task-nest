@@ -8,10 +8,15 @@ const MikroOrmConfig = {
   password: process.env['DB_PASSWORD'],
   user: process.env['DB_USER'],
   dbName: process.env['DB_NAME'],
-  entities: ['dist/**/*.entity.js'],
+  entities: ['./**/*.entity.js'],
+  entitiesTs: ['./**/*.entity.js'],
   migrations: {
-    path: 'migrations',
-    pathTs: 'migrations',
+    path: 'dist/migrations',
+    pathTs: 'src/migrations',
+  },
+  seeder: {
+    path: 'dist/seeds',
+    pathTs: 'src/seeds',
   },
   debug: true,
   findOneOrFailHandler: (entityName: string) =>

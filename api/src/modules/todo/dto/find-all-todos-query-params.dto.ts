@@ -1,5 +1,5 @@
+import { QueryOrder } from '@mikro-orm/core';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { Todo } from '../todo.entity';
 
 export class FindAllTodosQueryParamsDTO {

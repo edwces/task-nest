@@ -2,8 +2,8 @@ import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Repeat } from 'src/modules/todo/enums/repeat.enum';
-import { Todo } from 'src/modules/todo/todo.entity';
+import { Repeat } from '../modules/todo/enums/repeat.enum';
+import { Todo } from '../modules/todo/todo.entity';
 
 // Probably should query for todos in considirations to
 // each user timezone

@@ -10,7 +10,6 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { User } from 'src/common/decorators/user.decorator';
 import { JWTAccessGuard } from '../auth/guards/jwt-access.guard';
 import { SessionUser } from '../auth/interfaces/session-user.interface';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
@@ -21,6 +20,7 @@ import { UpdateTodoDTO } from '../todo/dto/update-todo.dto';
 import { TodoService } from '../todo/todo.service';
 import { UserService } from '../user/user.service';
 import { SkipThrottle } from '@nestjs/throttler';
+import { User } from '../../common/decorators/user.decorator';
 
 @Controller('me')
 @UseGuards(JWTAccessGuard)

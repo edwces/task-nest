@@ -1,8 +1,7 @@
-import { wrap } from '@mikro-orm/core';
+import { QueryOrder, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, QueryBuilder } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { QueryOrder } from 'src/common/enums/query-order.enum';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { UpdateTodoDTO } from './dto/update-todo.dto';

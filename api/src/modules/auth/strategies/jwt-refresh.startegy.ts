@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
-import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
+import { EnvironmentVariables } from '../../../common/interfaces/environment-variables.interface';
 import { jwtCookieExtractor } from '../helpers/jwt-cookie-extractor.helper';
 import { JWTRefreshPayload } from '../interfaces/jwt-refresh-payload.interface';
 import { SessionUser } from '../interfaces/session-user.interface';

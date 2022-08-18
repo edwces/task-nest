@@ -1,7 +1,7 @@
 import { MailerAsyncOptions } from '@nestjs-modules/mailer/dist/interfaces/mailer-async-options.interface';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
 import * as nodemailer from 'nodemailer';
+import { EnvironmentVariables } from '../common/interfaces/environment-variables.interface';
 
 export const mailerProvider = {
   useFactory: async (configService: ConfigService<EnvironmentVariables>) => {

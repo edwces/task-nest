@@ -7,7 +7,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/user.service';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from 'src/common/interfaces/environment-variables.interface';
 import {
   JWT_ACCESS_EXPIRE_TIME,
   JWT_REFRESH_EXPIRE_TIME,
@@ -17,6 +16,7 @@ import { JWTAccessPayload } from '../interfaces/jwt-access-payload.interface';
 import { JWTRefreshPayload } from '../interfaces/jwt-refresh-payload.interface';
 import { SignUpDTO } from '../dto/sign-up.dto';
 import { SignInDTO } from '../dto/sign-in.dto';
+import { EnvironmentVariables } from '../../../common/interfaces/environment-variables.interface';
 
 @Injectable()
 export class AuthService {

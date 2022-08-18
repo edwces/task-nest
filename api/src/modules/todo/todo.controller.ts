@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { Private } from 'src/common/decorators/private.decorator';
+import { Private } from '../../common/decorators/private.decorator';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { FindAllTodosQueryParamsDTO } from './dto/find-all-todos-query-params.dto';
 import { TodoService } from './todo.service';

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Private } from 'src/common/decorators/private.decorator';
+import { Private } from '../../common/decorators/private.decorator';
 import { CreateTagDTO } from './dto/create-tag.dto';
 import { TagService } from './tag.service';
 
